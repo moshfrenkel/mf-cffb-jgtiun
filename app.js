@@ -223,12 +223,12 @@ function viewToday(){
 }
 
 /* ---- WORKOUT PLAYER ---- */
-let timer = {iv:null, idx:-1, restSec:0};   // only one active timer at a time
+let timer = {iv:null, idx:-1, restSec:0, repaint:null};   // only one active timer at a time
 function clearActiveTimer(){
   if(timer.iv){ clearInterval(timer.iv); timer.iv=null; }
   if(timer.idx!==-1){ const o=document.getElementById('cnt-'+timer.idx); if(o) o.textContent=''; const b=document.getElementById('btn-'+timer.idx); if(b) b.textContent=b.dataset.label; }
   document.querySelectorAll('.rt-btns button.on').forEach(b=>b.classList.remove('on'));
-  timer.idx=-1; timer.restSec=0;
+  timer.idx=-1; timer.restSec=0; timer.repaint=null; releaseWake();
 }
 function buzz(p){ if(navigator.vibrate) navigator.vibrate(p); }
 const mmss = s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
@@ -252,6 +252,13 @@ function beep(freq, dur, vol){
 function cueEnd(){ beep(680,0.13,0.28); buzz(70); }                                   // each of the last 3 seconds
 function cueDone(){ beep(990,0.3,0.32); setTimeout(()=>beep(1180,0.32,0.32),200); buzz([200,100,200]); } // finish
 function cueSwitch(work){ beep(work?880:520,0.16,0.3); buzz(work?[140]:[80,50,80]); } // interval phase change
+
+/* wake lock — keep the screen on while a timer runs */
+let wakeLock=null;
+async function acquireWake(){
+  try{ if('wakeLock' in navigator){ wakeLock=await navigator.wakeLock.request('screen'); } }catch(e){}
+}
+function releaseWake(){ try{ if(wakeLock){ wakeLock.release(); wakeLock=null; } }catch(e){} }
 
 function viewWorkout(){
   const d = selectedDate;
@@ -329,7 +336,7 @@ function runRest(sec, btn, wrap){
   // tapping the active one again = stop
   if(timer.idx==='rest' && timer.iv && timer.restSec===sec){ clearActiveTimer(); return; }
   clearActiveTimer();
-  btn.classList.add('on');
+  btn.classList.add('on'); acquireWake();
   timer.idx='rest'; timer.restSec=sec;
   countdown(out, sec, 'מנוחה');
 }
@@ -378,51 +385,61 @@ function runTimer(i, s){
   // toggle off if this one is running
   if(timer.idx===i && timer.iv){ clearActiveTimer(); return; }
   clearActiveTimer();
-  timer.idx=i; if(btn) btn.textContent='⏸ עצור';
+  timer.idx=i; if(btn) btn.textContent='⏸ עצור'; acquireWake();
   const t = s.timer;
   if(!t) return countdown(out, s.t*60);
   if(t.mode==='countdown' || t.mode==='amrap') return countdown(out, t.sec, t.label);
   if(t.mode==='fortime') return stopwatch(out, t.cap);
   if(t.mode==='interval') return interval(out, t);
 }
+/* all engines are anchored to real timestamps, so they self-correct after the
+   screen sleeps / the tab is backgrounded (where setInterval gets throttled). */
 function countdown(out, secs, label){
-  let left=secs;
-  const tick=()=>{ out.innerHTML=`<span class="big">${mmss(left)}</span>${label?`<span class="sub">${label}</span>`:''}`;
+  const end=Date.now()+secs*1000; let prev=secs+1;
+  const paint=()=>{
+    let left=Math.round((end-Date.now())/1000); if(left<0) left=0;
+    out.innerHTML=`<span class="big">${mmss(left)}</span>${label?`<span class="sub">${label}</span>`:''}`;
     if(left<=0){ clearActiveTimer(); out.innerHTML='<span class="big done">סיום ✓</span>'; cueDone(); return; }
-    if(left<=3) cueEnd();
-    left--; };
-  tick(); timer.iv=setInterval(tick,1000);
+    if(left<prev && left<=3) cueEnd();
+    prev=left;
+  };
+  timer.repaint=paint; paint(); timer.iv=setInterval(paint,250);
 }
 function stopwatch(out, cap){
-  let s=0;
-  const tick=()=>{ out.innerHTML=`<span class="big">${mmss(s)}</span><span class="sub">סופר עולה · עצור כשסיימת</span>`;
+  const start=Date.now(); let prev=-1;
+  const paint=()=>{
+    const s=Math.floor((Date.now()-start)/1000);
+    out.innerHTML=`<span class="big">${mmss(s)}</span><span class="sub">סופר עולה · עצור כשסיימת</span>`;
     if(cap && s>=cap){ clearActiveTimer(); out.innerHTML='<span class="big done">capped ✓</span>'; cueDone(); return; }
-    if(cap && s>=cap-3) cueEnd();
-    s++; };
-  tick(); timer.iv=setInterval(tick,1000);
+    if(cap && s>prev && s>=cap-3 && s<cap) cueEnd();
+    prev=s;
+  };
+  timer.repaint=paint; paint(); timer.iv=setInterval(paint,250);
 }
 function interval(out, t){
-  let round=0, ph=0, left=t.phases[0].sec, totalRounds=t.rounds;
+  // flat schedule of every segment in the whole piece
+  const segs=[];
+  for(let r=0;r<t.rounds;r++) for(let ph=0;ph<t.phases.length;ph++) segs.push({r, ph, dur:t.phases[ph].sec});
+  const total=segs.reduce((a,s)=>a+s.dur,0);
+  const start=Date.now();
   const exForRound=(r)=> t.cycle ? t.cycle[r % t.cycle.length] : '';
+  let prevSeg=-1, prevLeft=-1;
   const paint=()=>{
-    const phase=t.phases[ph], ex=exForRound(round), cls=phase.work?'work':'rest';
-    out.innerHTML=`<span class="rd">סבב ${round+1}/${totalRounds}</span>`+
+    const elapsed=(Date.now()-start)/1000;
+    if(elapsed>=total){ clearActiveTimer(); out.innerHTML='<span class="big done">'+t.label+' ✓</span>'; cueDone(); return; }
+    let acc=0, si=0;
+    for(; si<segs.length; si++){ if(elapsed < acc+segs[si].dur) break; acc+=segs[si].dur; }
+    const seg=segs[si], phase=t.phases[seg.ph];
+    let left=Math.ceil(seg.dur-(elapsed-acc)); if(left<1) left=1;
+    const ex=exForRound(seg.r), cls=phase.work?'work':'rest';
+    out.innerHTML=`<span class="rd">סבב ${seg.r+1}/${t.rounds}</span>`+
       `<span class="big ${cls}">${mmss(left)}</span>`+
       `<span class="sub">${phase.label}${ex?' · '+ex:''}</span>`;
+    if(si!==prevSeg && prevSeg!==-1) cueSwitch(phase.work);   // entered a new segment
+    else if(left!==prevLeft && left<=3) cueEnd();             // counting down within a segment
+    prevSeg=si; prevLeft=left;
   };
-  paint();
-  const tick=()=>{
-    left--;
-    if(left<0){
-      ph++;
-      if(ph>=t.phases.length){ ph=0; round++; }
-      if(round>=totalRounds){ clearActiveTimer(); out.innerHTML='<span class="big done">'+t.label+' ✓</span>'; cueDone(); return; }
-      cueSwitch(t.phases[ph].work);
-      left=t.phases[ph].sec;
-    } else if(left<=3 && left>=0){ cueEnd(); }
-    paint();
-  };
-  timer.iv=setInterval(tick,1000);
+  timer.repaint=paint; paint(); timer.iv=setInterval(paint,250);
 }
 
 /* ---- CALENDAR (whole block ahead) ---- */
@@ -598,6 +615,12 @@ function renderHistory(){
 /* ---------------- NAV ---------------- */
 document.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{ activeTab=t.dataset.tab; render(); });
 render();
+
+/* when returning to the app: re-grab the wake lock (it auto-releases on hide)
+   and force the running timer to snap to the correct real-time value. */
+document.addEventListener('visibilitychange', ()=>{
+  if(document.visibilityState==='visible' && timer.iv){ acquireWake(); if(timer.repaint) timer.repaint(); }
+});
 
 /* service worker */
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
