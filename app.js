@@ -223,14 +223,35 @@ function viewToday(){
 }
 
 /* ---- WORKOUT PLAYER ---- */
-let timer = {iv:null, idx:-1};   // only one active timer at a time
+let timer = {iv:null, idx:-1, restSec:0};   // only one active timer at a time
 function clearActiveTimer(){
   if(timer.iv){ clearInterval(timer.iv); timer.iv=null; }
-  if(timer.idx>=0){ const o=document.getElementById('cnt-'+timer.idx); if(o) o.textContent=''; const b=document.getElementById('btn-'+timer.idx); if(b) b.textContent=b.dataset.label; }
-  timer.idx=-1;
+  if(timer.idx!==-1){ const o=document.getElementById('cnt-'+timer.idx); if(o) o.textContent=''; const b=document.getElementById('btn-'+timer.idx); if(b) b.textContent=b.dataset.label; }
+  document.querySelectorAll('.rt-btns button.on').forEach(b=>b.classList.remove('on'));
+  timer.idx=-1; timer.restSec=0;
 }
 function buzz(p){ if(navigator.vibrate) navigator.vibrate(p); }
 const mmss = s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+
+/* audio beeps — must init on a user gesture (timer button press) */
+let AC=null;
+function ensureAudio(){
+  try{ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){}
+}
+function beep(freq, dur, vol){
+  if(!AC) return;
+  try{
+    const o=AC.createOscillator(), g=AC.createGain(), t=AC.currentTime;
+    o.type='sine'; o.frequency.value=freq||880;
+    o.connect(g); g.connect(AC.destination);
+    g.gain.setValueAtTime(vol||0.3, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t+(dur||0.12));
+    o.start(t); o.stop(t+(dur||0.12)+0.02);
+  }catch(e){}
+}
+function cueEnd(){ beep(680,0.13,0.28); buzz(70); }                                   // each of the last 3 seconds
+function cueDone(){ beep(990,0.3,0.32); setTimeout(()=>beep(1180,0.32,0.32),200); buzz([200,100,200]); } // finish
+function cueSwitch(work){ beep(work?880:520,0.16,0.3); buzz(work?[140]:[80,50,80]); } // interval phase change
 
 function viewWorkout(){
   const d = selectedDate;
@@ -285,7 +306,32 @@ function liftCard(p, dKey){
     c.appendChild(row);
   });
   c.appendChild(el('div','mini','נשמר אוטומטית. השיאים מתעדכנים בעמוד התקדמות.'));
+
+  // rest timer between sets — one tap
+  const rt=el('div','rest-timer');
+  rt.innerHTML=`<div class="rt-label">מנוחה בין סטים</div>
+    <div class="rt-btns">
+      <button data-sec="30">0:30</button>
+      <button data-sec="60">1:00</button>
+      <button data-sec="90">1:30</button>
+      <button data-sec="180">3:00</button>
+    </div>
+    <div class="st-count" id="cnt-rest"></div>`;
+  rt.querySelectorAll('.rt-btns button').forEach(b=>{
+    b.onclick=()=>runRest(Number(b.dataset.sec), b, rt);
+  });
+  c.appendChild(rt);
   return c;
+}
+function runRest(sec, btn, wrap){
+  ensureAudio();
+  const out=wrap.querySelector('#cnt-rest');
+  // tapping the active one again = stop
+  if(timer.idx==='rest' && timer.iv && timer.restSec===sec){ clearActiveTimer(); return; }
+  clearActiveTimer();
+  btn.classList.add('on');
+  timer.idx='rest'; timer.restSec=sec;
+  countdown(out, sec, 'מנוחה');
 }
 
 /* ---- structured finish log ---- */
@@ -326,6 +372,7 @@ function finishCard(p, dKey){
 
 /* ---------------- TIMER ENGINE ---------------- */
 function runTimer(i, s){
+  ensureAudio();
   const out=document.getElementById('cnt-'+i);
   const btn=document.getElementById('btn-'+i);
   // toggle off if this one is running
@@ -341,15 +388,16 @@ function runTimer(i, s){
 function countdown(out, secs, label){
   let left=secs;
   const tick=()=>{ out.innerHTML=`<span class="big">${mmss(left)}</span>${label?`<span class="sub">${label}</span>`:''}`;
-    if(left<=0){ clearActiveTimer(); out.innerHTML='<span class="big done">סיום ✓</span>'; buzz([200,100,200]); return; }
-    if(left<=3) buzz(80);
+    if(left<=0){ clearActiveTimer(); out.innerHTML='<span class="big done">סיום ✓</span>'; cueDone(); return; }
+    if(left<=3) cueEnd();
     left--; };
   tick(); timer.iv=setInterval(tick,1000);
 }
 function stopwatch(out, cap){
   let s=0;
   const tick=()=>{ out.innerHTML=`<span class="big">${mmss(s)}</span><span class="sub">סופר עולה · עצור כשסיימת</span>`;
-    if(cap && s>=cap){ clearActiveTimer(); buzz([200,100,200]); return; }
+    if(cap && s>=cap){ clearActiveTimer(); out.innerHTML='<span class="big done">capped ✓</span>'; cueDone(); return; }
+    if(cap && s>=cap-3) cueEnd();
     s++; };
   tick(); timer.iv=setInterval(tick,1000);
 }
@@ -368,10 +416,10 @@ function interval(out, t){
     if(left<0){
       ph++;
       if(ph>=t.phases.length){ ph=0; round++; }
-      if(round>=totalRounds){ clearActiveTimer(); out.innerHTML='<span class="big done">'+t.label+' ✓</span>'; buzz([200,100,200,100,200]); return; }
-      buzz(t.phases[ph].work?[150]:[80,50,80]);
+      if(round>=totalRounds){ clearActiveTimer(); out.innerHTML='<span class="big done">'+t.label+' ✓</span>'; cueDone(); return; }
+      cueSwitch(t.phases[ph].work);
       left=t.phases[ph].sec;
-    } else if(left<=3 && left>=0){ buzz(60); }
+    } else if(left<=3 && left>=0){ cueEnd(); }
     paint();
   };
   timer.iv=setInterval(tick,1000);
@@ -474,9 +522,11 @@ function viewProgress(){
   const save=el('button','bigbtn','שמור צ׳ק-אין');
   save.onclick=()=>{ ck.date=todayKey(); DB.set('checkin_'+todayKey(), ck);
     const all=DB.get('checkins',[]); const i=all.findIndex(x=>x.date===ck.date); if(i>=0)all[i]=ck; else all.unshift(ck); DB.set('checkins',all);
-    save.textContent='נשמר ✓'; setTimeout(()=>save.textContent='שמור צ׳ק-אין',1500); renderHistory(); };
+    save.textContent='נשמר ✓'; setTimeout(()=>save.textContent='שמור צ׳ק-אין',1500); renderHistory(); renderWeightChart(); };
   f.appendChild(save);
   app.appendChild(f);
+
+  const wc=el('div','card'); wc.id='wchartcard'; app.appendChild(wc); renderWeightChart();
 
   const hist=el('div','card'); hist.id='histcard'; app.appendChild(hist); renderHistory();
 
@@ -494,6 +544,46 @@ function viewProgress(){
     });
     app.appendChild(lc);
   }
+}
+function renderWeightChart(){
+  const c=document.getElementById('wchartcard'); if(!c) return;
+  c.innerHTML='<div class="card-h">מגמת משקל גוף</div>';
+  const data=DB.get('checkins',[])
+    .map(x=>({date:x.date, w:parseFloat(x.weight)}))
+    .filter(x=>x.date && !isNaN(x.w))
+    .sort((a,b)=> a.date<b.date?-1:1);
+  if(data.length<2){ c.appendChild(el('div','mini','צריך לפחות 2 שקילות לגרף. מלא משקל בצ׳ק-אין כל יום ותראה את הקו.')); return; }
+
+  const W=320,H=150,padX=14,padTop=16,padBot=24;
+  const ws=data.map(d=>d.w); let min=Math.min(...ws), max=Math.max(...ws);
+  if(min===max){ min-=1; max+=1; } else { const m=(max-min)*0.18; min-=m; max+=m; }
+  const X=i=> padX + i*(W-padX*2)/(data.length-1);
+  const Y=w=> padTop + (max-w)/(max-min)*(H-padTop-padBot);
+  let line='', dots='';
+  data.forEach((d,i)=>{ const x=X(i).toFixed(1), y=Y(d.w).toFixed(1);
+    line+=(i?'L':'M')+x+' '+y+' ';
+    const last=i===data.length-1;
+    dots+=`<circle cx="${x}" cy="${y}" r="${last?4:2.6}" fill="${last?'#F4A261':'#2BBCB3'}"/>`;
+  });
+  const area=line+`L${X(data.length-1).toFixed(1)} ${H-padBot} L${X(0).toFixed(1)} ${H-padBot} Z`;
+  const first=data[0].w, lastW=data[data.length-1].w, diff=+(lastW-first).toFixed(1);
+  const sign=diff>0?'+':'';
+  const svg=`<svg class="wchart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid meet">
+    <defs><linearGradient id="wg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2BBCB3" stop-opacity="0.30"/>
+      <stop offset="1" stop-color="#2BBCB3" stop-opacity="0"/></linearGradient></defs>
+    <line x1="${padX}" y1="${Y(max).toFixed(1)}" x2="${W-padX}" y2="${Y(max).toFixed(1)}" stroke="#22322f"/>
+    <line x1="${padX}" y1="${Y(min).toFixed(1)}" x2="${W-padX}" y2="${Y(min).toFixed(1)}" stroke="#22322f"/>
+    <text x="${W-padX}" y="${(Y(max)-4).toFixed(1)}" class="wlab">${max.toFixed(1)}</text>
+    <text x="${W-padX}" y="${(Y(min)+11).toFixed(1)}" class="wlab">${min.toFixed(1)}</text>
+    <path d="${area}" fill="url(#wg)"/>
+    <path d="${line}" fill="none" stroke="#2BBCB3" stroke-width="2.4" stroke-linejoin="round" stroke-linecap="round"/>
+    ${dots}
+  </svg>`;
+  c.insertAdjacentHTML('beforeend', svg);
+  const sum=el('div','wsum');
+  sum.innerHTML=`<span>התחלה <b class="latin">${first}</b></span><span>עכשיו <b class="latin">${lastW}</b></span><span class="${diff<=0?'good':'up'}">שינוי <b class="latin">${sign}${diff} ק״ג</b></span>`;
+  c.appendChild(sum);
 }
 function renderHistory(){
   const c=document.getElementById('histcard'); if(!c)return;
