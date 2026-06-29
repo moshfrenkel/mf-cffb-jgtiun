@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <rect width="512" height="512" fill="#0d1413"/>
+  <!-- maskable safe zone ~80%. door motif: the door opens when you stop knocking -->
+  <g transform="translate(256 256)">
+    <!-- orange light spilling from the opening -->
+    <path d="M-20 -150 L120 -120 L120 120 L-20 150 Z" fill="#F4A261" opacity="0.16"/>
+    <!-- door frame -->
+    <rect x="-120" y="-150" width="240" height="300" rx="10" fill="none" stroke="#2BBCB3" stroke-width="16"/>
+    <!-- the opening door leaf, ajar -->
+    <path d="M-110 -140 L40 -110 L40 110 L-110 140 Z" fill="#16201f" stroke="#2BBCB3" stroke-width="12" stroke-linejoin="round"/>
+    <!-- handle -->
+    <circle cx="18" cy="6" r="11" fill="#F4A261"/>
+    <!-- barbell mark inside the light, drawn by hand -->
+    <g stroke="#2BBCB3" stroke-width="14" stroke-linecap="round">
+      <line x1="62" y1="-30" x2="104" y2="-30"/>
+      <line x1="62" y1="-46" x2="62" y2="-14"/>
+      <line x1="104" y1="-46" x2="104" y2="-14"/>
+    </g>
+  </g>
+</svg>

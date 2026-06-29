@@ -1,0 +1,16 @@
+{
+  "name": "MoshFit · CFFB-01",
+  "short_name": "MoshFit",
+  "description": "אימון ותזונה אישי, קרוספיט פוטבול",
+  "lang": "he",
+  "dir": "rtl",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0d1413",
+  "theme_color": "#0d1413",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
