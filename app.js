@@ -87,6 +87,16 @@ const T = {
   thDate:{he:'תאריך',en:'Date'}, thW:{he:'משקל',en:'Weight'}, thS:{he:'שינה',en:'Sleep'}, thM:{he:'מצב',en:'Mood'},
   lastH:{he:'אימונים אחרונים',en:'RECENT SESSIONS'},
   elbLog:{ok:{he:'מרפק שקט',en:'elbow quiet'},felt:{he:'מרפק הרגיש',en:'elbow felt'},pain:{he:'מרפק כאב',en:'elbow pain'}},
+  backupH:{he:'גיבוי ושחזור',en:'BACKUP & RESTORE'},
+  backupWhat:{he:'כל הנתונים שלך יושבים על הטלפון הזה בלבד. גבה לפני מעבר מכשיר או ניקוי דפדפן.',en:'All your data lives on this phone only. Back up before switching device or clearing the browser.'},
+  backupCopy:{he:'העתק גיבוי',en:'Copy backup'},
+  backupCopied:{he:'הועתק ✓ שמור בהערות/וואטסאפ',en:'Copied ✓ save it in Notes/WhatsApp'},
+  backupShow:{he:'הצג טקסט לגיבוי ידני',en:'Show text for manual backup'},
+  restorePh:{he:'הדבק כאן טקסט גיבוי כדי לשחזר...',en:'Paste a backup text here to restore...'},
+  restoreBtn:{he:'שחזר מהטקסט',en:'Restore from text'},
+  restoreDone:{he:'שוחזר ✓',en:'Restored ✓'},
+  restoreBad:{he:'הטקסט לא תקין',en:'Invalid backup text'},
+  restoreConfirm:{he:'לשחזר? זה יחליף את הנתונים הנוכחיים במכשיר.',en:'Restore? This replaces the current data on this device.'},
 };
 function t(k){ return tx(T[k]); }
 
@@ -198,6 +208,21 @@ const DB = {
   get(k, def){ try{ return JSON.parse(localStorage.getItem('mf_'+k)) ?? def; }catch(e){ return def; } },
   set(k, v){ localStorage.setItem('mf_'+k, JSON.stringify(v)); if(window.MFSync) window.MFSync.push(k, v); },
 };
+
+/* ---------------- BACKUP / RESTORE (portable, URL-agnostic) ----------------
+   Everything is in localStorage under the mf_ prefix. This dumps/loads all of
+   it as one text blob so data survives a device switch or a move to a new URL. */
+function exportAll(){
+  const out={_mf:1, _v:6, when:new Date().toISOString(), data:{}};
+  for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k && k.indexOf('mf_')===0) out.data[k]=localStorage.getItem(k); }
+  return JSON.stringify(out);
+}
+function importAll(str){
+  let obj; try{ obj=JSON.parse(str); }catch(e){ return false; }
+  if(!obj || !obj._mf || !obj.data || typeof obj.data!=='object') return false;
+  Object.entries(obj.data).forEach(([k,v])=>{ if(k.indexOf('mf_')===0 && typeof v==='string') localStorage.setItem(k, v); });
+  return true;
+}
 
 /* ---------------- HELPERS ---------------- */
 function todayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
@@ -912,6 +937,50 @@ function viewProgress(){
     });
     app.appendChild(lc);
   }
+
+  app.appendChild(scribbleRow(2));
+  app.appendChild(backupBoard());
+}
+
+/* ---- backup / restore board ---- */
+function backupBoard(){
+  const bd = el('div','board');
+  bd.innerHTML = `<div class="board-h o">${t('backupH')}</div>${squig(OR)}
+    <div class="mini" style="margin-bottom:10px">${t('backupWhat')}</div>`;
+
+  const copyBtn = el('button','music-open', t('backupCopy'));
+  const ta = el('textarea','score-note'); ta.rows=3; ta.style.display='none'; ta.readOnly=true;
+  const showLink = el('div','go'); showLink.style.cssText='color:var(--dust);font-size:15px'; showLink.textContent=t('backupShow');
+
+  copyBtn.onclick = async ()=>{
+    const blob = exportAll();
+    ta.value = blob;
+    let ok=false;
+    try{ await navigator.clipboard.writeText(blob); ok=true; }catch(e){}
+    if(!ok){ ta.style.display='block'; ta.focus(); ta.select(); try{ document.execCommand('copy'); ok=true; }catch(e){} }
+    copyBtn.textContent = t('backupCopied'); buzz([120,60,120]);
+    setTimeout(()=>copyBtn.textContent=t('backupCopy'), 2600);
+  };
+  showLink.onclick = ()=>{ ta.style.display = ta.style.display==='none' ? 'block' : 'none'; if(ta.style.display==='block'){ ta.value=exportAll(); } };
+
+  bd.appendChild(copyBtn);
+  bd.appendChild(showLink);
+  bd.appendChild(ta);
+
+  // restore
+  const rWrap = el('div','rest-timer'); rWrap.style.borderTopColor='var(--faint)';
+  const rTa = el('textarea','score-note'); rTa.rows=3; rTa.placeholder=t('restorePh');
+  const rBtn = el('button','bigbtn on-slate', t('restoreBtn')); rBtn.style.marginTop='10px';
+  rBtn.onclick = ()=>{
+    const v = rTa.value.trim();
+    if(!v){ return; }
+    if(!confirm(t('restoreConfirm'))){ return; }
+    if(importAll(v)){ rBtn.textContent=t('restoreDone'); if(window.MFSync){ /* re-push happens on next writes */ } setTimeout(()=>render(), 800); }
+    else { rBtn.textContent=t('restoreBad'); setTimeout(()=>rBtn.textContent=t('restoreBtn'),1800); }
+  };
+  rWrap.appendChild(rTa); rWrap.appendChild(rBtn);
+  bd.appendChild(rWrap);
+  return bd;
 }
 function renderWeightChart(){
   const c=document.getElementById('wchartcard'); if(!c) return;
