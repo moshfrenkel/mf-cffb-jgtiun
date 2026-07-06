@@ -97,6 +97,25 @@ const T = {
   restoreDone:{he:'שוחזר ✓',en:'Restored ✓'},
   restoreBad:{he:'הטקסט לא תקין',en:'Invalid backup text'},
   restoreConfirm:{he:'לשחזר? זה יחליף את הנתונים הנוכחיים במכשיר.',en:'Restore? This replaces the current data on this device.'},
+  eqBar:{he:'מוט',en:'Barbell'}, eqPlates:{he:'צלחות לכל צד',en:'Plates per side'},
+  eqKb:{he:'קטלבל',en:'Kettlebell'}, eqDb:{he:'דמבלים',en:'Dumbbells'},
+  eqRope:{he:'חבל קפיצה',en:'Jump rope'}, eqBox:{he:'בוקס',en:'Box'},
+  eqBand:{he:'גומיית התנגדות',en:'Resistance band'}, eqMat:{he:'מזרן',en:'Mat'},
+  eqRings:{he:'טבעות',en:'Rings'}, eqRower:{he:'מכונת חתירה',en:'Rower'},
+  eqStraps:{he:'רצועות משיכה',en:'Lifting straps'},
+  emptyBar:{he:'מוט ריק, בלי צלחות',en:'empty bar, no plates'},
+  target:{he:'המשקל להיום',en:"today's load"},
+  whyFirst:{he:'נקודת פתיחה. מכאן זה מתעדכן לפי מה שתרשום',en:'starting point — updates from what you log'},
+  whyUp:{he:'עלייה: פעם קודמת {w} והשלמת את החזרות',en:'moving up: last time {w} and you hit the reps'},
+  whySame:{he:'כמו פעם קודמת, קודם משלימים חזרות',en:'same as last time — hit the reps first'},
+  whyStick:{he:'המשקל שעבדת איתו לאחרונה',en:'what you used last time'},
+  allSets:{he:'כל הסטים אותו דבר:',en:'all sets the same:'},
+  detailSets:{he:'פירוט סט-סט ↓',en:'set by set ↓'},
+  hideDetail:{he:'סגור פירוט ↑',en:'hide detail ↑'},
+  setN:{he:'סט',en:'set'}, addSet:{he:'+ עוד סט',en:'+ add set'},
+  kgEach:{he:'ק״ג ליד',en:'kg each'},
+  actual:{he:'מה עשיתי בפועל:',en:'what I actually did:'},
+  stageNotePh:{he:'פתק לעצמי: איך הלך החלק הזה...',en:'note to self: how this part went...'},
 };
 function t(k){ return tx(T[k]); }
 
@@ -109,7 +128,9 @@ const B = (he,en)=>({he,en});
 
 const WORKOUTS = {
   A: { code:'A', name:'GROUNDED', focus:B('רגליים · סקוואט + לאנג׳','Legs · squat + lunge'), train:true,
-    lifts:[{name:'Front Squat',scheme:'4×4 @65%'},{name:'Walking Lunge',scheme:'3×8/leg'}], stages:[
+    lifts:[{name:'Front Squat',scheme:'4×4 @65%',sets:4,reps:4,start:30,inc:2.5,equip:'bar'},
+           {name:'Walking Lunge',scheme:'3×8/leg',sets:3,reps:8,start:8,inc:2,equip:'db',each:true}],
+    equip:[{t:'bar',lift:'Front Squat'},{t:'db',lift:'Walking Lunge'},{t:'rope'},{t:'mat',note:B('לקור בסוף','for the core work')}], stages:[
     {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט+צלחות לסקוואט, דמבל/קטלבל ללאנג׳, חבל. לכתוב משקל Front Squat על הלוח.','Bar + plates for squats, DB/KB for lunges, jump rope. Chalk your Front Squat weight on the board.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('חבל 2 דק׳, goblet squat hold, world\'s greatest stretch, front squat ריק ×8.','2 min rope, goblet squat hold, world\'s greatest stretch, empty-bar front squat ×8.')},
     {tag:'STR', t:16,title:B('כוח','strength'), d:B('Front Squat 4×4 @65%, מנוחה 90 שנ׳. ואז Walking/Reverse Lunge 3×8 לרגל מועמס, ברך שמאל בקו.','Front Squat 4×4 @65%, rest 90s. Then loaded Walking/Reverse Lunge 3×8 per leg, left knee tracking.')},
@@ -119,7 +140,9 @@ const WORKOUTS = {
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('pigeon, quad stretch, נשימות. לרשום בלוג.','Pigeon, quad stretch, breathing. Then log it.')},
   ]},
   B: { code:'B', name:'OVERHEAD', focus:B('פלג גוף עליון','Upper body'), train:true,
-    lifts:[{name:'Push Press',scheme:'5×4 @65%'}], stages:[
+    lifts:[{name:'Push Press',scheme:'5×4 @65%',sets:5,reps:4,start:25,inc:2.5,equip:'bar'}],
+    accLoads:[{name:'Lateral Raise',scheme:'3×15',sets:3,reps:15,start:4,inc:1,equip:'db',each:true}],
+    equip:[{t:'bar',lift:'Push Press'},{t:'db',lift:'Lateral Raise'},{t:'band',note:B('ל-Pallof Press','for Pallof Press')},{t:'rings',note:B('ל-Ring Row במטקון','for metcon Ring Rows')},{t:'rower',note:B('לחימום','for the warm-up')}], stages:[
     {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט+צלחות ל-press, דמבלים קלים, גומיית Pallof. לכתוב משקל Push Press על הלוח.','Bar + plates for the press, light DBs, Pallof band. Chalk your Push Press weight on the board.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('חתירה 2 דק׳, band dislocates, scap push-up, press ריק ×8.','2 min row, band dislocates, scap push-ups, empty-bar press ×8.')},
     {tag:'STR', t:16,title:B('כוח','strength'), d:B('Push Press 5×4 @65%, הנעה מהרגליים. מנוחה 90 שנ׳.','Push Press 5×4 @65%, drive from the legs. Rest 90s.')},
@@ -129,7 +152,11 @@ const WORKOUTS = {
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('מתיחת חזה, lat stretch, נשימות.','Chest stretch, lat stretch, breathing.')},
   ]},
   C: { code:'C', name:'EXPLODE', focus:B('כוח-מהירות','Speed-strength'), train:true,
-    lifts:[{name:'Power Clean',scheme:'6×3 @60%'},{name:'Push Jerk',scheme:'3×3 light'}], stages:[
+    lifts:[{name:'Power Clean',scheme:'6×3 @60%',sets:6,reps:3,start:25,inc:2.5,equip:'bar'},
+           {name:'Push Jerk',scheme:'3×3 light',sets:3,reps:3,start:20,inc:2.5,equip:'bar'}],
+    accLoads:[{name:'Bent-over Row',scheme:'3×10',sets:3,reps:10,start:10,inc:2,equip:'db',each:true}],
+    wodLoads:[{name:'KB Swing',start:12,equip:'kb',sticky:true}],
+    equip:[{t:'bar',lift:'Power Clean'},{t:'kb',lift:'KB Swing'},{t:'db',lift:'Bent-over Row'},{t:'box',note:B('נמוך, לקפיצות','low, for jumps')},{t:'rope',note:B('לחימום','for the warm-up')}], stages:[
     {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט+צלחות, קטלבל, בוקס נמוך. רצפה פנויה להנפות. לכתוב משקל Power Clean על הלוח.','Bar + plates, kettlebell, low box. Clear floor for pulls. Chalk your Power Clean weight on the board.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('חבל 2 דק׳, muscle clean ריק, front rack stretch, קפיצות נמוכות.','2 min rope, empty-bar muscle clean, front-rack stretch, low jumps.')},
     {tag:'STR', t:16,title:B('כוח','strength'), d:B('Power Clean 6×3 @60% טכני ונפיץ. מנוחה 2 דק׳. בסוף Push Jerk 3×3 קל.','Power Clean 6×3 @60%, technical and explosive. Rest 2 min. Finish with light Push Jerk 3×3.')},
@@ -139,7 +166,8 @@ const WORKOUTS = {
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('שחרור אמה/שורש כף יד, child\'s pose, נשימות.','Forearm/wrist release, child\'s pose, breathing.')},
   ]},
   D: { code:'D', name:'ANCHOR', focus:B('ציר · גב תחתון','Hinge · lower back'), train:true,
-    lifts:[{name:'Deadlift',scheme:'5×3 @65%'}], stages:[
+    lifts:[{name:'Deadlift',scheme:'5×3 @65%',sets:5,reps:3,start:50,inc:5,equip:'bar'}],
+    equip:[{t:'bar',lift:'Deadlift',note:B('trap bar אם יש','trap bar if available')},{t:'straps'},{t:'rope',note:B('למטקון','for the metcon')},{t:'rower',note:B('לחימום','for the warm-up')},{t:'mat',note:B('לקור','for the core work')}], stages:[
     {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט (trap bar אם יש)+צלחות, straps, מזרן ל-core. לכתוב משקל הדדליפט על הלוח.','Bar (trap bar if available) + plates, straps, mat for core. Chalk your deadlift weight on the board.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('חתירה 2 דק׳, hip hinge drill, glute activation, דדליפט קל ×8.','2 min row, hip hinge drill, glute activation, light deadlift ×8.')},
     {tag:'STR', t:16,title:B('כוח','strength'), d:B('Deadlift 5×3 @65% עם straps, גב ניטרלי. מנוחה 2 דק׳.','Deadlift 5×3 @65% with straps, neutral spine. Rest 2 min.')},
@@ -155,7 +183,8 @@ const WORKOUTS = {
 
 const SPECIAL = {
   '2026-07-01': { code:'1', name:'FIRST TOUCH', focus:B('יום פתיחה · Re-Entry 50-60%','Opening day · re-entry 50-60%'), train:true,
-    lifts:[{name:'Front Squat',scheme:'5×5 learn'}], stages:[
+    lifts:[{name:'Front Squat',scheme:'5×5 learn',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
+    equip:[{t:'bar',lift:'Front Squat',note:B('קל, לומדים תנועה','light — skill work')},{t:'rope'},{t:'band'},{t:'rower',note:B('למטקון','for the metcon')},{t:'mat'}], stages:[
     {tag:'SET', t:4, title:B('הכנה','setup'), d:B('היכרות עם הבוקס: איפה המוטות, הצלחות, החבל. להוציא מוט ריק/קל.','Meet the box: where the bars, plates and rope live. Grab an empty/light bar.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('3 דק׳ חבל קל, cat-cow, band pull-apart, scap push-ups, bodyweight squat ×10.','3 min easy rope, cat-cow, band pull-aparts, scap push-ups, bodyweight squat ×10.')},
     {tag:'STR', t:16,title:B('כוח','strength'), d:B('Front Squat לימוד תנועה 5×5 במוט ריק/קל (20-30 ק״ג). depth מלא, גב זקוף. לומדים, לא מעמיסים.','Front Squat skill work 5×5 with an empty/light bar (20-30 kg). Full depth, upright back. Learning, not loading.')},
@@ -165,7 +194,9 @@ const SPECIAL = {
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('מתיחת hip flexors, couch stretch, 10 נשימות עמוקות.','Hip flexor stretch, couch stretch, 10 deep breaths.')},
   ]},
   '2026-07-02': { code:'2', name:'OPEN GATES', focus:B('יום פתיחה · Re-Entry 50-60%','Opening day · re-entry 50-60%'), train:true,
-    lifts:[{name:'Strict Press',scheme:'5×5 learn'}], stages:[
+    lifts:[{name:'Strict Press',scheme:'5×5 learn',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
+    wodLoads:[{name:'KB Swing',start:12,equip:'kb',sticky:true}],
+    equip:[{t:'bar',lift:'Strict Press',note:B('קל, לומדים תנועה','light — skill work')},{t:'kb',lift:'KB Swing'},{t:'box',note:B('ל-Step-up','for step-ups')},{t:'band'},{t:'rower',note:B('לחימום','for the warm-up')}], stages:[
     {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט קל, קטלבל 12, בוקס, גומייה. תחנה אחת נקייה.','Light bar, 12 kg kettlebell, box, band. One clean station.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('3 דק׳ חתירה, arm circles, band face-pull, incline push-up ×8.','3 min row, arm circles, band face-pulls, incline push-up ×8.')},
     {tag:'STR', t:16,title:B('כוח','strength'), d:B('Strict Press לימוד 5×5 במוט קל (20-25 ק״ג). שליטה מלאה, ליבה אסופה.','Strict Press skill work 5×5 with a light bar (20-25 kg). Full control, braced core.')},
@@ -213,7 +244,7 @@ const DB = {
    Everything is in localStorage under the mf_ prefix. This dumps/loads all of
    it as one text blob so data survives a device switch or a move to a new URL. */
 function exportAll(){
-  const out={_mf:1, _v:6, when:new Date().toISOString(), data:{}};
+  const out={_mf:1, _v:7, when:new Date().toISOString(), data:{}};
   for(let i=0;i<localStorage.length;i++){ const k=localStorage.key(i); if(k && k.indexOf('mf_')===0) out.data[k]=localStorage.getItem(k); }
   return JSON.stringify(out);
 }
@@ -227,30 +258,101 @@ function importAll(str){
 /* ---------------- HELPERS ---------------- */
 function todayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 
-/* lift log: flat list of {date, code, lift, weight, reps} — the source of truth for PRs */
+/* lift log: flat list of {date, code, lift, weight, reps, sets?:[{w,r}]} — source of truth
+   for PRs AND for the adaptive load suggestions. weight/reps = "all sets the same";
+   sets[] = optional set-by-set detail that wins when present. */
 function liftGet(date, lift){
   return DB.get('liftlog',[]).find(x=>x.date===date && x.lift===lift) || null;
 }
-function liftSet(date, code, lift, weight, reps){
+function liftSet(date, code, def, quickW, quickR, sets){
   const log = DB.get('liftlog',[]);
-  const i = log.findIndex(x=>x.date===date && x.lift===lift);
-  const w = weight===''?null:Number(weight), r = reps===''?null:Number(reps);
-  if(w==null && r==null){ if(i>=0){ log.splice(i,1); DB.set('liftlog',log); } return; }
-  const rec = {date, code, lift, weight:w, reps:r};
+  const i = log.findIndex(x=>x.date===date && x.lift===def.name);
+  sets = (sets||[]).filter(s=>s.w!=='' || s.r!=='')
+    .map(s=>({w:s.w===''?null:Number(s.w), r:s.r===''?null:Number(s.r)}));
+  let w = quickW===''||quickW==null ? null : Number(quickW);
+  let r = quickR===''||quickR==null ? null : Number(quickR);
+  if(w==null && sets.length){ // detail only: headline = the heaviest set
+    const best = sets.reduce((a,b)=>((b.w||0)>(a.w||0)?b:a));
+    w = best.w; if(r==null) r = best.r;
+  }
+  if(w==null && r==null && !sets.length){ if(i>=0){ log.splice(i,1); DB.set('liftlog',log); } return; }
+  const rec = {date, code, lift:def.name, weight:w, reps:r};
+  if(sets.length) rec.sets = sets;
   if(i>=0) log[i]=rec; else log.push(rec);
   DB.set('liftlog', log);
 }
 function e1rm(w, r){ if(!w||!r) return null; return Math.round(w*(1+r/30)); } // Epley estimate
+function recTopWeight(rec){
+  let w = rec.weight||0;
+  (rec.sets||[]).forEach(s=>{ if((s.w||0)>w) w=s.w; });
+  return w||null;
+}
+function repsAtTop(rec, w){
+  let r = (rec.weight===w) ? rec.reps : null;
+  (rec.sets||[]).forEach(s=>{ if(s.w===w && (s.r||0)>(r||0)) r=s.r; });
+  return r;
+}
 function personalRecords(){
-  const log = DB.get('liftlog',[]).filter(x=>x.weight);
   const byLift = {};
-  log.forEach(x=>{
+  DB.get('liftlog',[]).forEach(x=>{
+    const w = recTopWeight(x); if(!w) return;
+    const r = repsAtTop(x, w);
     const b = byLift[x.lift];
-    const better = !b || x.weight>b.weight || (x.weight===b.weight && (x.reps||0)>(b.reps||0));
-    if(better) byLift[x.lift] = x;
+    if(!b || w>b.weight || (w===b.weight && (r||0)>(b.reps||0)))
+      byLift[x.lift] = {lift:x.lift, date:x.date, weight:w, reps:r};
   });
-  return Object.entries(byLift).map(([lift,best])=>({lift, ...best, est:e1rm(best.weight,best.reps)}))
+  return Object.values(byLift).map(b=>({...b, est:e1rm(b.weight,b.reps)}))
     .sort((a,b)=>b.weight-a.weight);
+}
+
+/* ---- adaptive load engine ----
+   Suggestion = last logged performance for that movement. Hit the prescribed reps
+   in every set → one increment up. Missed → same weight. No history → start weight.
+   sticky (metcon loads without rep logging) → whatever you used last time. */
+function roundLoad(w, equip){
+  if(equip==='kb'){ const s=[4,8,12,16,20,24,28,32]; return s.reduce((a,b)=>Math.abs(b-w)<Math.abs(a-w)?b:a); }
+  if(equip==='bar') return Math.round(w/2.5)*2.5;
+  return Math.round(w*2)/2;
+}
+function recHitTarget(rec, def){
+  if(rec.sets && rec.sets.length)
+    return rec.sets.length>=def.sets && rec.sets.filter(s=>(s.r||0)>=def.reps).length>=def.sets;
+  return (rec.reps||0) >= def.reps;
+}
+function suggestFor(def, beforeDate){
+  const hist = DB.get('liftlog',[])
+    .filter(x=>x.lift===def.name && x.date<beforeDate && recTopWeight(x))
+    .sort((a,b)=>a.date<b.date?1:-1);
+  if(!hist.length) return {w:roundLoad(def.start,def.equip), why:'first'};
+  const last=hist[0], top=recTopWeight(last);
+  if(def.sticky || def.inc==null) return {w:top, why:'stick', prev:top};
+  if(recHitTarget(last, def)) return {w:roundLoad(top+def.inc,def.equip), why:'up', prev:top};
+  return {w:top, why:'same', prev:top};
+}
+function findDef(p, name){
+  return [].concat(p.lifts||[], p.accLoads||[], p.wodLoads||[]).find(d=>d.name===name) || null;
+}
+/* plate math: what to load per side on a 20 kg bar */
+const PLATE_SIZES=[20,15,10,5,2.5,1.25];
+function plateBreakdown(total, barKg){
+  barKg = barKg||20;
+  if(total==null || total<=barKg) return {empty:true};
+  let per=(total-barKg)/2; const out=[];
+  for(const pl of PLATE_SIZES){ while(per>=pl-0.001){ out.push(pl); per-=pl; } }
+  return {empty:false, plates:out};
+}
+
+/* per-stage "how it went" notes: {date, code, tag, text} */
+function stageNoteGet(date, code, tag){
+  return (DB.get('stagenotes',[]).find(x=>x.date===date&&x.code===code&&x.tag===tag)||{}).text||'';
+}
+function stageNoteSet(date, code, tag, text){
+  const all=DB.get('stagenotes',[]);
+  const i=all.findIndex(x=>x.date===date&&x.code===code&&x.tag===tag);
+  if(!text){ if(i>=0){ all.splice(i,1); DB.set('stagenotes',all); } return; }
+  const rec={date,code,tag,text};
+  if(i>=0) all[i]=rec; else all.unshift(rec);
+  DB.set('stagenotes',all);
 }
 
 /* metcon score log: {date, code, wod, mode, a, b, rx, note}
@@ -309,6 +411,25 @@ const FIGS = {
     <path d="M20 14 l-6 8 6 8 M80 12 l6 8 -6 8" stroke="${TQ}" stroke-width="2.4"/>`),
 };
 function heroFig(code){ return FIGS[code] || (String(code).match(/^\d/) ? FIGS.S : FIGS.A); }
+
+/* bespoke chalk equipment icons — hand-line style, same DNA as the athletes */
+function eqSvg(inner){
+  return `<svg viewBox="0 0 40 28" fill="none" stroke="${CH}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+}
+const EQICONS = {
+  bar: eqSvg(`<path d="M4 14.2 L36 13.8" stroke-width="2.6"/><path d="M8.2 7 L8 21 M12 9.2 L12.2 18.8" stroke="${TQ}" stroke-width="2.6"/><path d="M31.8 7.2 L32 21 M28 9 L27.8 19" stroke="${TQ}" stroke-width="2.6"/>`),
+  plates: eqSvg(`<circle cx="14" cy="14" r="10"/><circle cx="14" cy="14" r="3.4" stroke="${OR}"/><circle cx="30" cy="16.5" r="7"/><circle cx="30" cy="16.5" r="2.3" stroke="${OR}"/>`),
+  kb: eqSvg(`<path d="M15.5 9.5 a5 5 0 0 1 9.5 -.3"/><path d="M14 11 q-4.5 5 -2.5 9 a9.5 7 0 0 0 17.5 -.3 q1.8 -4 -2.5 -8.7 z" stroke="${TQ}"/>`),
+  db: eqSvg(`<path d="M13 14.1 L27 13.9" stroke-width="2.4"/><path d="M9.2 8 L9 20 M13 10 L13.2 18" stroke="${TQ}" stroke-width="2.4"/><path d="M30.8 8.2 L31 20 M27 10.2 L26.8 18" stroke="${TQ}" stroke-width="2.4"/>`),
+  rope: eqSvg(`<path d="M8 5.5 L8.2 12 M32 5.8 L31.8 12" stroke="${OR}" stroke-width="2.6"/><path d="M8.2 12 C8 23 15.5 26 20 22 C24.5 18.2 32 20.5 31.8 12"/>`),
+  box: eqSvg(`<path d="M7 12.2 L20 6.8 L33 12 L33.2 22 L7.2 22.2 Z"/><path d="M7 12.2 L20 16 L33 12 M20 16 L20.2 22" stroke-width="1.3" opacity=".7"/>`),
+  band: eqSvg(`<ellipse cx="20" cy="13.5" rx="13" ry="7.5" stroke="${TQ}"/><path d="M10 18.5 q10 -3.5 20 -.3" stroke-width="1.4" opacity=".7"/>`),
+  mat: eqSvg(`<path d="M5 20.2 L26 20 M5.2 15.8 L26 16"/><circle cx="31" cy="18" r="5.5" stroke="${OR}"/><circle cx="31" cy="18" r="1.7"/>`),
+  rings: eqSvg(`<path d="M13 3 L13.2 10.5 M27 3.2 L26.8 10.5" stroke-width="1.6"/><circle cx="13" cy="17" r="6" stroke="${OR}"/><circle cx="27" cy="17" r="6" stroke="${OR}"/>`),
+  rower: eqSvg(`<path d="M5 21.5 L35 21.2"/><path d="M10 21 L10.2 13.5 a5.5 5.5 0 0 1 5.8 -.2 L16 21" stroke="${TQ}"/><path d="M22 16.5 l7 .2 .2 4.5 -7.2 -.2 z"/><path d="M25.5 16.5 L30 8.5" stroke-width="1.6"/>`),
+  straps: eqSvg(`<path d="M14 4 L14 17.5 q0 4.5 4.5 4.5 M26 4.2 L26 17.5 q0 4.5 -4.5 4.5" stroke="${OR}"/><path d="M11 4 L17 4 M23 4.2 L29 4.2"/>`),
+};
+const EQNAMES = {bar:'eqBar',plates:'eqPlates',kb:'eqKb',db:'eqDb',rope:'eqRope',box:'eqBox',band:'eqBand',mat:'eqMat',rings:'eqRings',rower:'eqRower',straps:'eqStraps'};
 
 /* memphis chalk scribbles for the wall between boards */
 const SCRIB = [
@@ -545,30 +666,167 @@ function viewWorkout(){
 
   app.appendChild(musicBoard());
 
-  // one big session board — the whole WOD chalked up like a real box whiteboard
+  // one big session board — every stage is a collapsible chalk card that carries
+  // its own gear list / weights / timers / score, so you log where you train
   const total = p.stages.reduce((a,s)=>a+s.t,0);
   const sb = el('div','board tray');
   sb.innerHTML = `<div class="board-h t"><span class="lt">${total}′</span> ${t('doorToDoor')}</div>${squig(TQ)}`;
-  p.stages.forEach((s,i)=>{
-    const st = el('div','stage');
-    const lbl = timerLabel(s);
-    st.innerHTML = `${i>0?zigdiv():''}
-      <div class="st-head"><span class="st-tag lt${s.tag==='WOD'?' wod':''}">${s.tag}</span><span class="st-title">${tx(s.title)}</span><span class="st-time">${s.t?s.t+'′':''}</span></div>
-      <div class="st-body">${tx(s.d)}</div>
-      ${lbl?`<button class="st-timer" id="btn-${i}" data-label="${lbl}">${lbl}</button>`:''}
-      <div class="st-count" id="cnt-${i}"></div>`;
-    if(lbl) st.querySelector('.st-timer').onclick=()=>runTimer(i, s);
-    sb.appendChild(st);
-  });
+  p.stages.forEach((s,i)=>sb.appendChild(stageCard(p, s, i, dKey)));
   sb.appendChild(trayBar());
   app.appendChild(sb);
 
-  // weights clipboard (dossier), then metcon score board, then debrief clipboard
-  if(p.lifts) app.appendChild(liftClip(p, dKey));
-  const wodStage = p.stages.find(s=>s.timer);
-  if(wodStage) app.appendChild(metconBoard(p, wodStage, dKey));
   app.appendChild(scribbleRow(3));
   app.appendChild(finishClip(p, dKey));
+}
+
+/* ---- stage cards ---- */
+const STAGE_OPEN = {};
+function stageCard(p, s, i, dKey){
+  const key = dKey+':'+i;
+  const st = el('div','stage'+(STAGE_OPEN[key]?' open':''));
+  const lbl = timerLabel(s);
+  st.innerHTML = `${i>0?zigdiv():''}
+    <div class="st-head"><span class="st-tag lt${s.tag==='WOD'?' wod':''}">${s.tag}</span><span class="st-title">${tx(s.title)}</span><span class="st-time">${s.t?s.t+'′':''}</span><svg class="st-arr" viewBox="0 0 16 16" fill="none" stroke="${CH}" stroke-width="2.2" stroke-linecap="round"><path d="M8 2.5 L8 13.5 M2.5 8 L13.5 8"/></svg></div>
+    <div class="st-x"></div>`;
+  const x = st.querySelector('.st-x');
+
+  if(s.tag==='SET' && p.equip) x.appendChild(equipListEl(p, dKey)); // gear list replaces the wall of text
+  else x.appendChild(el('div','st-body', tx(s.d)));
+
+  if(s.tag==='STR'){
+    (p.lifts||[]).forEach(def=>x.appendChild(liftBlock(p, def, dKey)));
+    x.appendChild(restTimerEl());
+  }
+  if(s.tag==='ACC') (p.accLoads||[]).forEach(def=>x.appendChild(loadRow(p, def, dKey)));
+
+  if(lbl){
+    const b = el('button','st-timer'); b.id='btn-'+i; b.dataset.label=lbl; b.textContent=lbl;
+    b.onclick=()=>runTimer(i, s);
+    x.appendChild(b);
+  }
+  const cnt = el('div','st-count'); cnt.id='cnt-'+i; x.appendChild(cnt);
+
+  if(s.tag==='WOD'){
+    (p.wodLoads||[]).forEach(def=>x.appendChild(loadRow(p, def, dKey)));
+    x.appendChild(metconSection(p, s, dKey));
+  }
+  if(s.tag==='STR' || s.tag==='ACC') x.appendChild(stageNoteEl(dKey, p.code, s.tag));
+
+  st.querySelector('.st-head').onclick=()=>{
+    STAGE_OPEN[key] = !STAGE_OPEN[key];
+    st.classList.toggle('open', STAGE_OPEN[key]);
+  };
+  return st;
+}
+
+/* ---- SET stage: the gear to stage, weights computed from today's targets ---- */
+function equipListEl(p, dKey){
+  const w = el('div','eqlist');
+  const row = (ic, label, sub, wtxt)=>{
+    const r = el('div','eqrow');
+    r.innerHTML = `<span class="eq-ic">${EQICONS[ic]||''}</span><span class="eq-t"><b>${label}</b>${sub?`<i>${sub}</i>`:''}</span>${wtxt?`<span class="eq-w lt">${wtxt}</span>`:''}`;
+    w.appendChild(r);
+  };
+  (p.equip||[]).forEach(q=>{
+    const note = q.note ? tx(q.note) : '';
+    if(q.t==='bar'){
+      const def = findDef(p, q.lift), sg = def ? suggestFor(def, dKey) : null;
+      row('bar', t('eqBar'), [q.lift, note].filter(Boolean).join(' · '), '20 '+t('kg'));
+      if(sg){
+        const pb = plateBreakdown(sg.w, 20);
+        if(pb.empty) row('plates', t('eqPlates'), `${q.lift} ${sg.w} ${t('kg')} · ${t('emptyBar')}`, '—');
+        else row('plates', t('eqPlates'), `${q.lift} → ${sg.w} ${t('kg')}`, pb.plates.join(' + '));
+      }
+    } else if(q.lift){
+      const def = findDef(p, q.lift), sg = def ? suggestFor(def, dKey) : null;
+      const wt = sg ? ((def.each ? sg.w+'+'+sg.w : String(sg.w))+' '+t('kg')) : '';
+      row(q.t, t(EQNAMES[q.t]), [q.lift, note].filter(Boolean).join(' · '), wt);
+    } else {
+      row(q.t, t(EQNAMES[q.t]), note, q.kg ? q.kg+' '+t('kg') : '');
+    }
+  });
+  return w;
+}
+
+/* ---- suggested-load chalk line ---- */
+function suggWhy(sg){
+  if(sg.why==='first') return t('whyFirst');
+  if(sg.why==='up')    return tx(T.whyUp).replace('{w}', sg.prev);
+  if(sg.why==='stick') return t('whyStick');
+  return t('whySame');
+}
+function suggLine(def, sg){
+  return `<div class="sugg"><span class="sg-l">${t('target')}</span><span class="sg-w">${def.each?sg.w+'+'+sg.w:sg.w}</span><span class="sg-kg">${def.each?t('kgEach'):t('kg')}</span><span class="sg-why">${suggWhy(sg)}</span></div>`;
+}
+
+/* ---- STR: one block per lift — target, quick log, optional set-by-set ---- */
+function liftBlock(p, def, dKey){
+  const rec = liftGet(dKey, def.name) || {};
+  const sg = suggestFor(def, dKey);
+  const wrap = el('div','liftblock');
+  wrap.innerHTML = `
+    <div class="lb-head"><b class="lt">${def.name}</b> <span class="plate"><span class="lt">${def.scheme}</span></span></div>
+    ${suggLine(def, sg)}
+    <div class="lb-quick"><span class="q-lbl">${t('allSets')}</span><span class="qq"><input class="slin q-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${rec.weight??''}"><span class="x">×</span><input class="slin q-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${rec.reps??''}"></span></div>
+    <button class="detbtn"></button>
+    <div class="lb-sets" style="display:none"></div>`;
+  const qw = wrap.querySelector('.q-w'), qr = wrap.querySelector('.q-r');
+  const setsBox = wrap.querySelector('.lb-sets'), det = wrap.querySelector('.detbtn');
+  let open = !!(rec.sets && rec.sets.length);
+
+  const collect = ()=>Array.from(setsBox.querySelectorAll('.setrow')).map(r=>({
+    w: r.querySelector('.s-w').value, r: r.querySelector('.s-r').value }));
+  const save = ()=>liftSet(dKey, p.code, def, qw.value, qr.value, collect());
+  const addSetRow = (k, v)=>{
+    const r = el('div','setrow');
+    r.innerHTML = `<span class="sn">${t('setN')} ${k+1}</span><span class="qq"><input class="slin s-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${v.w??''}"><span class="x">×</span><input class="slin s-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${v.r??''}"></span>`;
+    r.querySelectorAll('input').forEach(inp=>inp.onchange=save);
+    const add = setsBox.querySelector('.addset');
+    if(add) setsBox.insertBefore(r, add); else setsBox.appendChild(r);
+  };
+  const buildSets = ()=>{
+    setsBox.innerHTML = '';
+    const cur = (liftGet(dKey, def.name)||{}).sets || [];
+    const n = Math.max(def.sets||3, cur.length);
+    for(let k=0;k<n;k++) addSetRow(k, cur[k] || ((qw.value||qr.value) ? {w:qw.value, r:qr.value} : {}));
+    const add = el('button','detbtn addset', t('addSet'));
+    add.onclick = ()=>addSetRow(setsBox.querySelectorAll('.setrow').length, {});
+    setsBox.appendChild(add);
+  };
+  const paintDet = ()=>{
+    det.textContent = open ? t('hideDetail') : t('detailSets');
+    setsBox.style.display = open ? 'block' : 'none';
+  };
+  det.onclick = ()=>{ open = !open; if(open && !setsBox.children.length) buildSets(); paintDet(); };
+  if(open) buildSets();
+  paintDet();
+  qw.onchange = ()=>{ if(!open) setsBox.innerHTML=''; save(); };
+  qr.onchange = ()=>{ if(!open) setsBox.innerHTML=''; save(); };
+  return wrap;
+}
+
+/* ---- ACC / WOD loadable movement: suggested weight + what was actually used ---- */
+function loadRow(p, def, dKey){
+  const rec = liftGet(dKey, def.name) || {};
+  const sg = suggestFor(def, dKey);
+  const withReps = def.reps != null;
+  const wrap = el('div','liftblock');
+  wrap.innerHTML = `
+    <div class="lb-head"><b class="lt">${def.name}</b>${def.scheme?` <span class="plate"><span class="lt">${def.scheme}</span></span>`:''}</div>
+    ${suggLine(def, sg)}
+    <div class="lb-quick"><span class="q-lbl">${t('actual')}</span><span class="qq"><input class="slin q-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${rec.weight??''}">${withReps?`<span class="x">×</span><input class="slin q-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${rec.reps??''}">`:''}</span></div>`;
+  const qw = wrap.querySelector('.q-w'), qr = wrap.querySelector('.q-r');
+  const save = ()=>liftSet(dKey, p.code, def, qw.value, qr ? qr.value : '', []);
+  qw.onchange = save; if(qr) qr.onchange = save;
+  return wrap;
+}
+
+/* ---- per-stage note ---- */
+function stageNoteEl(dKey, code, tag){
+  const ta = el('textarea','score-note'); ta.rows = 2; ta.placeholder = t('stageNotePh');
+  ta.value = stageNoteGet(dKey, code, tag);
+  ta.onchange = ()=>stageNoteSet(dKey, code, tag, ta.value.trim());
+  return ta;
 }
 
 /* button label per timer type (countdown default) */
@@ -579,24 +837,9 @@ function timerLabel(s){
   return `▶ ${tm.label}`;
 }
 
-/* ---- weights clipboard ---- */
-function liftClip(p, dKey){
-  const c = el('div','clip');
-  c.setAttribute('data-tab', t('weightsH'));
-  p.lifts.forEach(lf=>{
-    const cur = liftGet(dKey, lf.name) || {};
-    const row = el('div','liftrow');
-    row.innerHTML = `<div class="lf-name"><b>${lf.name}</b><span class="plate on-paper"><span class="lt">${lf.scheme}</span></span></div>
-      <div class="lf-in"><input class="lf-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${cur.weight??''}"><span>×</span><input class="lf-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${cur.reps??''}"></div>`;
-    const w=row.querySelector('.lf-w'), r=row.querySelector('.lf-r');
-    const save=()=>liftSet(dKey, p.code, lf.name, w.value, r.value);
-    w.onchange=save; r.onchange=save;
-    c.appendChild(row);
-  });
-  c.appendChild(el('div','mini',t('weightsMini')));
-
-  // rest timer between sets — one tap
-  const rt=el('div','rest-timer');
+/* ---- rest timer between sets — lives inside the strength card ---- */
+function restTimerEl(){
+  const rt=el('div','rest-timer slate');
   rt.innerHTML=`<div class="rt-label">${t('restBetween')}</div>
     <div class="rt-btns">
       <button data-sec="30">0:30</button>
@@ -608,8 +851,7 @@ function liftClip(p, dKey){
   rt.querySelectorAll('.rt-btns button').forEach(b=>{
     b.onclick=()=>runRest(Number(b.dataset.sec), b, rt);
   });
-  c.appendChild(rt);
-  return c;
+  return rt;
 }
 function runRest(sec, btn, wrap){
   ensureAudio();
@@ -621,14 +863,13 @@ function runRest(sec, btn, wrap){
   countdown(out, sec, t('restLbl'));
 }
 
-/* ---- metcon score board ---- */
-function metconBoard(p, wodStage, dKey){
+/* ---- metcon score — lives inside the WOD card ---- */
+function metconSection(p, wodStage, dKey){
   const tm = wodStage.timer;
   const prev = metconGet(dKey, p.code) || {};
-  const bd = el('div','board');
+  const bd = el('div','score-sec');
   bd.id='scoreboard';
-  bd.innerHTML = `<div class="board-h o">${t('scoreH')}</div>${squig(OR)}
-    <div class="mini" style="margin-bottom:4px"><span class="lt">${tm.label}</span> — ${tx(wodStage.d)}</div>`;
+  bd.innerHTML = `<div class="rt-label" style="color:var(--orange);margin-top:10px">${t('scoreH')}</div>`;
 
   const inputs = el('div','score-in');
   if(tm.mode==='fortime'){
@@ -700,8 +941,11 @@ function finishClip(p, dKey){
     clearActiveTimer();
     const note=c.querySelector('.fin-note').value.trim();
     const rpe=c.querySelector('.fin-rpe').value;
-    const lifts=(p.lifts||[]).map(lf=>liftGet(dKey,lf.name)).filter(Boolean)
-      .map(x=>`${x.lift} ${x.weight||'?'}×${x.reps||'?'}`);
+    const lifts=[].concat(p.lifts||[], p.accLoads||[], p.wodLoads||[])
+      .map(lf=>liftGet(dKey,lf.name)).filter(Boolean)
+      .map(x=> x.sets && x.sets.length
+        ? `${x.lift} ${x.sets.map(s=>`${s.w||'?'}×${s.r||'?'}`).join(' / ')}`
+        : `${x.lift} ${x.weight||'?'}${x.reps?'×'+x.reps:''}`);
     const logs=DB.get('worklog',[]);
     const rec={date:dKey, code:p.code, name:typeof p.name==='object'?p.name.he:p.name, note, rpe:rpe?Number(rpe):null, elbow, lifts};
     const i=logs.findIndex(x=>x.date===dKey && x.code===p.code);

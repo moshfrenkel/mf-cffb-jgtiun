@@ -136,6 +136,51 @@
   .st-count .sub{font-size:13px;color:var(--dust)}
   .st-count .rd{font-family:'Amatic SC';font-weight:700;font-size:20px;color:var(--orange)}
 
+  /* ---- collapsible stage cards ---- */
+  .st-head{cursor:pointer;user-select:none}
+  .st-arr{flex:none;width:15px;height:15px;align-self:center;opacity:.6;transition:transform .18s}
+  .stage.open .st-arr{transform:rotate(45deg);opacity:1}
+  .st-x{display:none;padding-top:2px}
+  .stage.open .st-x{display:block}
+
+  /* ---- equipment list (SET stage) ---- */
+  .eqrow{display:flex;align-items:center;gap:11px;padding:8px 0;border-bottom:1px dashed rgba(236,234,223,.13)}
+  .eqrow:last-child{border-bottom:none}
+  .eq-ic{width:40px;height:28px;flex:none;opacity:.92}
+  .eq-ic svg{width:100%;height:100%}
+  .eq-t{flex:1;display:flex;flex-direction:column;line-height:1.35}
+  .eq-t b{font-weight:400;font-size:14.5px}
+  .eq-t i{font-style:normal;color:var(--dust);font-size:11.5px;font-weight:300}
+  .eq-w{font-family:'Amatic SC';font-weight:700;font-size:23px;color:var(--turq);white-space:nowrap;text-shadow:0 0 8px rgba(62,211,200,.25)}
+
+  /* ---- lift / load blocks chalked on the slate ---- */
+  .liftblock{padding:10px 0 6px;border-top:1px dashed rgba(236,234,223,.13);margin-top:8px}
+  .lb-head b{font-weight:600;font-family:'Heebo';font-size:15px}
+  .sugg{display:flex;align-items:baseline;gap:8px;margin:4px 0 2px;flex-wrap:wrap}
+  .sugg .sg-l{font-size:11.5px;color:var(--dust)}
+  .sugg .sg-w{font-family:'Amatic SC';font-weight:700;font-size:31px;color:var(--turq);direction:ltr;text-shadow:0 0 10px rgba(62,211,200,.3);line-height:1}
+  .sugg .sg-kg{font-size:11px;color:var(--dust)}
+  .sugg .sg-why{font-size:11px;color:var(--orange);opacity:.85;flex-basis:100%}
+  .slin{background:transparent;border:none;border-bottom:2px dashed rgba(236,234,223,.35);color:var(--chalk);
+    font-family:'Heebo';font-size:16px;padding:4px 2px;border-radius:0;text-align:center;direction:ltr;width:60px}
+  .slin:focus{outline:none;border-bottom-color:var(--turq);border-bottom-style:solid}
+  .lb-quick{display:flex;align-items:center;gap:9px;padding:4px 0;flex-wrap:wrap}
+  .lb-quick .q-lbl{font-size:12px;color:var(--dust)}
+  .qq{display:flex;align-items:center;gap:6px}
+  .qq .x{color:var(--dust)}
+  .detbtn{background:transparent;border:none;color:var(--orange);font-family:'Amatic SC';font-weight:700;font-size:19px;cursor:pointer;padding:5px 0;display:block}
+  .setrow{display:flex;align-items:center;gap:9px;padding:3px 0}
+  .setrow .sn{font-family:'Amatic SC';font-weight:700;font-size:19px;color:var(--dust);min-width:46px}
+
+  /* rest timer variant on slate */
+  .rest-timer.slate{border-top-color:rgba(236,234,223,.13)}
+  .rest-timer.slate .rt-label{color:var(--orange)}
+  .rest-timer.slate .rt-btns button{border-color:rgba(236,234,223,.35);color:var(--chalk)}
+  .rest-timer.slate .rt-btns button.on{border-style:solid;border-color:var(--orange);color:var(--orange);background:transparent}
+  .rest-timer.slate .st-count .big{color:var(--chalk);text-shadow:0 0 14px rgba(236,234,223,.2);font-size:52px}
+  .rest-timer.slate .st-count .sub{color:var(--dust)}
+  .rest-timer.slate .st-count .big.done{color:var(--turq)}
+
   /* ============ CONTAINER SPECIES 2: manila clipboard / dossier ============ */
   .clip{
     position:relative;background:linear-gradient(170deg,var(--manila),#c9b88e 80%);
