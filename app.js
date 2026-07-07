@@ -67,7 +67,7 @@ const T = {
   boxesH:{he:'הקופסאות',en:'The boxes'},
   shopH:{he:'רשימת קניות · חמישי',en:'Shopping list · Thursday'},
   prepH:{he:'הכנה',en:'PREP'},
-  prepTxt:{he:'חמישי בערב: לגרל את כל העוף בנינג׳ה (בלי פלטות עישון), קציצות בקר, סיר אורז על הכיריים. טונה לא צריכה בישול, חלבון מיידי.',en:'Thursday night: grill all the chicken in the Ninja (no smoke plates), beef patties, pot of rice on the stove. Tuna needs no cooking — instant protein.'},
+  prepTxt:{he:'שישי (לפני הארוחה המשפחתית): לגרל את כל העוף בנינג׳ה (בלי פלטות עישון), קציצות בקר, סיר אורז על הכיריים. קונים בחמישי, מבשלים בשישי. טונה לא צריכה בישול, חלבון מיידי.',en:'Friday (before the family dinner): grill all the chicken in the Ninja (no smoke plates), beef patties, pot of rice on the stove. Shop Thursday, cook Friday. Tuna needs no cooking — instant protein.'},
   progKick:{he:'התקדמות',en:'PROGRESS'},
   progH1a:{he:'הנתונים',en:'MY'}, progH1b:{he:'שלי',en:'NUMBERS'},
   prH:{he:'בורסת השיאים',en:'PR EXCHANGE'},
@@ -237,8 +237,8 @@ const NUTRITION = {
 };
 
 /* ---- daily rotating menus — synced to the training week (Sun A · Mon B · Tue rest ·
-   Wed C · Thu D+prep · Fri/Sat rest-flex). Low-carb v2 rules: no bread/oats/eggplant/
-   zucchini/lentils, tuna in, hummus in moderation, Ninja Woodfire + stovetop only. */
+   Wed C · Thu D · Fri rest+big cook · Sat rest-flex). Low-carb v2 rules: no bread/oats/
+   eggplant/zucchini/lentils, tuna in, hummus in moderation, Ninja Woodfire + stovetop only. */
 const DAYMENUS = {
   0:[ // Sunday · A · train
     {id:'b', when:B('בוקר','Morning'), what:B('3 ביצים מקושקשות עם פטריות ובצל + חצי אבוקדו','3 scrambled eggs with mushrooms & onion + half avocado'), p:22},
@@ -272,10 +272,10 @@ const DAYMENUS = {
     {id:'b', when:B('בוקר','Morning'), what:B('3 ביצים + חצי אבוקדו','3 eggs + half avocado'), p:22},
     {id:'s', when:B('שייק','Shake'), what:B('Whey אחרי הדדליפט (+ בננה קטנה לפני)','Whey after the deadlifts (+ small banana before)'), p:25},
     {id:'l', when:B('צהריים','Lunch'), what:B('סלט טונה + בטטה קטנה + ירקות','Tuna salad + small sweet potato + veg'), p:40},
-    {id:'d', when:B('ערב','Dinner'), what:B('חזה עוף חם מהבישול הגדול + ברוקולי (ערב הכנת קופסאות)','Hot chicken from the big cook + broccoli (prep night)'), p:45},
+    {id:'d', when:B('ערב','Dinner'), what:B('חזה עוף מהקופסאות + ברוקולי','Chicken breast from the boxes + broccoli'), p:45},
     {id:'x', when:B('תוספת','Extra'), what:B('יוגורט יווני 0% + אגוזים','0% Greek yogurt + nuts'), p:20},
   ],
-  5:[ // Friday · rest — family dinner, inside the lines without counting
+  5:[ // Friday · rest — the big cook happens today, family dinner inside the lines
     {id:'b', when:B('בוקר','Morning'), what:B('חביתה + ירקות + קוטג׳ 5%','Omelet + veggies + 5% cottage'), p:25},
     {id:'l', when:B('צהריים','Lunch'), what:B('טונה + סלט גדול + אבוקדו','Tuna + big salad + avocado'), p:35},
     {id:'d', when:B('ערב','Dinner'), what:B('ארוחה משפחתית: חלבון + ירק, בגבולות, בלי לספור','Family dinner: protein + veg, inside the lines, no counting'), p:40},
