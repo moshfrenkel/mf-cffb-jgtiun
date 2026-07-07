@@ -1,5 +1,5 @@
 /* MoshFit service worker — offline shell cache */
-const CACHE = 'moshfit-v9';
+const CACHE = 'moshfit-v10';
 const ASSETS = ['./','./index.html','./app.js','./sync.js','./manifest.webmanifest','./icon.svg'];
 
 self.addEventListener('install', e=>{

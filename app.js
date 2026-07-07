@@ -698,9 +698,20 @@ function musicBoard(){
 
 /* ---- WORKOUT PLAYER ---- */
 let timer = {iv:null, idx:-1, restSec:0, repaint:null, mode:null, elapsed:0};
+/* the live athlete: a chalk figure center-screen that mirrors the running timer —
+   doing the day's lift while you work, lounging in the hammock while you rest */
+function showLiveFig(mode, label){
+  let f=document.getElementById('livefig');
+  if(!f){ f=el('div'); f.id='livefig'; document.body.appendChild(f); }
+  f.innerHTML = (mode==='rest' ? FIGS.R : heroFig(timer.code||'A')) + (label?`<span class="lf-tag">${label}</span>`:'');
+  f.className = 'on '+mode;
+}
+function hideLiveFig(){ const f=document.getElementById('livefig'); if(f) f.className=''; }
+
 function clearActiveTimer(){
   if(timer.iv){ clearInterval(timer.iv); timer.iv=null; }
   if(timer.ov){ timer.ov.remove(); timer.ov=null; }
+  hideLiveFig();
   if(timer.idx!==-1){ const o=document.getElementById('cnt-'+timer.idx); if(o) o.textContent=''; const b=document.getElementById('btn-'+timer.idx); if(b) b.textContent=b.dataset.label; }
   document.querySelectorAll('.rt-btns button.on').forEach(b=>b.classList.remove('on'));
   document.querySelectorAll('.stage.pulse').forEach(s=>s.classList.remove('pulse'));
@@ -951,12 +962,45 @@ function loadRow(p, def, dKey){
   return wrap;
 }
 
+/* ---- voice-to-text: a chalk mic on every note — speak, it types itself ---- */
+const MIC_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+  <path d="M12 3.2 C9.6 3.3 9 5 9.1 6.5 L9.2 11.8 C9.3 13.8 10.5 14.9 12 14.9 C13.5 14.9 14.8 13.8 14.8 11.8 L14.9 6.4 C15 5 14.4 3.2 12 3.2 Z"/>
+  <path d="M5.6 11.4 a6.5 6.5 0 0 0 12.9 .2 M12 17.8 L12.1 21.2 M8.6 21.4 L15.5 21.3"/></svg>`;
+function addMic(ta){
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if(!SR || !ta) return;
+  const wrap = el('span','notewrap');
+  ta.parentNode.insertBefore(wrap, ta); wrap.appendChild(ta);
+  const b = el('button','micbtn'); b.type='button'; b.innerHTML = MIC_SVG;
+  let rec=null, active=false;
+  b.onclick = (e)=>{
+    e.preventDefault(); e.stopPropagation();
+    if(active){ try{ rec.stop(); }catch(err){} return; }
+    rec = new SR();
+    rec.lang = LANG==='he' ? 'he-IL' : 'en-US';
+    rec.continuous = true; rec.interimResults = false;
+    rec.onresult = (ev)=>{
+      let txt='';
+      for(let i=ev.resultIndex;i<ev.results.length;i++) if(ev.results[i].isFinal) txt+=ev.results[i][0].transcript;
+      if(txt.trim()){
+        ta.value = (ta.value ? ta.value.trim()+' ' : '') + txt.trim();
+        ta.dispatchEvent(new Event('change')); // autosaves wherever the note autosaves
+      }
+    };
+    rec.onend = ()=>{ active=false; b.classList.remove('rec'); };
+    rec.onerror = ()=>{ active=false; b.classList.remove('rec'); };
+    try{ rec.start(); active=true; b.classList.add('rec'); buzz(30); }catch(err){}
+  };
+  wrap.appendChild(b);
+}
+
 /* ---- per-stage note ---- */
 function stageNoteEl(dKey, code, tag){
   const ta = el('textarea','score-note'); ta.rows = 2; ta.placeholder = t('stageNotePh');
   ta.value = stageNoteGet(dKey, code, tag);
   ta.onchange = ()=>stageNoteSet(dKey, code, tag, ta.value.trim());
-  return ta;
+  const holder = el('div'); holder.appendChild(ta); addMic(ta);
+  return holder;
 }
 
 /* button label per timer type (countdown default) */
@@ -990,6 +1034,8 @@ function runRest(sec, btn, wrap){
   clearActiveTimer();
   btn.classList.add('on'); acquireWake();
   timer.idx='rest'; timer.restSec=sec;
+  timer.code = planFor(selectedDate).code;
+  showLiveFig('rest', t('restLbl')); // the athlete hits the hammock
   countdown(out, sec, t('restLbl'), 'GO!'); // rest over → announcer sends you back to the bar
 }
 
@@ -1028,7 +1074,7 @@ function metconSection(p, wodStage, dKey){
   bd.appendChild(seg);
 
   const note = el('textarea','score-note'); note.rows=2; note.placeholder=t('scoreNotePh'); note.value=prev.note||'';
-  bd.appendChild(note);
+  bd.appendChild(note); addMic(note);
 
   const save = el('button','bigbtn on-slate', t('saveScore'));
   save.onclick = ()=>{
@@ -1060,6 +1106,7 @@ function finishClip(p, dKey){
       <textarea class="fin-note" rows="3" placeholder="${t('finishPh')}">${prev.note||''}</textarea></label>
     <div class="field"><span>${t('rpe')}</span><input class="fin-rpe" type="number" inputmode="numeric" min="1" max="10" value="${prev.rpe??''}"></div>
     <div class="field col"><span>${t('elbow')}</span><div class="seg" id="seg-elbow"></div></div>`;
+  addMic(c.querySelector('.fin-note'));
   const seg = c.querySelector('#seg-elbow');
   let elbow = prev.elbow || '';
   [['ok',t('elbOk')],['felt',t('elbFelt')],['pain',t('elbPain')]].forEach(([v,lbl])=>{
@@ -1107,7 +1154,8 @@ function runTimer(i, s){
   }
   clearActiveTimer();
   timer.idx=i; timer.elapsed=0; if(btn) btn.textContent=t('stop'); acquireWake();
-  document.body.classList.add('training'); // the chalk athlete starts doing reps
+  timer.code = planFor(selectedDate).code;
+  showLiveFig('work'); // the chalk athlete gets to work, center stage
   const tm = s.timer;
   timer.mode = tm ? tm.mode : 'countdown';
   if(!tm) return countdown(out, s.t*60);
@@ -1187,6 +1235,7 @@ function interval(out, tmr){
     out.innerHTML=`<span class="rd">${t('round')} ${seg.r+1}/${tmr.rounds}</span>`+
       `<span class="big ${cls}">${mmss(left)}</span>`+
       `<span class="sub">${tx(phase.label)}${ex?' · '+ex:''}</span>`;
+    if(si!==prevSeg) showLiveFig(phase.work?'work':'rest', phase.work?ex:tx(phase.label)); // figure works/rests with the phase
     if(si!==prevSeg && prevSeg!==-1) cueSwitch(phase.work, phase.work ? seg.r+1 : null); // announcer calls the round
     else if(left!==prevLeft && left<=3) cueCount(left);
     crunchFx(out, left<=3);
