@@ -181,6 +181,72 @@
   .rest-timer.slate .st-count .sub{color:var(--dust)}
   .rest-timer.slate .st-count .big.done{color:var(--turq)}
 
+  /* ============ CHALK FX — dust, slams, hand-drawn reveals ============ */
+  @keyframes chalk-draw{to{stroke-dashoffset:0}}
+
+  /* dust particles */
+  .poof{position:fixed;z-index:95;border-radius:50%;pointer-events:none;animation:poof-fly .65s ease-out forwards}
+  @keyframes poof-fly{to{transform:translate(var(--dx),var(--dy)) scale(.15);opacity:0}}
+
+  /* 3-2-1-GO pre-roll overlay */
+  .preroll{position:fixed;inset:0;z-index:80;display:flex;align-items:center;justify-content:center;
+    background:rgba(11,14,13,.78);backdrop-filter:blur(2px)}
+  .preroll .prn{font-family:'Amatic SC';font-weight:700;font-size:clamp(130px,42vw,260px);line-height:1;
+    color:var(--chalk);text-shadow:0 0 34px rgba(236,234,223,.4);animation:prn-slam .85s ease-out}
+  .preroll .prn.go{color:var(--turq);text-shadow:0 0 46px rgba(62,211,200,.65)}
+  @keyframes prn-slam{0%{transform:scale(1.9) rotate(-7deg);opacity:0}16%{transform:scale(.95) rotate(1.5deg);opacity:1}30%{transform:scale(1.02)}100%{transform:scale(1);opacity:1}}
+
+  /* last-3-seconds chalk jitter + card heartbeat */
+  .big.crunch{animation:crunch .26s steps(2) infinite}
+  @keyframes crunch{0%{transform:translate(0,0) rotate(-.7deg)}50%{transform:translate(1.6px,-1.2px) rotate(.9deg)}100%{transform:translate(-1.2px,1px) rotate(-.5deg)}}
+  .stage.pulse{animation:stg-pulse .5s ease-in-out infinite}
+  @keyframes stg-pulse{50%{transform:scale(1.012)}}
+
+  /* the chalk athlete does reps while a timer runs */
+  body.training .hero .fig{animation:figrep 1.15s ease-in-out infinite;transform-origin:50% 88%}
+  @keyframes figrep{0%,100%{transform:translateY(0) scaleY(1)}55%{transform:translateY(7px) scaleY(.92)}}
+
+  /* springy card-open arrow (overrides the plain transition above) */
+  .st-arr{transition:transform .5s cubic-bezier(.3,2.3,.4,.85)}
+
+  /* supplement check: mark draws itself, strike-through sweeps */
+  .check.done .cbx svg path{stroke-dasharray:46;stroke-dashoffset:46;animation:chalk-draw .4s ease-out .05s forwards}
+  .check b{position:relative}
+  .check b::after{content:"";position:absolute;inset-inline:-3px;top:56%;height:2.2px;border-radius:2px;
+    background:rgba(244,162,97,.75);transform:scaleX(0) rotate(-1.2deg);transform-origin:100% 50%}
+  html[dir="ltr"] .check b::after{transform-origin:0 50%}
+  .check.done b::after{transform:scaleX(1) rotate(-1.2deg);transition:transform .35s .18s cubic-bezier(.5,.1,.3,1.25)}
+
+  /* calendar: the done-ring draws itself */
+  .done-ring{position:absolute;inset:6% 10%;width:80%;height:88%;pointer-events:none}
+  .done-ring path{stroke:rgba(244,162,97,.6);stroke-width:2.6;fill:none;stroke-linecap:round;
+    stroke-dasharray:170;stroke-dashoffset:170;animation:chalk-draw .55s ease-out forwards;animation-delay:var(--d,0s)}
+
+  /* metcon score writes itself in chalk */
+  .score-sec{position:relative}
+  .chalkwrite{position:absolute;inset:-4px;display:flex;align-items:center;justify-content:center;z-index:6;
+    background:rgba(19,27,24,.94);border-radius:3px;direction:ltr}
+  .chalkwrite svg{height:76px;max-width:92%}
+  .chalkwrite path{stroke:var(--turq);stroke-width:4.5;fill:none;stroke-linecap:round;stroke-linejoin:round;
+    filter:drop-shadow(0 0 9px rgba(62,211,200,.5))}
+
+  /* palm wipe on session save */
+  .wipe-ov{position:absolute;inset:0;overflow:hidden;border-radius:2px;pointer-events:none;z-index:6}
+  .wipe-smudge{position:absolute;top:-6%;bottom:-6%;width:46%;filter:blur(7px);
+    background:radial-gradient(ellipse at center, rgba(236,234,223,.55), rgba(236,234,223,.12) 60%, transparent 75%);
+    animation:wipe-x 1s ease-in-out forwards}
+  @keyframes wipe-x{from{inset-inline-start:-50%}to{inset-inline-start:112%}}
+  .wipe-check{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:7;pointer-events:none}
+  .wipe-check svg{width:110px;height:110px}
+  .wipe-check path{stroke:#1f6e3c;stroke-width:7;fill:none;stroke-linecap:round;
+    stroke-dasharray:130;stroke-dashoffset:130;animation:chalk-draw .5s .6s ease-out forwards}
+
+  /* PR! chalk sticker */
+  .prtag{display:inline-block;font-family:'Amatic SC';font-weight:700;font-size:19px;line-height:1.2;
+    color:var(--wall);background:var(--orange);padding:1px 9px 0;border-radius:2px 6px 3px 5px;
+    transform:rotate(-3deg);margin-inline-start:8px;animation:prn-slam .5s ease-out;
+    box-shadow:0 0 12px rgba(244,162,97,.4)}
+
   /* ============ CONTAINER SPECIES 2: manila clipboard / dossier ============ */
   .clip{
     position:relative;background:linear-gradient(170deg,var(--manila),#c9b88e 80%);
@@ -302,7 +368,7 @@
   .check.done .cbx svg{display:block}
   .check span{display:flex;flex-direction:column}
   .check b{font-weight:400;font-size:15px}
-  .check.done b{color:var(--dust);text-decoration:line-through;text-decoration-color:rgba(244,162,97,.7);text-decoration-thickness:2px}
+  .check.done b{color:var(--dust)} /* strike-through is the animated ::after below */
   .check i{font-style:normal;font-size:11.5px;color:var(--dust);font-weight:300}
 
   /* nutrition boxes — clipboard rows */
@@ -344,8 +410,7 @@
   .cal-cell.tr:active{transform:scale(.94)}
   .cal-cell.rt .cl{color:rgba(236,234,223,.25);font-size:18px}
   .cal-cell.today{border:2px solid var(--orange);border-radius:6px 10px 7px 9px}
-  .cal-cell.done-day{position:relative}
-  .cal-cell.done-day::after{content:"";position:absolute;inset:8% 12%;border:2px solid rgba(244,162,97,.55);border-radius:50% 46% 52% 48%;transform:rotate(-6deg)}
+  .cal-cell.done-day{position:relative} /* ring is an animated SVG injected by JS */
   .leg{display:flex;align-items:baseline;gap:10px;padding:7px 0;border-bottom:1px dashed rgba(236,234,223,.12);font-size:13px}
   .leg:last-child{border-bottom:none}
   .leg-c{width:28px;flex:none;text-align:center;font-family:'Amatic SC';font-weight:700;font-size:22px;color:var(--turq)}

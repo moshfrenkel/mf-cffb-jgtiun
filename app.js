@@ -458,6 +458,88 @@ function trayBar(){
   return w;
 }
 
+/* ---------------- CHALK FX ---------------- */
+function chalkPoof(x, y, opts){
+  const n=(opts&&opts.n)||14, color=(opts&&opts.color)||'236,234,223';
+  for(let i=0;i<n;i++){
+    const p=document.createElement('i'); p.className='poof';
+    const a=Math.random()*Math.PI*2, d=18+Math.random()*48, s=3+Math.random()*5;
+    p.style.cssText=`left:${x}px;top:${y}px;width:${s}px;height:${s}px;`+
+      `background:rgba(${color},${(0.4+Math.random()*0.5).toFixed(2)});`+
+      `--dx:${(Math.cos(a)*d).toFixed(0)}px;--dy:${(Math.sin(a)*d-16).toFixed(0)}px;`+
+      `animation-delay:${(Math.random()*90)|0}ms`;
+    document.body.appendChild(p);
+    setTimeout(()=>p.remove(), 900);
+  }
+}
+function poofAt(elm, opts){
+  const r=elm.getBoundingClientRect();
+  chalkPoof(r.left+r.width/2, r.top+r.height/2, opts);
+}
+
+/* hand-drawn chalk numerals — the score writes itself on the board */
+const GLYPHS={
+  '0':{w:40,d:'M20 8 C7 10 7 50 20 52 C33 50 33 10 20 8'},
+  '1':{w:26,d:'M6 18 L16 8 L16 52'},
+  '2':{w:40,d:'M9 17 C10 4 32 6 30 19 C28 31 12 37 8 52 L33 50'},
+  '3':{w:40,d:'M9 12 C24 3 34 14 21 25 C36 29 33 52 8 46'},
+  '4':{w:40,d:'M26 8 L8 36 L34 36 M25 22 L25 52'},
+  '5':{w:40,d:'M31 8 L12 10 L10 28 C25 22 34 32 30 42 C26 52 13 52 9 45'},
+  '6':{w:40,d:'M29 9 C15 13 8 33 12 44 C16 54 30 52 30 42 C29 32 16 32 12 40'},
+  '7':{w:36,d:'M7 10 L31 8 L16 52'},
+  '8':{w:40,d:'M20 28 C8 24 10 8 20 8 C30 8 32 24 20 28 C7 33 10 52 20 52 C30 52 33 33 20 28'},
+  '9':{w:40,d:'M29 19 C29 7 12 6 10 18 C8 30 27 30 29 19 L26 52'},
+  ':':{w:18,d:'M9 22 a1.6 1.6 0 1 0 .1 0 M9 40 a1.6 1.6 0 1 0 .1 0'},
+  '+':{w:34,d:'M17 16 L17 40 M5 28 L29 28'},
+  '/':{w:30,d:'M25 8 L5 52'},
+  'R':{w:38,d:'M9 52 L9 8 L24 8 C35 10 35 26 24 28 L9 28 M21 28 L33 52'},
+  '?':{w:34,d:'M8 16 C10 4 30 6 28 18 C27 27 17 27 17 36 M17 46 a1.6 1.6 0 1 0 .1 0'},
+  ' ':{w:14,d:''},
+};
+function chalkWrite(host, str){
+  const ov=el('div','chalkwrite');
+  let x=6; const parts=[];
+  String(str).split('').forEach(ch=>{
+    const g=GLYPHS[ch]||GLYPHS['?'];
+    if(g.d) parts.push(`<g transform="translate(${x},0) rotate(${(Math.random()*4-2).toFixed(1)} 20 30)"><path d="${g.d}"/></g>`);
+    x+=g.w;
+  });
+  ov.innerHTML=`<svg viewBox="0 0 ${x+6} 60" preserveAspectRatio="xMidYMid meet">${parts.join('')}</svg>`;
+  host.appendChild(ov);
+  let delay=100;
+  ov.querySelectorAll('path').forEach(p=>{
+    const L=p.getTotalLength();
+    p.style.strokeDasharray=L; p.style.strokeDashoffset=L;
+    p.style.animation=`chalk-draw .3s ease-out ${delay}ms forwards`;
+    delay+=170;
+  });
+  setTimeout(()=>{ ov.style.transition='opacity .45s'; ov.style.opacity='0'; setTimeout(()=>ov.remove(),500); }, delay+1000);
+  return delay;
+}
+
+/* stock-ticker count-up for the PR exchange */
+function countUp(elm, val, dur){
+  const dec=String(val).includes('.')?1:0;
+  const node=elm.childNodes[0];
+  if(!node || node.nodeType!==3) return;
+  const t0=performance.now();
+  const step=(t)=>{
+    const k=Math.min((t-t0)/(dur||700),1), e=1-Math.pow(1-k,3);
+    node.nodeValue=(val*e).toFixed(dec);
+    if(k<1) requestAnimationFrame(step); else node.nodeValue=String(val);
+  };
+  node.nodeValue=(0).toFixed(dec);
+  requestAnimationFrame(step);
+}
+
+/* PR! — dust burst + chalk sticker on a new personal record */
+function celebratePR(wrap){
+  const head=wrap.querySelector('.lb-head');
+  if(head && !head.querySelector('.prtag')) head.insertAdjacentHTML('beforeend','<span class="prtag">PR!</span>');
+  poofAt(head||wrap, {n:26, color:'244,162,97'});
+  buzz([90,40,90,40,160]);
+}
+
 /* museum-style wall label */
 function plate(html){ return `<span class="plate">${html}</span>`; }
 
@@ -550,7 +632,10 @@ function viewToday(){
     const row = el('div','check'+(done[s.id]?' done':''));
     row.innerHTML = `<span class="cbx">${CHECKMARK}</span>
       <span><b>${tx(s.name)}</b><i>${tx(s.when)}</i></span>`;
-    row.onclick=()=>{ done[s.id]=!done[s.id]; DB.set(sk,done); row.classList.toggle('done',done[s.id]); };
+    row.onclick=()=>{
+      done[s.id]=!done[s.id]; DB.set(sk,done); row.classList.toggle('done',done[s.id]);
+      if(done[s.id]){ poofAt(row.querySelector('.cbx'), {n:10, color:'244,162,97'}); buzz(40); }
+    };
     sc.appendChild(row);
   });
   app.appendChild(sc);
@@ -615,8 +700,11 @@ function musicBoard(){
 let timer = {iv:null, idx:-1, restSec:0, repaint:null, mode:null, elapsed:0};
 function clearActiveTimer(){
   if(timer.iv){ clearInterval(timer.iv); timer.iv=null; }
+  if(timer.ov){ timer.ov.remove(); timer.ov=null; }
   if(timer.idx!==-1){ const o=document.getElementById('cnt-'+timer.idx); if(o) o.textContent=''; const b=document.getElementById('btn-'+timer.idx); if(b) b.textContent=b.dataset.label; }
   document.querySelectorAll('.rt-btns button.on').forEach(b=>b.classList.remove('on'));
+  document.querySelectorAll('.stage.pulse').forEach(s=>s.classList.remove('pulse'));
+  document.body.classList.remove('training');
   timer.idx=-1; timer.restSec=0; timer.repaint=null; timer.mode=null; releaseWake();
 }
 function buzz(p){ if(navigator.vibrate) navigator.vibrate(p); }
@@ -626,6 +714,7 @@ const mmss = s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
 let AC=null;
 function ensureAudio(){
   try{ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){}
+  initVoice();
 }
 function beep(freq, dur, vol){
   if(!AC) return;
@@ -638,9 +727,33 @@ function beep(freq, dur, vol){
     o.start(tt); o.stop(tt+(dur||0.12)+0.02);
   }catch(e){}
 }
-function cueEnd(){ beep(680,0.13,0.28); buzz(70); }
-function cueDone(){ beep(990,0.3,0.32); setTimeout(()=>beep(1180,0.32,0.32),200); buzz([200,100,200]); }
-function cueSwitch(work){ beep(work?880:520,0.16,0.3); buzz(work?[140]:[80,50,80]); }
+/* voice announcer — box-style callouts (3-2-1, GO, TIME, REST, Round N) via the
+   built-in speech engine. English on purpose: that's how a box sounds. Falls back to beeps. */
+let VOICE=null;
+function initVoice(){
+  if(!('speechSynthesis' in window)) return;
+  const pick=()=>{
+    const vs=speechSynthesis.getVoices();
+    VOICE = vs.find(v=>/^en([-_]|$)/i.test(v.lang) && /Google|Natural|Premium|Enhanced/i.test(v.name))
+         || vs.find(v=>/^en([-_]|$)/i.test(v.lang)) || null;
+  };
+  pick(); if(!VOICE) speechSynthesis.onvoiceschanged=pick;
+}
+function say(txt){
+  if(!VOICE) return false;
+  try{
+    const u=new SpeechSynthesisUtterance(txt);
+    u.voice=VOICE; u.lang=VOICE.lang; u.rate=1.12; u.pitch=1.05; u.volume=1;
+    speechSynthesis.cancel(); speechSynthesis.speak(u);
+    return true;
+  }catch(e){ return false; }
+}
+function cueCount(n){ if(!say(String(n))) beep(680,0.13,0.28); buzz(70); }
+function cueDone(word){ if(!say(word||'TIME!')){ beep(990,0.3,0.32); setTimeout(()=>beep(1180,0.32,0.32),200); } buzz([200,100,200]); }
+function cueSwitch(work, round){
+  if(!say(work ? (round!=null ? 'Round '+round : 'WORK') : 'REST')) beep(work?880:520,0.16,0.3);
+  buzz(work?[140]:[80,50,80]);
+}
 
 /* wake lock — keep the screen on while a timer runs */
 let wakeLock=null;
@@ -715,6 +828,7 @@ function stageCard(p, s, i, dKey){
   st.querySelector('.st-head').onclick=()=>{
     STAGE_OPEN[key] = !STAGE_OPEN[key];
     st.classList.toggle('open', STAGE_OPEN[key]);
+    if(STAGE_OPEN[key]) poofAt(st.querySelector('.st-arr'), {n:8});
   };
   return st;
 }
@@ -774,9 +888,20 @@ function liftBlock(p, def, dKey){
   const setsBox = wrap.querySelector('.lb-sets'), det = wrap.querySelector('.detbtn');
   let open = !!(rec.sets && rec.sets.length);
 
+  // today's entry is the standing PR (and there was history to beat) → keep the sticker up
+  const pr = personalRecords().find(r=>r.lift===def.name);
+  const hadHistory = DB.get('liftlog',[]).some(x=>x.lift===def.name && x.date<dKey && recTopWeight(x));
+  if(pr && pr.date===dKey && hadHistory)
+    wrap.querySelector('.lb-head').insertAdjacentHTML('beforeend','<span class="prtag">PR!</span>');
+
   const collect = ()=>Array.from(setsBox.querySelectorAll('.setrow')).map(r=>({
     w: r.querySelector('.s-w').value, r: r.querySelector('.s-r').value }));
-  const save = ()=>liftSet(dKey, p.code, def, qw.value, qr.value, collect());
+  const save = ()=>{
+    const before=(personalRecords().find(r=>r.lift===def.name)||{}).weight||0;
+    liftSet(dKey, p.code, def, qw.value, qr.value, collect());
+    const after=(personalRecords().find(r=>r.lift===def.name)||{}).weight||0;
+    if(before>0 && after>before) celebratePR(wrap); // beat your best → magnesium cloud
+  };
   const addSetRow = (k, v)=>{
     const r = el('div','setrow');
     r.innerHTML = `<span class="sn">${t('setN')} ${k+1}</span><span class="qq"><input class="slin s-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${v.w??''}"><span class="x">×</span><input class="slin s-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${v.r??''}"></span>`;
@@ -816,7 +941,12 @@ function loadRow(p, def, dKey){
     ${suggLine(def, sg)}
     <div class="lb-quick"><span class="q-lbl">${t('actual')}</span><span class="qq"><input class="slin q-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${rec.weight??''}">${withReps?`<span class="x">×</span><input class="slin q-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${rec.reps??''}">`:''}</span></div>`;
   const qw = wrap.querySelector('.q-w'), qr = wrap.querySelector('.q-r');
-  const save = ()=>liftSet(dKey, p.code, def, qw.value, qr ? qr.value : '', []);
+  const save = ()=>{
+    const before=(personalRecords().find(r=>r.lift===def.name)||{}).weight||0;
+    liftSet(dKey, p.code, def, qw.value, qr ? qr.value : '', []);
+    const after=(personalRecords().find(r=>r.lift===def.name)||{}).weight||0;
+    if(before>0 && after>before) celebratePR(wrap);
+  };
   qw.onchange = save; if(qr) qr.onchange = save;
   return wrap;
 }
@@ -860,7 +990,7 @@ function runRest(sec, btn, wrap){
   clearActiveTimer();
   btn.classList.add('on'); acquireWake();
   timer.idx='rest'; timer.restSec=sec;
-  countdown(out, sec, t('restLbl'));
+  countdown(out, sec, t('restLbl'), 'GO!'); // rest over → announcer sends you back to the bar
 }
 
 /* ---- metcon score — lives inside the WOD card ---- */
@@ -908,7 +1038,8 @@ function metconSection(p, wodStage, dKey){
       rx, note:note.value.trim()};
     metconSet(rec);
     save.textContent = t('scoreSaved'); buzz([120,60,120]);
-    setTimeout(()=>{ save.textContent=t('saveScore'); }, 1600);
+    const holdMs = chalkWrite(bd, metconScoreStr(rec)); // the score writes itself on the board
+    setTimeout(()=>{ save.textContent=t('saveScore'); }, holdMs+1200);
   };
   bd.appendChild(save);
   return bd;
@@ -952,7 +1083,11 @@ function finishClip(p, dKey){
     if(i>=0) logs[i]=rec; else logs.unshift(rec);
     DB.set('worklog',logs);
     save.textContent=t('savedWell'); buzz([120,60,120]);
-    setTimeout(()=>{ activeTab='progress'; render(); }, 700);
+    // palm wipe sweeps the dossier clean, a big check writes itself, then off to Progress
+    const ov=el('div','wipe-ov'); ov.innerHTML='<div class="wipe-smudge"></div>';
+    const ck=el('div','wipe-check'); ck.innerHTML='<svg viewBox="0 0 100 100"><path d="M20 55 L42 78 L82 25"/></svg>';
+    c.appendChild(ov); c.appendChild(ck);
+    setTimeout(()=>{ activeTab='progress'; render(); }, 1800);
   };
   c.appendChild(save);
   return c;
@@ -971,23 +1106,52 @@ function runTimer(i, s){
     return;
   }
   clearActiveTimer();
-  timer.idx=i; if(btn) btn.textContent=t('stop'); acquireWake();
+  timer.idx=i; timer.elapsed=0; if(btn) btn.textContent=t('stop'); acquireWake();
+  document.body.classList.add('training'); // the chalk athlete starts doing reps
   const tm = s.timer;
   timer.mode = tm ? tm.mode : 'countdown';
   if(!tm) return countdown(out, s.t*60);
-  if(tm.mode==='countdown' || tm.mode==='amrap') return countdown(out, tm.sec, tm.label);
-  if(tm.mode==='fortime') return stopwatch(out, tm.cap);
-  if(tm.mode==='interval') return interval(out, tm);
+  // WOD timers get the full 3-2-1-GO treatment
+  if(tm.mode==='countdown' || tm.mode==='amrap') return preRoll(()=>countdown(out, tm.sec, tm.label));
+  if(tm.mode==='fortime') return preRoll(()=>stopwatch(out, tm.cap));
+  if(tm.mode==='interval') return preRoll(()=>interval(out, tm));
+}
+
+/* 3-2-1-GO: giant chalk numbers slam on screen, announcer counts, then the engine starts */
+function preRoll(start){
+  const ov=el('div','preroll'); const num=el('span','prn'); ov.appendChild(num);
+  document.body.appendChild(ov); timer.ov=ov;
+  let n=3;
+  const slam=(txt)=>{ num.textContent=txt; num.style.animation='none'; void num.offsetWidth; num.style.animation=''; };
+  const step=()=>{
+    if(n===0){
+      slam('GO!'); num.classList.add('go');
+      if(!say('GO!')) beep(990,0.3,0.35);
+      buzz([140]);
+      chalkPoof(window.innerWidth/2, window.innerHeight/2, {n:24, color:'62,211,200'});
+      timer.iv=setTimeout(()=>{ if(timer.ov){ timer.ov.remove(); timer.ov=null; } timer.iv=null; start(); }, 500);
+      return;
+    }
+    slam(n); cueCount(n);
+    n--; timer.iv=setTimeout(step, 1000);
+  };
+  step();
 }
 /* all engines are anchored to real timestamps, so they self-correct after the
    screen sleeps / the tab is backgrounded (where setInterval gets throttled). */
-function countdown(out, secs, label){
+/* the last 3 seconds: chalk digits jitter, the card gets a heartbeat */
+function crunchFx(out, on){
+  const big=out.querySelector('.big'); if(big && on) big.classList.add('crunch');
+  const card=out.closest('.stage'); if(card) card.classList.toggle('pulse', !!on);
+}
+function countdown(out, secs, label, endWord){
   const end=Date.now()+secs*1000; let prev=secs+1;
   const paint=()=>{
     let left=Math.round((end-Date.now())/1000); if(left<0) left=0;
     out.innerHTML=`<span class="big">${mmss(left)}</span>${label?`<span class="sub">${label}</span>`:''}`;
-    if(left<=0){ clearActiveTimer(); out.innerHTML=`<span class="big done">${t('finish')}</span>`; cueDone(); return; }
-    if(left<prev && left<=3) cueEnd();
+    if(left<=0){ clearActiveTimer(); out.innerHTML=`<span class="big done">${t('finish')}</span>`; cueDone(endWord); return; }
+    if(left<prev && left<=3) cueCount(left);
+    crunchFx(out, left<=3);
     prev=left;
   };
   timer.repaint=paint; paint(); timer.iv=setInterval(paint,250);
@@ -998,8 +1162,9 @@ function stopwatch(out, cap){
     const s=Math.floor((Date.now()-start)/1000);
     timer.elapsed=s;
     out.innerHTML=`<span class="big">${mmss(s)}</span><span class="sub">${t('stopUp')}</span>`;
-    if(cap && s>=cap){ clearActiveTimer(); out.innerHTML='<span class="big done">capped ✓</span>'; cueDone(); prefillForTime(cap); return; }
-    if(cap && s>prev && s>=cap-3 && s<cap) cueEnd();
+    if(cap && s>=cap){ clearActiveTimer(); out.innerHTML='<span class="big done">capped ✓</span>'; cueDone('TIME!'); prefillForTime(cap); return; }
+    if(cap && s>prev && s>=cap-3 && s<cap) cueCount(cap-s);
+    crunchFx(out, cap && s>=cap-3);
     prev=s;
   };
   timer.repaint=paint; paint(); timer.iv=setInterval(paint,250);
@@ -1013,7 +1178,7 @@ function interval(out, tmr){
   let prevSeg=-1, prevLeft=-1;
   const paint=()=>{
     const elapsed=(Date.now()-start)/1000;
-    if(elapsed>=total){ clearActiveTimer(); out.innerHTML='<span class="big done">'+tmr.label+' ✓</span>'; cueDone(); return; }
+    if(elapsed>=total){ clearActiveTimer(); out.innerHTML='<span class="big done">'+tmr.label+' ✓</span>'; cueDone('TIME!'); return; }
     let acc=0, si=0;
     for(; si<segs.length; si++){ if(elapsed < acc+segs[si].dur) break; acc+=segs[si].dur; }
     const seg=segs[si], phase=tmr.phases[seg.ph];
@@ -1022,8 +1187,9 @@ function interval(out, tmr){
     out.innerHTML=`<span class="rd">${t('round')} ${seg.r+1}/${tmr.rounds}</span>`+
       `<span class="big ${cls}">${mmss(left)}</span>`+
       `<span class="sub">${tx(phase.label)}${ex?' · '+ex:''}</span>`;
-    if(si!==prevSeg && prevSeg!==-1) cueSwitch(phase.work);
-    else if(left!==prevLeft && left<=3) cueEnd();
+    if(si!==prevSeg && prevSeg!==-1) cueSwitch(phase.work, phase.work ? seg.r+1 : null); // announcer calls the round
+    else if(left!==prevLeft && left<=3) cueCount(left);
+    crunchFx(out, left<=3);
     prevSeg=si; prevLeft=left;
   };
   timer.repaint=paint; paint(); timer.iv=setInterval(paint,250);
@@ -1042,14 +1208,21 @@ function viewCalendar(){
   const start = new Date(BLOCK_START);
   start.setDate(start.getDate() - start.getDay());
   const tk = todayKey();
+  let doneN = 0;
   for(let i=0;i<35;i++){
     const d = new Date(start); d.setDate(start.getDate()+i);
     const inBlock = d>=BLOCK_START && d<=BLOCK_END;
     if(!inBlock){ grid.appendChild(el('div','cal-cell empty')); continue; }
     const p = planFor(d);
     const k = todayKey(d);
-    const cell = el('div','cal-cell '+(p.train?'tr':'rt')+(k===tk?' today':'')+(doneDates.has(k)?' done-day':''));
+    const done = doneDates.has(k);
+    const cell = el('div','cal-cell '+(p.train?'tr':'rt')+(k===tk?' today':'')+(done?' done-day':''));
     cell.innerHTML = `<span class="cd lt">${d.getDate()}.${d.getMonth()+1}</span><span class="cl">${p.train?p.code:'·'}</span>`;
+    if(done){ // don't-break-the-chain ring draws itself, one after another
+      cell.insertAdjacentHTML('beforeend',
+        `<svg class="done-ring" viewBox="0 0 50 44" style="--d:${(doneN*0.12).toFixed(2)}s"><path d="M25 5 C9 7 3 16 5 26 C7 37 22 42 33 38 C45 34 47 18 39 10 C33 3 27 3 21 6"/></svg>`);
+      doneN++;
+    }
     if(p.train){ cell.onclick=()=>{ selectedDate=d; activeTab='workout'; render(); }; }
     grid.appendChild(cell);
   }
@@ -1137,6 +1310,10 @@ function viewProgress(){
       pc.appendChild(row);
     });
     pc.appendChild(el('div','mini',t('prMini')));
+    // the exchange opens: numbers tick up from zero, staggered like a trading board
+    requestAnimationFrame(()=>{
+      pc.querySelectorAll('.pr-w').forEach((e,i)=>setTimeout(()=>countUp(e, prs[i].weight, 700), i*90));
+    });
   }
   app.appendChild(pc);
 
