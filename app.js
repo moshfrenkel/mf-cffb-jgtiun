@@ -17,7 +17,7 @@ const T = {
   suppsToday:{he:'תוספים היום',en:'SUPPLEMENTS'},
   nutriTitle:{he:'תזונה',en:'FUEL'}, trainDay:{he:'יום אימון',en:'training day'}, restDay:{he:'יום מנוחה',en:'rest day'},
   kcal:{he:'קל׳',en:'kcal'}, protein:{he:'חלבון',en:'protein'}, fat:{he:'שומן',en:'fat'}, carbs:{he:'פחמ׳',en:'carbs'},
-  boxesShop:{he:'קופסאות ורשימת קניות ←',en:'Boxes & shopping list →'},
+  boxesShop:{he:'תפריט היום, מעקב ותובנות ←',en:"Today's menu, tracking & insights →"},
   evening:{he:'הערב',en:'TONIGHT'},
   eveningTxt:{he:'מגנזיום ב-22:00 · יעד שינה 22:30 (קימה 05:30). השינה היא התקרה של התוצאות.',en:'Magnesium at 22:00 · sleep by 22:30 (up at 05:30). Sleep is the ceiling on your results.'},
   checkinCta:{he:'צ׳ק-אין יומי',en:'DAILY CHECK-IN'},
@@ -116,6 +116,16 @@ const T = {
   kgEach:{he:'ק״ג ליד',en:'kg each'},
   actual:{he:'מה עשיתי בפועל:',en:'what I actually did:'},
   stageNotePh:{he:'פתק לעצמי: איך הלך החלק הזה...',en:'note to self: how this part went...'},
+  menuH:{he:'התפריט של היום',en:"TODAY'S MENU"},
+  menuMini:{he:'תפריט מתחלף לפי היום בשבוע. סמן מה קרה בפועל, מזה נבנות התובנות למטה.',en:'The menu rotates by weekday. Mark what actually happened — the insights below are built from it.'},
+  mAte:{he:'כמתוכנן',en:'as planned'},
+  mOther:{he:'אחר',en:'other'},
+  mSkip:{he:'דילגתי',en:'skipped'},
+  mOtherPh:{he:'מה אכלת בפועל?',en:'what did you eat instead?'},
+  dayFoodPh:{he:'עוד דברים שנכנסו היום (נשנושים, שתייה, יציאות מהתוכנית)...',en:'anything else that went in today (snacks, drinks, off-plan)...'},
+  insightsH:{he:'תובנות מהצלחת',en:'PLATE INSIGHTS'},
+  insEmpty:{he:'סמן ארוחות בתפריט למעלה, ומכאן והלאה יופיעו פה תובנות אמיתיות מהנתונים שלך, יום אחרי יום.',en:'Mark meals in the menu above — real insights from your own data show up here, day after day.'},
+  foodToday:{he:'סומנו היום',en:'logged today'},
 };
 function t(k){ return tx(T[k]); }
 
@@ -225,6 +235,60 @@ const NUTRITION = {
     [B('ירקות ושומן טוב','Veg & good fat'), [B('סלט: מלפפון, עגבנייה, פלפל, חסה','Salad: cucumber, tomato, pepper, lettuce'),B('ברוקולי, כרובית, שעועית ירוקה, פטריות','Broccoli, cauliflower, green beans, mushrooms'),B('בצל, שום','Onion, garlic'),B('אבוקדו ×4-5','Avocado ×4-5'),B('אגוזים/שקדים, שמן זית','Nuts/almonds, olive oil')]],
   ],
 };
+
+/* ---- daily rotating menus — synced to the training week (Sun A · Mon B · Tue rest ·
+   Wed C · Thu D+prep · Fri/Sat rest-flex). Low-carb v2 rules: no bread/oats/eggplant/
+   zucchini/lentils, tuna in, hummus in moderation, Ninja Woodfire + stovetop only. */
+const DAYMENUS = {
+  0:[ // Sunday · A · train
+    {id:'b', when:B('בוקר','Morning'), what:B('3 ביצים מקושקשות עם פטריות ובצל + חצי אבוקדו','3 scrambled eggs with mushrooms & onion + half avocado'), p:22},
+    {id:'s', when:B('שייק','Shake'), what:B('Whey מיד אחרי האימון (+ בננה קטנה לפני)','Whey right after training (+ small banana before)'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('180ג׳ חזה עוף מהנינג׳ה + אורז מדוד + ברוקולי','180g chicken breast + measured rice + broccoli'), p:45},
+    {id:'d', when:B('ערב','Dinner'), what:B('דג בגריל + סלט גדול בשמן זית','Grilled fish + big salad with olive oil'), p:35},
+    {id:'x', when:B('תוספת','Extra'), what:B('יוגורט יווני 0% + חופן שקדים','0% Greek yogurt + handful of almonds'), p:20},
+  ],
+  1:[ // Monday · B · train
+    {id:'b', when:B('בוקר','Morning'), what:B('3 ביצים + חצי אבוקדו + עגבנייה','3 eggs + half avocado + tomato'), p:22},
+    {id:'s', when:B('שייק','Shake'), what:B('Whey אחרי האימון (+ בננה קטנה לפני)','Whey post-workout (+ small banana before)'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('קציצות בקר 5% + בטטה קטנה + שעועית ירוקה','5% beef patties + small sweet potato + green beans'), p:45},
+    {id:'d', when:B('ערב','Dinner'), what:B('סלט טונה גדול (2 קופסאות) + חומוס במידה + ירקות','Big tuna salad (2 cans) + hummus in moderation + veg'), p:40},
+    {id:'x', when:B('תוספת','Extra'), what:B('קוטג׳ 5% + אגוזים','5% cottage + nuts'), p:20},
+  ],
+  2:[ // Tuesday · rest — near-zero carbs, more veg & good fat
+    {id:'b', when:B('בוקר','Morning'), what:B('חביתת 3 ביצים עם פטריות + עגבנייה','3-egg omelet with mushrooms + tomato'), p:22},
+    {id:'l', when:B('צהריים','Lunch'), what:B('חזה עוף + כרובית מהאייר-פרייר + סלט (בלי עמילן)','Chicken breast + air-fried cauliflower + salad (no starch)'), p:45},
+    {id:'d', when:B('ערב','Dinner'), what:B('סלמון בנינג׳ה + שעועית ירוקה + חצי אבוקדו','Ninja salmon + green beans + half avocado'), p:35},
+    {id:'x', when:B('תוספת','Extra'), what:B('יוגורט יווני 0% + שקדים','0% Greek yogurt + almonds'), p:20},
+    {id:'x2', when:B('תוספת ב׳','Extra 2'), what:B('קופסת טונה קטנה / קוטג׳ (להשלים חלבון)','Small tuna can / cottage (protein top-up)'), p:18},
+  ],
+  3:[ // Wednesday · C · train — banana before the explosive work
+    {id:'b', when:B('בוקר','Morning'), what:B('קערת יוגורט יווני 0% + שקדים','0% Greek yogurt bowl + almonds'), p:18},
+    {id:'s', when:B('שייק','Shake'), what:B('Whey אחרי האימון (+ בננה לפני העבודה הנפיצה)','Whey post-workout (+ banana before the explosive work)'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('חזה עוף + אורז מדוד + פלפלים ובצל מהגריל','Chicken breast + measured rice + grilled peppers & onion'), p:45},
+    {id:'d', when:B('ערב','Dinner'), what:B('סינטה רזה / קציצות בקר + סלט גדול + חומוס במידה','Lean sirloin / beef patties + big salad + hummus in moderation'), p:40},
+    {id:'x', when:B('תוספת','Extra'), what:B('קוטג׳ 5% + ירקות חתוכים','5% cottage + cut veggies'), p:22},
+  ],
+  4:[ // Thursday · D · train + big prep night
+    {id:'b', when:B('בוקר','Morning'), what:B('3 ביצים + חצי אבוקדו','3 eggs + half avocado'), p:22},
+    {id:'s', when:B('שייק','Shake'), what:B('Whey אחרי הדדליפט (+ בננה קטנה לפני)','Whey after the deadlifts (+ small banana before)'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('סלט טונה + בטטה קטנה + ירקות','Tuna salad + small sweet potato + veg'), p:40},
+    {id:'d', when:B('ערב','Dinner'), what:B('חזה עוף חם מהבישול הגדול + ברוקולי (ערב הכנת קופסאות)','Hot chicken from the big cook + broccoli (prep night)'), p:45},
+    {id:'x', when:B('תוספת','Extra'), what:B('יוגורט יווני 0% + אגוזים','0% Greek yogurt + nuts'), p:20},
+  ],
+  5:[ // Friday · rest — family dinner, inside the lines without counting
+    {id:'b', when:B('בוקר','Morning'), what:B('חביתה + ירקות + קוטג׳ 5%','Omelet + veggies + 5% cottage'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('טונה + סלט גדול + אבוקדו','Tuna + big salad + avocado'), p:35},
+    {id:'d', when:B('ערב','Dinner'), what:B('ארוחה משפחתית: חלבון + ירק, בגבולות, בלי לספור','Family dinner: protein + veg, inside the lines, no counting'), p:40},
+    {id:'x', when:B('תוספת','Extra'), what:B('יוגורט יווני 0%','0% Greek yogurt'), p:18},
+  ],
+  6:[ // Saturday · rest — clean home food, flexible
+    {id:'b', when:B('בוקר','Morning'), what:B('ביצים ברוטב עגבניות על הכיריים (בלי לחם)','Eggs in tomato sauce on the stove (no bread)'), p:22},
+    {id:'l', when:B('צהריים','Lunch'), what:B('עוף / דג ביתי נקי + סלט גדול','Clean home chicken / fish + big salad'), p:40},
+    {id:'d', when:B('ערב','Dinner'), what:B('בקר רזה / טונה + ירקות מוקפצים','Lean beef / tuna + stir-fried veg'), p:35},
+    {id:'x', when:B('תוספת','Extra'), what:B('קוטג׳ / יוגורט יווני + אגוזים','Cottage / Greek yogurt + nuts'), p:20},
+  ],
+};
+function menuFor(d){ return DAYMENUS[(d||new Date()).getDay()]; }
 
 const SUPPS = [
   {id:'creatine', name:B('קריאטין 5 גרם','Creatine 5g'), when:B('בוקר','morning')},
@@ -340,6 +404,89 @@ function plateBreakdown(total, barKg){
   let per=(total-barKg)/2; const out=[];
   for(const pl of PLATE_SIZES){ while(per>=pl-0.001){ out.push(pl); per-=pl; } }
   return {empty:false, plates:out};
+}
+
+/* ---- food log: {date, meal, status:'done'|'other'|'skip', note} — real tracking,
+   and the raw material for the daily insights. */
+function foodGet(date, mealId){
+  return DB.get('foodlog',[]).find(x=>x.date===date && x.meal===mealId) || null;
+}
+function foodSet(date, mealId, status, note){
+  const log=DB.get('foodlog',[]);
+  const i=log.findIndex(x=>x.date===date && x.meal===mealId);
+  if(!status){ if(i>=0){ log.splice(i,1); DB.set('foodlog',log); } return; }
+  const rec={date, meal:mealId, status, note:note||''};
+  if(i>=0) log[i]=rec; else log.push(rec);
+  DB.set('foodlog',log);
+}
+
+/* rule-based insights: only from what was actually logged — no inventions */
+function nutritionInsights(){
+  const he = LANG==='he';
+  const ins=(h,e)=> he?h:e;
+  const out=[];
+  const log=DB.get('foodlog',[]);
+  if(!log.length) return out;
+
+  const today=todayKey();
+  const menuToday=menuFor(new Date());
+  const target= planFor(new Date()).train ? 155 : 150;
+
+  // today
+  const lt=log.filter(x=>x.date===today);
+  if(lt.length){
+    const done=lt.filter(x=>x.status==='done');
+    const doneP=done.reduce((a,x)=>{ const m=menuToday.find(mm=>mm.id===x.meal); return a+(m?m.p:0); },0);
+    out.push(ins(`היום: ${done.length}/${menuToday.length} ארוחות כמתוכנן · ~${doneP} מתוך ${target} גרם חלבון מסומן`,
+                 `Today: ${done.length}/${menuToday.length} meals as planned · ~${doneP} of ${target}g protein logged`));
+    const skip=lt.filter(x=>x.status==='skip');
+    if(skip.length){
+      const names=skip.map(x=>{ const m=menuToday.find(mm=>mm.id===x.meal); return m?tx(m.when):x.meal; }).join(', ');
+      out.push(ins(`דילגת היום על: ${names}. ארוחה שדולגה = חלבון שלא חוזר.`,
+                   `Skipped today: ${names}. A skipped meal is protein that doesn't come back.`));
+    }
+  }
+
+  // last 7 days (only days you actually logged — honest math)
+  const days=[]; for(let k=0;k<7;k++){ const d=new Date(); d.setDate(d.getDate()-k); days.push({key:todayKey(d), d:new Date(d)}); }
+  const tracked=days.map(({key,d})=>{
+    const l=log.filter(x=>x.date===key); if(!l.length) return null;
+    const m=menuFor(d);
+    return {key, done:l.filter(x=>x.status==='done').length, total:m.length, skips:l.filter(x=>x.status==='skip')};
+  }).filter(Boolean);
+  if(tracked.length>=2){
+    const pct=Math.round(100*tracked.reduce((a,x)=>a+x.done,0)/tracked.reduce((a,x)=>a+x.total,0));
+    out.push(ins(`7 ימים אחרונים: ${pct}% מהארוחות כמתוכנן (${tracked.length} ימים שסימנת)`,
+                 `Last 7 days: ${pct}% of meals as planned (${tracked.length} logged days)`));
+    // streak of solid days (80%+), counting back from the latest logged day
+    let streak=0;
+    for(const {key,d} of days){
+      const tr=tracked.find(x=>x.key===key);
+      if(!tr){ if(streak) break; else continue; }
+      if(tr.done/tr.total>=0.8) streak++; else break;
+    }
+    if(streak>=2) out.push(ins(`רצף: ${streak} ימים חזקים ברציפות. אל תשבור את השרשרת.`,
+                               `Streak: ${streak} solid days in a row. Don't break the chain.`));
+    // most-skipped meal across the week
+    const skipCount={};
+    tracked.forEach(x=>x.skips.forEach(s=>{ skipCount[s.meal]=(skipCount[s.meal]||0)+1; }));
+    const worst=Object.entries(skipCount).sort((a,b)=>b[1]-a[1])[0];
+    if(worst && worst[1]>=2){
+      const m=menuToday.find(mm=>mm.id===worst[0]) || menuFor(new Date(Date.now()-86400000)).find(mm=>mm.id===worst[0]);
+      const nm=m?tx(m.when):worst[0];
+      out.push(ins(`הארוחה שהכי נופלת: ${nm} (${worst[1]} פעמים השבוע). תכין אותה מראש, קופסה במקרר = החלטה שכבר קיבלת.`,
+                   `Your most-dropped meal: ${nm} (${worst[1]}× this week). Prep it ahead — a box in the fridge is a decision already made.`));
+    }
+  }
+
+  // weight over the same week, if weighed at least twice
+  const ws=DB.get('checkins',[]).map(x=>({date:x.date,w:parseFloat(x.weight)})).filter(x=>x.date>=days[6].key && !isNaN(x.w)).sort((a,b)=>a.date<b.date?-1:1);
+  if(ws.length>=2){
+    const diff=+(ws[ws.length-1].w-ws[0].w).toFixed(1);
+    out.push(ins(`משקל השבוע: ${diff>0?'+':''}${diff} ק״ג (${ws[0].w} ← ${ws[ws.length-1].w})`,
+                 `Weight this week: ${diff>0?'+':''}${diff} kg (${ws[0].w} → ${ws[ws.length-1].w})`));
+  }
+  return out;
 }
 
 /* per-stage "how it went" notes: {date, code, tag, text} */
@@ -649,6 +796,8 @@ function viewToday(){
       <div><b style="color:#0e7c72;text-shadow:none">${n.f}</b><i style="color:#6b5c38">${t('fat')}</i></div>
       <div><b style="color:#0e7c72;text-shadow:none">${n.c}</b><i style="color:#6b5c38">${t('carbs')}</i></div>
     </div>
+    ${(()=>{ const l=DB.get('foodlog',[]).filter(x=>x.date===todayKey());
+      return l.length?`<div class="mini" style="margin-top:8px;color:#1f6e3c;font-weight:600">${l.filter(x=>x.status==='done').length}/${menuFor(d).length} ${t('mAte')} · ${l.length} ${t('foodToday')}</div>`:''; })()}
     <div class="clip-h" style="margin-top:10px;cursor:pointer" data-go>${t('boxesShop')}</div>`;
   nc.querySelector('[data-go]').onclick=()=>{ activeTab='nutrition'; render(); };
   app.appendChild(nc);
@@ -1305,9 +1454,24 @@ function viewNutrition(){
     <div class="macros"><div><b>${n.kcal}</b><i>${t('kcal')}</i></div><div><b>${n.p}</b><i>${t('protein')}</i></div><div><b>${n.f}</b><i>${t('fat')}</i></div><div><b>${n.c}</b><i>${t('carbs')}</i></div></div>`;
   app.appendChild(mb);
 
-  const bc=el('div','clip'); bc.setAttribute('data-tab', t('boxesH'));
-  NUTRITION.boxes.forEach(b=>{ const r=el('div','box'); r.innerHTML=`<span class="b-when">${tx(b[0])}</span><span class="b-what">${tx(b[1])}</span><span class="b-p lt">${b[2]}g</span>`; bc.appendChild(r); });
+  // today's rotating menu — mark what actually happened, meal by meal
+  const dKey = todayKey();
+  const bc=el('div','clip'); bc.setAttribute('data-tab', `${t('menuH')} · ${dowName(new Date())}`);
+  bc.appendChild(el('div','mini', t('menuMini')));
+  menuFor(new Date()).forEach(m=>bc.appendChild(mealRow(m, dKey)));
+  const dayNote=el('textarea','score-note'); dayNote.rows=2; dayNote.placeholder=t('dayFoodPh');
+  dayNote.value=stageNoteGet(dKey,'FOOD','day');
+  dayNote.onchange=()=>stageNoteSet(dKey,'FOOD','day',dayNote.value.trim());
+  bc.appendChild(dayNote); addMic(dayNote);
   app.appendChild(bc);
+
+  // insights — built only from what was logged
+  const ib=el('div','board');
+  ib.innerHTML=`<div class="board-h o">${t('insightsH')}</div>${squig(OR)}`;
+  const lines=nutritionInsights();
+  if(!lines.length) ib.appendChild(el('div','mini',t('insEmpty')));
+  else lines.forEach(s=>ib.appendChild(el('div','ins',s)));
+  app.appendChild(ib);
 
   app.appendChild(scribbleRow(4));
 
@@ -1319,6 +1483,38 @@ function viewNutrition(){
   app.appendChild(sc);
 
   app.appendChild(el('div','board',`<div class="board-h o">${t('prepH')}</div>${squig(OR)}<div class="mini">${t('prepTxt')}</div>`));
+}
+
+/* one meal on the day's menu: what's planned + what actually happened */
+function mealRow(m, dKey){
+  const cur=foodGet(dKey, m.id)||{};
+  const row=el('div','meal');
+  row.innerHTML=`<div class="m-top"><span class="b-when">${tx(m.when)}</span><span>${tx(m.what)}</span><span class="b-p lt">${m.p}g</span></div>
+    <div class="seg m-seg">
+      <button class="seg-b" data-s="done">✓ ${t('mAte')}</button>
+      <button class="seg-b" data-s="other">≈ ${t('mOther')}</button>
+      <button class="seg-b" data-s="skip">✗ ${t('mSkip')}</button>
+    </div>
+    <input class="m-note" type="text" placeholder="${t('mOtherPh')}" value="${cur.note||''}" style="display:none">`;
+  const noteIn=row.querySelector('.m-note');
+  const paint=(s)=>{
+    row.querySelectorAll('.seg-b').forEach(b=>b.classList.toggle('on', b.dataset.s===s));
+    noteIn.style.display = s==='other' ? 'block' : 'none';
+  };
+  row.querySelectorAll('.seg-b').forEach(b=>{
+    b.onclick=()=>{
+      const s=b.classList.contains('on') ? null : b.dataset.s; // tap again to clear
+      foodSet(dKey, m.id, s, noteIn.value.trim());
+      paint(s);
+      if(s==='done'){ poofAt(b,{n:8,color:'31,110,60'}); buzz(30); }
+    };
+  });
+  noteIn.onchange=()=>{
+    const on=row.querySelector('.seg-b.on');
+    foodSet(dKey, m.id, on?on.dataset.s:'other', noteIn.value.trim());
+  };
+  paint(cur.status||null);
+  return row;
 }
 
 /* ---- PROGRESS + CHECKIN ---- */
