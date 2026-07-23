@@ -1,0 +1,613 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0c1413">
+<title>אתגר 30 · משחק תנועה לשחקן אחד</title>
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;600;800&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+/* ===== אתגר 30 — chalk board-game ledger =====
+   roll: ledger top-to-bottom · perforated receipt slips · type-to-unlock stamp
+   · colliding type · vintage board-game box · pulse-sync (2s beat everywhere) */
+:root{
+  --bg:#0c1413; --board:#101b1a; --paper:#152220; --paper2:#182724;
+  --chalk:#ece5d4; --dim:#8fa39d; --tq:#2BBCB3; --or:#F4A261;
+  --beat:2s;
+}
+*{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent}
+html{background:var(--bg)}
+body{
+  font-family:'Heebo',sans-serif; color:var(--chalk); background:var(--bg);
+  min-height:100vh; overflow-x:hidden;
+  background-image:radial-gradient(ellipse 120% 60% at 50% -10%, #16302d55, transparent 60%);
+}
+h1,h2,.num,.big{font-family:'Secular One',sans-serif; font-weight:400}
+svg{display:block}
+button{font-family:inherit; color:inherit; background:none; border:none; cursor:pointer}
+input{font-family:inherit}
+#app{max-width:520px; margin:0 auto; padding:0 0 90px}
+
+/* — box lid — */
+.lid{position:relative; padding:34px 20px 10px; overflow:hidden}
+.lid .frame{position:absolute; inset:10px; border:2px solid var(--chalk); opacity:.25; pointer-events:none}
+.lid .frame::after{content:''; position:absolute; inset:5px; border:1px solid var(--chalk); opacity:.6}
+.collide{position:relative; height:118px}
+.collide .n30{
+  position:absolute; top:-28px; left:6px; font-size:150px; line-height:1;
+  color:transparent; -webkit-text-stroke:2px var(--tq); opacity:.85;
+  transform:rotate(-7deg); animation:breath var(--beat) ease-in-out infinite;
+}
+.collide .word{
+  position:absolute; top:34px; right:14px; font-size:58px; color:var(--chalk);
+  text-shadow:3px 3px 0 var(--bg), 5px 5px 0 var(--or); transform:rotate(1.5deg); z-index:2;
+}
+.lid .sub{margin:2px 16px 0; color:var(--dim); font-size:14px; transform:rotate(-1deg)}
+.lid .edition{display:inline-block; margin:10px 14px 0; padding:3px 10px; border:1px dashed var(--or);
+  color:var(--or); font-size:12px; transform:rotate(-2deg)}
+@keyframes breath{0%,100%{transform:rotate(-7deg) scale(1)}50%{transform:rotate(-7deg) scale(1.035)}}
+
+/* — receipt slips (perforated) — */
+.slip{position:relative; margin:26px 12px 0; background:var(--paper); padding:20px 18px 24px;
+  box-shadow:0 10px 30px #0009;}
+.slip::before,.slip::after{content:''; position:absolute; left:0; right:0; height:12px;
+  background:radial-gradient(circle 5px at 11px 6px, var(--bg) 97%, transparent) repeat-x;
+  background-size:22px 12px}
+.slip::before{top:-6px}
+.slip::after{bottom:-6px; transform:scaleY(-1)}
+.slip .rip{position:absolute; top:8px; left:-4px; width:26px; height:26px; border:2px solid var(--or);
+  border-radius:50%; border-left-color:transparent; border-bottom-color:transparent; transform:rotate(33deg); opacity:.7}
+.today-head{display:flex; align-items:flex-end; gap:14px}
+.today-head .num{font-size:74px; line-height:.9; color:var(--or)}
+.today-head .of{color:var(--dim); font-size:13px; margin-bottom:8px}
+.today-head .dtype{margin-inline-start:auto; text-align:left; margin-bottom:6px}
+.today-head .dtype b{display:block; color:var(--tq); font-size:20px; font-family:'Secular One'}
+.today-head .dtype span{color:var(--dim); font-size:12px}
+.dashline{border:none; border-top:1px dashed #ece5d433; margin:14px 0}
+.startbtn{display:flex; width:100%; align-items:center; justify-content:space-between;
+  border:2px solid var(--tq); padding:16px 18px; font-size:24px; font-family:'Secular One';
+  color:var(--chalk); background:linear-gradient(120deg, #2bbcb322, transparent 55%);
+  animation:pulseline var(--beat) ease-in-out infinite}
+.startbtn svg{width:44px; height:34px}
+.startbtn:active{transform:translateY(2px)}
+@keyframes pulseline{0%,100%{border-color:var(--tq)}50%{border-color:#2bbcb355}}
+.slip .stamped-note{color:var(--or); font-size:15px; padding:8px 2px 0}
+.musicrow{display:flex; align-items:center; gap:10px; margin-top:14px; color:var(--dim); font-size:14px}
+.musicrow button{border-bottom:1px dashed var(--tq); color:var(--tq); padding-bottom:2px; font-size:14px}
+.musicwrap{margin-top:10px; display:none}
+.musicwrap.on{display:block}
+.musicwrap iframe{width:100%; height:80px; border:0}
+.musicwrap input{width:100%; margin-top:8px; background:var(--bg); border:1px dashed #ece5d433;
+  color:var(--chalk); padding:8px 10px; font-size:13px}
+
+/* — rulebook — */
+.rules{margin:30px 22px 0 34px; transform:rotate(-.6deg); border:1px solid #ece5d426; padding:14px 16px;
+  font-size:13.5px; color:var(--dim); line-height:1.75; position:relative}
+.rules h2{color:var(--chalk); font-size:16px; margin-bottom:6px}
+.rules .rl{display:flex; gap:8px}
+.rules .rl i{font-style:normal; color:var(--or); font-family:'Secular One'; min-width:16px}
+.rules::after{content:''; position:absolute; top:-7px; left:24px; width:52px; height:14px;
+  background:#ece5d41c; transform:rotate(-4deg)}
+
+/* — ledger tape — */
+.ledger{margin:34px 0 0; position:relative}
+.ledger .tapehead{display:flex; align-items:baseline; gap:12px; padding:0 22px 10px}
+.ledger .tapehead h2{font-size:22px}
+.tally{margin-inline-start:auto}
+.row{display:flex; align-items:center; gap:12px; padding:10px 22px; border-bottom:1px dashed #ece5d41f;
+  position:relative; min-height:52px}
+.row .dnum{font-family:'Secular One'; font-size:20px; width:34px; color:var(--dim)}
+.row .dname{font-size:14px; color:var(--dim); flex:1}
+.row.done .dname,.row.done .dnum{color:var(--chalk)}
+.row.today{background:linear-gradient(90deg,#2bbcb31c,transparent 70%)}
+.row.today .dnum{color:var(--tq); font-size:26px}
+.row.today .youare{color:var(--tq); font-size:12px; border:1px solid var(--tq); padding:2px 8px; transform:rotate(-2deg)}
+.row.locked{opacity:.42}
+.row .stamp{transform:rotate(-9deg); width:64px; flex:none}
+.row .ddate{font-size:11px; color:var(--dim)}
+.row.patched .dname{color:var(--or)}
+/* dead-zone patch (the joker) */
+.deadzone{position:relative; margin:2px 14px; padding:14px 16px; border:2px solid var(--or);
+  transform:rotate(-2.2deg); background:repeating-linear-gradient(45deg,#f4a26114 0 8px,transparent 8px 16px)}
+.deadzone b{font-family:'Secular One'; color:var(--or); font-size:16px; display:block}
+.deadzone span{font-size:12.5px; color:var(--dim); line-height:1.5; display:block}
+.deadzone .tape{position:absolute; width:56px; height:14px; background:#ece5d42a}
+.deadzone .tape.t1{top:-8px; right:18px; transform:rotate(6deg)}
+.deadzone .tape.t2{bottom:-8px; left:14px; transform:rotate(-5deg)}
+.deadzone button{margin-top:8px; color:var(--or); border-bottom:1px dashed var(--or); font-size:13px}
+
+/* — player — */
+#player{position:fixed; inset:0; background:var(--bg); display:none; z-index:50; overflow:hidden}
+#player.on{display:flex; flex-direction:column}
+#player .halo{position:absolute; inset:-20%; background:radial-gradient(circle at 50% 46%, #2bbcb318, transparent 55%);
+  animation:halo var(--beat) ease-in-out infinite; pointer-events:none}
+#player.rest .halo{background:radial-gradient(circle at 50% 46%, #f4a26118, transparent 55%)}
+@keyframes halo{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.ptop{display:flex; justify-content:space-between; align-items:center; padding:16px 18px 0; font-size:13px; color:var(--dim)}
+.ptop .quit{color:var(--dim); border-bottom:1px dashed var(--dim)}
+.ptape{height:5px; background:#ece5d41a; margin:12px 0 0}
+.ptape i{display:block; height:100%; background:var(--tq); width:0%}
+.pmain{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; position:relative; padding:0 18px}
+.pcount{font-family:'Secular One'; font-size:110px; line-height:1; color:var(--chalk);
+  animation:breath2 var(--beat) ease-in-out infinite}
+#player.rest .pcount{color:var(--or)}
+@keyframes breath2{0%,100%{transform:scale(1)}50%{transform:scale(1.045)}}
+.pex{font-size:30px; font-family:'Secular One'; text-align:center; color:var(--tq)}
+#player.rest .pex{color:var(--or)}
+.pcue{font-size:15px; color:var(--dim); text-align:center; min-height:22px}
+.pfig{width:190px; height:190px; margin-top:6px}
+.pfig svg{width:100%; height:100%}
+.pnext{position:absolute; bottom:14px; right:18px; left:18px; display:flex; justify-content:space-between;
+  color:var(--dim); font-size:13px; border-top:1px dashed #ece5d426; padding-top:10px}
+.pbtns{display:flex; gap:12px; padding:0 18px 26px}
+.pbtns button{flex:1; border:2px solid #ece5d438; padding:14px; font-size:16px; font-family:'Secular One'; color:var(--chalk)}
+.pbtns button.go{border-color:var(--tq)}
+
+/* — done / stamp screen — */
+#done{position:fixed; inset:0; background:var(--bg); display:none; z-index:60; overflow-y:auto}
+#done.on{display:block}
+.donewrap{max-width:520px; margin:0 auto; padding:40px 0 60px}
+.bigstamp{width:150px; margin:8px auto 0; transform:rotate(-11deg); opacity:0; transition:opacity .5s, transform .5s}
+.bigstamp.show{opacity:1; transform:rotate(-7deg) scale(1)}
+.sumline{display:flex; justify-content:space-between; font-size:14px; color:var(--dim); padding:6px 2px; border-bottom:1px dashed #ece5d422}
+.sumline b{color:var(--chalk); font-weight:600}
+.signrow{margin-top:18px}
+.signrow label{font-size:14px; color:var(--dim); display:block; margin-bottom:8px}
+.signrow input{width:100%; background:transparent; border:none; border-bottom:2px dashed var(--tq);
+  color:var(--chalk); font-size:26px; font-family:'Secular One'; padding:6px 4px; outline:none}
+.stampbtn{display:block; width:100%; margin-top:18px; border:2px solid var(--or); color:var(--or);
+  font-family:'Secular One'; font-size:22px; padding:14px; opacity:.35; pointer-events:none}
+.stampbtn.ready{opacity:1; pointer-events:auto; animation:pulseline var(--beat) infinite}
+.extra{margin-top:16px; display:flex; align-items:center; gap:10px; font-size:14.5px; color:var(--dim)}
+.extra .chk{width:26px; height:26px; border:2px solid var(--tq); flex:none; display:grid; place-items:center}
+.extra .chk svg{width:18px; height:18px; opacity:0}
+.extra.on .chk svg{opacity:1}
+.extra input{width:80px; background:transparent; border:none; border-bottom:1px dashed var(--or);
+  color:var(--chalk); font-size:18px; text-align:center; outline:none}
+.backhome{display:block; margin:26px auto 0; color:var(--dim); border-bottom:1px dashed var(--dim); font-size:15px}
+.confetti-note{text-align:center; color:var(--tq); font-size:15px; margin-top:14px; min-height:20px}
+@media(min-width:520px){ .collide .n30{font-size:170px} }
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="player"></div>
+<div id="done"></div>
+<script>
+/* ================== state ================== */
+const DB={
+  k:'ch30.v1',
+  load(){ try{return JSON.parse(localStorage.getItem(this.k))||{}}catch(e){return{}} },
+  save(s){ localStorage.setItem(this.k,JSON.stringify(s)) }
+};
+let S=DB.load();
+S.days=S.days||{}; S.weights=S.weights||{};
+const todayStr=()=>{const d=new Date();return d.toISOString().slice(0,10)};
+const addDays=(str,n)=>{const d=new Date(str+'T12:00:00');d.setDate(d.getDate()+n);return d.toISOString().slice(0,10)};
+
+/* ================== chalk figures — 2-pose SMIL morphs on one 2s beat ================== */
+const CH='#ece5d4', TQ='#2BBCB3', OR='#F4A261';
+const FIGS={
+ squat:{h:[[50,18],[50,34]],p:[
+  {a:'M50 25 L50 55',b:'M50 41 L48 62'},
+  {a:'M50 32 L36 42 M50 32 L64 42',b:'M50 46 L32 40 M50 46 L68 40'},
+  {a:'M50 55 L44 70 L42 88 M50 55 L56 70 L58 88',b:'M48 62 L34 72 L38 88 M48 62 L62 72 L58 88'}]},
+ lunge:{h:[[50,18],[47,26]],p:[
+  {a:'M50 25 L50 55',b:'M47 33 L49 58'},
+  {a:'M50 32 L38 42 M50 32 L62 42',b:'M47 38 L36 48 M47 38 L58 46'},
+  {a:'M50 55 L44 70 L42 88 M50 55 L56 70 L58 88',b:'M49 58 L32 68 L30 88 M49 58 L62 74 L70 88'}]},
+ pushup:{h:[[78,48],[78,63]],p:[
+  {a:'M70 52 L20 76',b:'M70 66 L20 78'},
+  {a:'M70 52 L68 82',b:'M70 66 L76 82'},
+  {a:'M64 53 L60 82',b:'M64 67 L58 82'}]},
+ plank:{h:[[78,50],[78,52]],p:[
+  {a:'M70 54 L20 76',b:'M70 56 L20 76'},
+  {a:'M70 54 L68 82',b:'M70 56 L68 82'},
+  {a:'M64 55 L60 82',b:'M64 57 L60 82'}]},
+ pike:{h:[[62,66],[60,72]],p:[
+  {a:'M25 80 L46 42 L60 60',b:'M25 80 L46 44 L58 66'},
+  {a:'M60 60 L66 82 M60 60 L56 82',b:'M58 66 L66 82 M58 66 L54 82'}]},
+ bridge:{h:[[76,74],[78,72]],p:[
+  {a:'M72 76 L50 72 L34 76',b:'M72 76 L50 56 L34 70'},
+  {a:'M34 76 L30 84',b:'M34 70 L30 84'},
+  {a:'M70 78 L56 82',b:'M70 78 L56 82'}]},
+ hinge:{h:[[50,18],[30,38]],p:[
+  {a:'M50 25 L50 55',b:'M36 40 L52 56'},
+  {a:'M50 34 L42 40 M50 34 L58 40',b:'M40 44 L46 50 M40 44 L36 50'},
+  {a:'M50 55 L46 88 M50 55 L54 88',b:'M52 56 L48 88 M52 56 L56 88'}]},
+ back:{h:[[78,78],[80,71]],p:[
+  {a:'M72 80 Q50 81 28 80',b:'M72 74 Q50 84 28 76'},
+  {a:'M72 80 L88 80',b:'M74 73 L90 66'}]},
+ hollow:{h:[[26,72],[24,66]],p:[
+  {a:'M30 76 Q48 82 64 76',b:'M30 72 Q48 82 64 72'},
+  {a:'M64 76 L84 70',b:'M64 72 L84 62'},
+  {a:'M30 76 L14 68',b:'M30 72 L14 58'}]},
+ climber:{h:[[78,48],[78,48]],p:[
+  {a:'M70 52 L45 64',b:'M70 52 L45 64'},
+  {a:'M70 52 L68 82 M64 53 L61 82',b:'M70 52 L68 82 M64 53 L61 82'},
+  {a:'M45 64 L28 60',b:'M45 64 L20 78'},
+  {a:'M45 64 L20 76',b:'M45 64 L26 58'}]},
+ bear:{h:[[72,52],[72,52]],p:[
+  {a:'M66 58 L38 56',b:'M66 58 L38 56'},
+  {a:'M66 58 L74 80',b:'M66 58 L60 80'},
+  {a:'M66 58 L58 80',b:'M66 58 L72 80'},
+  {a:'M38 56 L30 68 L34 80',b:'M38 56 L44 68 L40 80'},
+  {a:'M38 56 L46 68 L42 80',b:'M38 56 L32 68 L36 80'}]},
+ crab:{h:[[70,54],[70,52]],p:[
+  {a:'M34 60 L66 60',b:'M34 58 L66 60'},
+  {a:'M66 60 L72 82',b:'M66 60 L60 82'},
+  {a:'M34 60 L26 70 L30 82',b:'M34 58 L40 70 L36 82'}]},
+ jump:{h:[[50,36],[50,12]],p:[
+  {a:'M50 43 L48 62',b:'M50 19 L50 44'},
+  {a:'M50 48 L34 42 M50 48 L66 42',b:'M50 24 L38 8 M50 24 L62 8'},
+  {a:'M48 62 L36 74 L40 86 M48 62 L60 74 L56 86',b:'M50 44 L42 56 L46 66 M50 44 L58 56 L54 66'}]},
+ burpee:{h:[[76,62],[50,14]],p:[
+  {a:'M70 64 L22 76',b:'M50 21 L50 52'},
+  {a:'M70 64 L74 82 M64 65 L58 82',b:'M50 26 L36 10 M50 26 L64 10'},
+  {a:'M40 70 L30 82 M46 68 L38 82',b:'M50 52 L44 86 M50 52 L56 86'}]},
+ flow:{h:[[68,62],[70,50]],p:[
+  {a:'M64 58 Q50 44 36 58',b:'M64 58 Q50 68 36 58'},
+  {a:'M64 58 L64 82',b:'M64 58 L64 82'},
+  {a:'M36 58 L36 82',b:'M36 58 L36 82'}]},
+ balance:{h:[[48,16],[46,18]],p:[
+  {a:'M48 23 L50 52',b:'M46 25 L52 52'},
+  {a:'M50 52 L50 86',b:'M52 52 L52 86'},
+  {a:'M50 52 L38 58 L40 70',b:'M52 52 L66 60 L78 56'},
+  {a:'M48 30 L32 34 M48 30 L64 34',b:'M46 32 L28 26 M46 32 L60 40'}]}
+};
+function figSvg(key,accent){
+  const f=FIGS[key]||FIGS.squat, ac=accent||TQ;
+  const anim=(vals)=>`<animate attributeName="d" values="${vals.a};${vals.b};${vals.a}" dur="2s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1"/>`;
+  const paths=f.p.map(p=>`<path d="${p.a}" fill="none" stroke="${CH}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">${anim(p)}</path>`).join('');
+  const [h1,h2]=f.h;
+  return `<svg viewBox="0 0 100 100">
+    <path d="M8 88 L92 88" stroke="${ac}" stroke-width="1.6" opacity=".45" fill="none"/>
+    ${paths}
+    <circle r="7" fill="none" stroke="${CH}" stroke-width="3.2" cx="${h1[0]}" cy="${h1[1]}">
+      <animate attributeName="cx" values="${h1[0]};${h2[0]};${h1[0]}" dur="2s" repeatCount="indefinite"/>
+      <animate attributeName="cy" values="${h1[1]};${h2[1]};${h1[1]}" dur="2s" repeatCount="indefinite"/>
+    </circle></svg>`;
+}
+/* breath circle for rest segments */
+const restSvg=()=>`<svg viewBox="0 0 100 100">
+  <circle cx="50" cy="50" r="20" fill="none" stroke="${OR}" stroke-width="2.4">
+    <animate attributeName="r" values="16;30;16" dur="4s" repeatCount="indefinite"/>
+    <animate attributeName="opacity" values=".9;.35;.9" dur="4s" repeatCount="indefinite"/></circle>
+  <circle cx="50" cy="50" r="34" fill="none" stroke="${OR}" stroke-width="1" opacity=".3">
+    <animate attributeName="r" values="30;42;30" dur="4s" repeatCount="indefinite"/></circle></svg>`;
+/* chalk stamp */
+const stampSvg=(txt)=>`<svg viewBox="0 0 120 60">
+  <ellipse cx="60" cy="30" rx="55" ry="24" fill="none" stroke="${OR}" stroke-width="2.6" transform="rotate(-3 60 30)" stroke-dasharray="4 3"/>
+  <text x="60" y="38" text-anchor="middle" font-family="Secular One" font-size="20" fill="${OR}">${txt}</text></svg>`;
+/* streak tally marks (groups of 5, fifth is diagonal) */
+function tallySvg(n){
+  if(!n) return '';
+  let x=6, parts=[];
+  const groups=Math.floor(n/5), rem=n%5;
+  const grp=(gx,count,slash)=>{
+    let s='';
+    for(let i=0;i<count;i++) s+=`<path d="M${gx+i*7} 4 L${gx+i*7+1} 24" stroke="${TQ}" stroke-width="2.4" stroke-linecap="round"/>`;
+    if(slash) s+=`<path d="M${gx-4} 20 L${gx+24} 7" stroke="${OR}" stroke-width="2.4" stroke-linecap="round"/>`;
+    return s;
+  };
+  for(let g=0;g<groups;g++){ parts.push(grp(x,4,true)); x+=38; }
+  if(rem){ parts.push(grp(x,rem,false)); x+=rem*7+8; }
+  return `<svg viewBox="0 0 ${x+4} 28" style="height:24px">${parts.join('')}</svg>`;
+}
+const startArrow=`<svg viewBox="0 0 60 40"><path d="M6 20 L44 20 M34 8 L46 20 L34 32" fill="none" stroke="${TQ}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" transform="scale(-1,1) translate(-60,0)"/></svg>`;
+const vMark=`<svg viewBox="0 0 24 24"><path d="M4 13 L10 19 L20 5" fill="none" stroke="${TQ}" stroke-width="3.4" stroke-linecap="round"/></svg>`;
+
+/* ================== exercise library (מוש עובר ומתקן — טיוטת מאמן) ================== */
+/* p: squat/lunge/push/hinge/back/core/loco/ball/mob/balance · t: שבוע מינימלי · f: fig */
+const LIB=[
+ {n:'סקוואט',cue:'עקבים בקרקע, ברכיים החוצה',p:'squat',t:1,f:'squat'},
+ {n:'סקוואט טמפו 3-1-1',cue:'שלוש שניות ירידה, עצירה למטה',p:'squat',t:2,f:'squat'},
+ {n:'סקוואט עמוק בהחזקה',cue:'מרפקים דוחפים ברכיים, גב ארוך',p:'squat',t:1,f:'squat'},
+ {n:'סקוואט קוזאק',cue:'משקל לעקב, חזה גבוה',p:'squat',t:3,f:'lunge'},
+ {n:'פיסטול לספסל',cue:'ירידה בשליטה, עקב נטוע',p:'squat',t:4,f:'squat'},
+ {n:'לאנג׳ אחורי',cue:'ברך מרחפת מעל הקרקע',p:'lunge',t:1,f:'lunge'},
+ {n:'לאנג׳ הליכה',cue:'צעד ארוך, גו זקוף',p:'lunge',t:2,f:'lunge'},
+ {n:'לאנג׳ צד',cue:'ישבן אחורה, ברך מעל כף רגל',p:'lunge',t:2,f:'lunge'},
+ {n:'שכיבות סמיכה על ברכיים',cue:'גוף קרש אחד מהברך',p:'push',t:1,f:'pushup'},
+ {n:'שכיבות סמיכה',cue:'מרפקים 45 מעלות, ליבה נעולה',p:'push',t:2,f:'pushup'},
+ {n:'שכיבות יהלום',cue:'ידיים צרות, מרפקים צמודים',p:'push',t:3,f:'pushup'},
+ {n:'פייק פוש-אפ',cue:'ישבן למעלה, ראש בין הידיים',p:'push',t:3,f:'pike'},
+ {n:'שכיבות ארצ׳ר',cue:'משקל לצד אחד, יד שנייה ישרה',p:'push',t:4,f:'pushup'},
+ {n:'גשר ירכיים',cue:'לדחוף עקבים, לכווץ ישבן למעלה',p:'hinge',t:1,f:'bridge'},
+ {n:'גשר רגל אחת',cue:'אגן ישר, בלי לקרוס לצד',p:'hinge',t:3,f:'bridge'},
+ {n:'גוד מורנינג',cue:'ישבן אחורה, גב ישר, ידיים לעורף',p:'hinge',t:1,f:'hinge'},
+ {n:'דדליפט רגל אחת',cue:'גב ארוך, אגן סגור',p:'hinge',t:2,f:'hinge'},
+ {n:'סופרמן',cue:'להרים חזה וירכיים יחד',p:'back',t:1,f:'back'},
+ {n:'סופרמן Y-T',cue:'אגודלים לתקרה, שכמות עובדות',p:'back',t:2,f:'back'},
+ {n:'שולחן הפוך',cue:'אגן גבוה, חזה פתוח',p:'back',t:2,f:'bridge'},
+ {n:'פלאנק',cue:'ישבן וליבה נעולים, בלי לשבור אגן',p:'core',t:1,f:'plank'},
+ {n:'פלאנק צד',cue:'אגן גבוה, גוף קו אחד',p:'core',t:2,f:'plank'},
+ {n:'הולו הולד',cue:'גב תחתון מודבק לרצפה',p:'core',t:2,f:'hollow'},
+ {n:'דד באג',cue:'גב צמוד, יד ורגל נגדית',p:'core',t:1,f:'hollow'},
+ {n:'מטפסי הרים',cue:'אגן יציב, ברכיים לחזה',p:'core',t:2,f:'climber'},
+ {n:'V-אפ',cue:'ידיים לרגליים, גב מגולגל',p:'core',t:4,f:'hollow'},
+ {n:'טוויסט רוסי',cue:'חזה גבוה, סיבוב מהגו',p:'core',t:2,f:'hollow'},
+ {n:'זחילת דוב',cue:'ברכיים סנטימטר מהקרקע',p:'loco',t:1,f:'bear'},
+ {n:'זחילת דוב אחורה',cue:'לאט, יד ורגל נגדית',p:'loco',t:3,f:'bear'},
+ {n:'הליכת סרטן',cue:'אגן גבוה, אצבעות קדימה',p:'loco',t:2,f:'crab'},
+ {n:'זחילת נמר',cue:'נמוך, ברך למרפק',p:'loco',t:3,f:'bear'},
+ {n:'אינצ׳וורם',cue:'ידיים הולכות רחוק, רגליים ישרות',p:'loco',t:2,f:'pike'},
+ {n:'ג׳אמפינג ג׳קס',cue:'קל על כפות הרגליים',p:'ball',t:1,f:'jump'},
+ {n:'סקווט ג׳אמפ',cue:'נחיתה רכה ושקטה',p:'ball',t:3,f:'jump'},
+ {n:'סקייטרים',cue:'דחיפה הצידה, נחיתה יציבה',p:'ball',t:3,f:'jump'},
+ {n:'ברפי בלי קפיצה',cue:'קצב אחיד, נשימה',p:'ball',t:3,f:'burpee'},
+ {n:'ברפי מלא',cue:'חזה לרצפה, קפיצה למעלה',p:'ball',t:4,f:'burpee'},
+ {n:'לאנג׳ קפיצה',cue:'החלפה באוויר, נחיתה רכה',p:'ball',t:4,f:'jump'},
+ {n:'חתול-פרה',cue:'חוליה חוליה, עם הנשימה',p:'mob',t:1,f:'flow'},
+ {n:'כלב מביט מטה ← קוברה',cue:'זרימה איטית בין הקצוות',p:'mob',t:2,f:'pike'},
+ {n:'מעברי 90/90',cue:'ברכיים נופלות יחד, גו זקוף',p:'mob',t:2,f:'flow'},
+ {n:'המתיחה הגדולה בעולם',cue:'לאנג׳ עמוק, סיבוב ויד לשמיים',p:'mob',t:2,f:'lunge'},
+ {n:'עמידה על רגל אחת',cue:'מבט קדימה, כף רגל אוחזת ברצפה',p:'balance',t:1,f:'balance'},
+ {n:'עפיפון רגל אחת',cue:'ידיים לצדדים, רגל אחורה, גו קדימה',p:'balance',t:2,f:'balance'}
+];
+
+/* ================== deterministic 30-day plan ================== */
+const DTYPES=[
+ {name:'סבב מלא',    sub:'כל הגוף, שני סבבים', pats:['squat','push','hinge','core','lunge','back','ball','core'], w:35, r:10},
+ {name:'מנוע וזחילות',sub:'ליבה ולוקומושן',     pats:['loco','core','loco','core','loco','core','loco','core'], w:35, r:10},
+ {name:'זרימה',       sub:'מוביליטי ונשימה',     pats:['mob','mob','balance','mob','squat','mob','balance','mob'], w:40, r:5},
+ {name:'סבב רגליים',  sub:'דגש תחתון',           pats:['lunge','push','squat','back','hinge','core','ball','loco'], w:35, r:10},
+ {name:'עליון וליבה', sub:'דחיקה, גב, בטן',      pats:['push','back','core','push','back','core','push','core'], w:35, r:10},
+ {name:'כוח מתפרץ',   sub:'קצב ופיצוץ',          pats:['ball','squat','ball','lunge','ball','core','ball','loco'], w:30, r:15},
+ {name:'איפוס',       sub:'התאוששות פעילה',      pats:['mob','balance','mob','hinge','mob','balance','mob','mob'], w:40, r:5}
+];
+const WARMUP=[
+ {n:'ריצה קלה במקום',cue:'כתפיים רפויות',f:'jump'},
+ {n:'חתול-פרה',cue:'חוליה חוליה',f:'flow'},
+ {n:'אינצ׳וורם',cue:'ידיים רחוק, רגליים ישרות',f:'pike'},
+ {n:'סקוואט עמוק בהחזקה',cue:'לפתוח ירכיים, לנשום',f:'squat'}
+];
+function pickEx(pat,day,slot,used){
+  const maxT=Math.min(1+Math.floor((day-1)/7),4);
+  const pool=LIB.filter(e=>e.p===pat&&e.t<=maxT);
+  if(!pool.length) return LIB[0];
+  let i=(day*3+slot*5)%pool.length, tries=0;
+  while(used.has(pool[i].n)&&tries<pool.length){ i=(i+1)%pool.length; tries++; }
+  used.add(pool[i].n);
+  return pool[i];
+}
+function dayPlan(day){
+  const dt=DTYPES[(day-1)%7], used=new Set();
+  const main=dt.pats.map((p,s)=>pickEx(p,day,s,used));
+  return {day,dt,main};
+}
+function daySegments(plan){
+  const segs=[];
+  WARMUP.forEach((w,i)=>segs.push({name:w.n,cue:w.cue,fig:w.f,secs:30,work:true,tag:`חימום ${i+1}/4`}));
+  for(let r=1;r<=2;r++) plan.main.forEach((e,i)=>{
+    segs.push({name:e.n,cue:e.cue,fig:e.f,secs:plan.dt.w,work:true,tag:`סבב ${r}/2 · תרגיל ${i+1}/8`});
+    if(!(r===2&&i===7)) segs.push({name:'מנוחה',cue:'נשימה דרך האף',fig:null,secs:plan.dt.r,work:false,tag:'עוד רגע ממשיכים'});
+  });
+  return segs;
+}
+
+/* ================== audio + voice ================== */
+let AC=null;
+function ensureAudio(){ try{ if(!AC)AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended')AC.resume(); }catch(e){} }
+function beep(f,d,v){ if(!AC)return; try{ const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime;
+  o.type='sine'; o.frequency.value=f||880; o.connect(g); g.connect(AC.destination);
+  g.gain.setValueAtTime(v||.3,t); g.gain.exponentialRampToValueAtTime(.0001,t+(d||.12)); o.start(t); o.stop(t+(d||.12)+.02);}catch(e){} }
+let HEV;
+function say(t){ if(!('speechSynthesis' in window))return;
+  if(HEV===undefined){ const vs=speechSynthesis.getVoices(); HEV=vs.find(v=>/^he/i.test(v.lang))||null; }
+  if(!HEV)return;
+  try{ speechSynthesis.cancel(); const u=new SpeechSynthesisUtterance(t); u.voice=HEV; u.lang='he-IL'; u.rate=1.05; speechSynthesis.speak(u);}catch(e){} }
+
+/* ================== streak ================== */
+function streak(){
+  const dates=new Set(Object.values(S.days).map(d=>d.date));
+  if(S.joker)dates.add(S.joker);
+  let d=todayStr(), s=0;
+  if(!dates.has(d)) d=addDays(d,-1);
+  while(dates.has(d)){ s++; d=addDays(d,-1); }
+  return s;
+}
+function gapYesterday(){
+  const dates=new Set(Object.values(S.days).map(d=>d.date));
+  const y=addDays(todayStr(),-1), yy=addDays(todayStr(),-2);
+  return !dates.has(y)&&dates.has(yy)&&!S.joker&&!dates.has(todayStr());
+}
+
+/* ================== spotify ================== */
+const DEF_SP='https://open.spotify.com/playlist/37i9dQZF1DX76Wlfdnj7AP';
+function spEmbed(url){
+  const m=String(url||'').match(/spotify\.com\/(?:intl-[a-z]{2}\/)?(playlist|album|track|artist|episode|show)\/([A-Za-z0-9]+)/);
+  return m?`https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`:null;
+}
+
+/* ================== home ================== */
+const app=document.getElementById('app');
+let musicOpen=false;
+function currentDay(){ for(let d=1;d<=30;d++) if(!S.days[d]) return d; return 31; }
+function home(){
+  const day=currentDay(), fin=day>30, plan=fin?null:dayPlan(day);
+  const doneToday=Object.values(S.days).some(d=>d.date===todayStr());
+  const st=streak();
+  let rows='';
+  for(let d=1;d<=30;d++){
+    const rec=S.days[d], p=DTYPES[(d-1)%7];
+    const cls=rec?'done':(d===day?'today':'locked');
+    rows+=`<div class="row ${cls}" >
+      <span class="dnum">${d}</span>
+      <span class="dname">${p.name}</span>
+      ${rec?`<span class="ddate">${rec.date.slice(5).split('-').reverse().join('.')}</span><span class="stamp">${stampSvg('בוצע')}</span>`
+        :d===day?`<span class="youare">אתה כאן</span>`
+        :`<span class="ddate">נעול</span>`}
+    </div>`;
+    if(d===13&&!S.joker){
+      rows+=`<div class="deadzone"><i class="tape t1"></i><i class="tape t2"></i>
+        <b>אזור מת · טלאי חירום</b>
+        <span>טלאי אחד לכל האתגר. פספסת יום אתמול? מדביקים אותו על החור והרצף ניצל. אין שני.</span>
+        ${gapYesterday()?`<button onclick="useJoker()">הדבק טלאי על אתמול</button>`:''}
+      </div>`;
+    }
+    if(d===13&&S.joker){
+      rows+=`<div class="deadzone" style="opacity:.5"><b>הטלאי נוצל</b><span>הודבק על ${S.joker.slice(5).split('-').reverse().join('.')} — הרצף ניצל פעם אחת. מכאן, בלי רשת.</span></div>`;
+    }
+  }
+  const spURL=spEmbed(S.spotify||DEF_SP)||spEmbed(DEF_SP);
+  app.innerHTML=`
+  <header class="lid"><i class="frame"></i>
+    <div class="collide"><span class="n30">30</span><span class="word">אתגר</span></div>
+    <p class="sub">משחק תנועה לשחקן אחד · 15 דקות ביום · בלי ציוד</p>
+    <span class="edition">מהדורת 46 ומעלה</span>
+  </header>
+
+  <section class="slip"><i class="rip"></i>
+    ${fin?`<div class="today-head"><span class="stamp" style="width:110px">${stampSvg('הושלם')}</span><div class="dtype"><b>סיימת את הקופסה</b><span>30 מתוך 30. שיחקת אותה.</span></div></div>`
+    :`<div class="today-head">
+      <span class="num">${String(day).padStart(2,'0')}</span><span class="of">מתוך 30</span>
+      <div class="dtype"><b>${plan.dt.name}</b><span>${plan.dt.sub} · ‎~14 דק׳</span></div>
+    </div>
+    <hr class="dashline">
+    ${doneToday
+      ?`<p class="stamped-note">היום כבר הוחתם. רוצה בונוס? מחר זה יום ${day}.</p>`
+      :`<button class="startbtn" onclick="startDay()"><span>התחל את היום</span>${startArrow}</button>`}
+    `}
+    <div class="musicrow">
+      <span>מוזיקה לדרך</span>
+      <button onclick="toggleMusic()">${musicOpen?'סגור נגן':'פתח נגן ספוטיפיי'}</button>
+    </div>
+    <div class="musicwrap ${musicOpen?'on':''}">
+      ${musicOpen?`<iframe src="${spURL}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <input placeholder="הדבק קישור פלייליסט מספוטיפיי והוא יישמר" onchange="setSpotify(this.value)">`:''}
+    </div>
+  </section>
+
+  <aside class="rules">
+    <h2>חוקי הקופסה</h2>
+    <div class="rl"><i>א.</i><span>פותחים כל בוקר. רבע שעה, וסוגרים את הקופסה.</span></div>
+    <div class="rl"><i>ב.</i><span>יום שהושלם נחתם בהקלדה. בלי חתימה אין חותמת.</span></div>
+    <div class="rl"><i>ג.</i><span>חלון האכילה נסגר ב-20:00. מסמנים ביושר.</span></div>
+    <div class="rl"><i>ד.</i><span>טלאי חירום אחד לכל המשחק. השתמשת? נגמר.</span></div>
+  </aside>
+
+  <section class="ledger">
+    <div class="tapehead"><h2>הסולם</h2>
+      <div class="tally">${st?tallySvg(st):'<span style="color:var(--dim);font-size:12px">עוד אין רצף. היום זה מתחיל.</span>'}</div>
+    </div>
+    ${rows}
+  </section>`;
+}
+function toggleMusic(){ musicOpen=!musicOpen; home(); }
+function setSpotify(v){ if(spEmbed(v)){ S.spotify=v; DB.save(S); musicOpen=true; home(); } }
+function useJoker(){ S.joker=addDays(todayStr(),-1); DB.save(S); home(); }
+
+/* ================== player ================== */
+const P=document.getElementById('player');
+let T={segs:[],i:0,left:0,iv:null,day:0,lock:null};
+async function wake(){ try{ T.lock=await navigator.wakeLock.request('screen'); }catch(e){} }
+function startDay(){
+  ensureAudio(); say('');
+  const day=currentDay(); if(day>30)return;
+  T={segs:daySegments(dayPlan(day)),i:-1,left:0,iv:null,day};
+  P.classList.add('on'); wake();
+  nextSeg();
+  T.iv=setInterval(tick,1000);
+}
+function nextSeg(){
+  T.i++;
+  if(T.i>=T.segs.length){ finish(); return; }
+  const s=T.segs[T.i];
+  T.left=s.secs;
+  P.classList.toggle('rest',!s.work);
+  if(s.work){ beep(980,.12); say(s.name); } else { beep(520,.2); say('מנוחה'); }
+  paint();
+}
+function tick(){
+  T.left--;
+  if(T.left<=0){ nextSeg(); return; }
+  if(T.left<=3) beep(T.left===1?1200:800,.09,.25);
+  const c=document.getElementById('pcount'); if(c)c.textContent=T.left;
+  const tp=document.getElementById('ptape'); if(tp){
+    const done=T.segs.slice(0,T.i).reduce((a,s)=>a+s.secs,0)+(T.segs[T.i].secs-T.left);
+    const tot=T.segs.reduce((a,s)=>a+s.secs,0);
+    tp.style.width=(done/tot*100)+'%';
+  }
+}
+function paint(){
+  const s=T.segs[T.i], nxt=T.segs[T.i+1];
+  P.innerHTML=`<div class="halo"></div>
+  <div class="ptop"><span>יום ${T.day} · ${s.tag}</span><button class="quit" onclick="quitDay()">יציאה</button></div>
+  <div class="ptape"><i id="ptape"></i></div>
+  <div class="pmain">
+    <div class="pcount" id="pcount">${T.left}</div>
+    <div class="pex">${s.name}</div>
+    <div class="pcue">${s.cue||''}</div>
+    <div class="pfig">${s.work&&s.fig?figSvg(s.fig,s.work?TQ:OR):restSvg()}</div>
+    <div class="pnext"><span>הבא בתור</span><span>${nxt?nxt.name:'חותמת'}</span></div>
+  </div>
+  <div class="pbtns">
+    <button onclick="skipSeg()">דלג</button>
+    <button class="go" onclick="pauseSeg(this)">עצור רגע</button>
+  </div>`;
+}
+function skipSeg(){ if(paused){ paused=false; T.iv=setInterval(tick,1000); } nextSeg(); }
+let paused=false;
+function pauseSeg(b){
+  paused=!paused;
+  if(paused){ clearInterval(T.iv); T.iv=null; b.textContent='המשך'; }
+  else{ T.iv=setInterval(tick,1000); b.textContent='עצור רגע'; }
+}
+function quitDay(){ if(T.iv)clearInterval(T.iv); if(T.lock)T.lock.release(); P.classList.remove('on'); P.innerHTML=''; home(); }
+
+/* ================== done + type-to-unlock stamp ================== */
+const D=document.getElementById('done');
+function finish(){
+  if(T.iv)clearInterval(T.iv); if(T.lock)T.lock.release();
+  P.classList.remove('on'); P.innerHTML='';
+  beep(880,.15); setTimeout(()=>beep(1100,.15),160); setTimeout(()=>beep(1320,.25),330);
+  say('כל הכבוד');
+  const day=T.day, weighDay=[1,8,15,22,29].includes(day);
+  D.classList.add('on');
+  D.innerHTML=`<div class="donewrap"><div class="slip"><i class="rip"></i>
+    <h2 style="font-size:26px">קבלה · יום ${day}</h2>
+    <div class="bigstamp" id="bigstamp">${stampSvg('הוחתם')}</div>
+    <div class="sumline"><span>תאריך</span><b>${todayStr().split('-').reverse().join('.')}</b></div>
+    <div class="sumline"><span>זמן עבודה</span><b>‎~14 דק׳</b></div>
+    <div class="sumline"><span>תרגילים</span><b>${new Set(T.segs.filter(s=>s.work).map(s=>s.name)).size}</b></div>
+    <div class="signrow">
+      <label>הסולם סופר רק את מי שחותם. חתום כאן:</label>
+      <input id="sig" autocomplete="off" placeholder="השם שלך" oninput="sigCheck(this)">
+    </div>
+    <button class="stampbtn" id="stampbtn" onclick="stampDay(${day})">החתם את היום</button>
+    <div class="extra ${S.days[day]?.window?'on':''}" id="winrow" onclick="toggleWin()">
+      <span class="chk">${vMark}</span><span>חלון האכילה נסגר עד 20:00</span>
+    </div>
+    ${weighDay?`<div class="extra"><span style="min-width:120px">שקילה שבועית (ק״ג)</span>
+      <input inputmode="decimal" id="wgt" placeholder="—" value="${S.weights[day]||''}"></div>`:''}
+    <div class="confetti-note" id="cnote"></div>
+    <button class="backhome" onclick="closeDone()">חזרה לקופסה</button>
+  </div></div>`;
+}
+let winOn=false;
+function toggleWin(){ winOn=!winOn; document.getElementById('winrow').classList.toggle('on',winOn); }
+function sigCheck(inp){ document.getElementById('stampbtn').classList.toggle('ready',inp.value.trim().length>=2); }
+function stampDay(day){
+  const sig=document.getElementById('sig').value.trim(); if(sig.length<2)return;
+  const w=document.getElementById('wgt');
+  S.days[day]={date:todayStr(),sig,window:winOn};
+  if(!S.start)S.start=todayStr();
+  if(w&&w.value)S.weights[day]=parseFloat(w.value);
+  DB.save(S);
+  document.getElementById('bigstamp').classList.add('show');
+  document.getElementById('stampbtn').style.visibility='hidden';
+  document.getElementById('cnote').textContent=`נרשמת בסולם, ${sig}. רצף: ${streak()} ימים.`;
+  beep(660,.3,.35);
+}
+function closeDone(){ D.classList.remove('on'); D.innerHTML=''; winOn=false; home(); }
+
+/* ================== boot ================== */
+if('speechSynthesis' in window) speechSynthesis.onvoiceschanged=()=>{HEV=undefined};
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+home();
+</script>
+</body>
+</html>
