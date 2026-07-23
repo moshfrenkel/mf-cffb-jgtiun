@@ -1,9 +1,10 @@
 {
-  "name": "MoshFit · CFFB-01",
-  "short_name": "MoshFit",
+  "name": "moshfbb · CFFB-01",
+  "short_name": "moshfbb",
   "description": "אימון ותזונה אישי, קרוספיט פוטבול",
   "lang": "he",
   "dir": "rtl",
+  "id": "moshfbb-main",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

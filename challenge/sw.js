@@ -1,5 +1,5 @@
 /* challenge-30 service worker — cache-first shell so the app opens offline */
-const CACHE = 'ch30-v1';
+const CACHE = 'ch30-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest'];
 
 self.addEventListener('install', e => {
