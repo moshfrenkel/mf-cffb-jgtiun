@@ -411,7 +411,36 @@ const LIB=[
  {n:'מעברי 90/90',cue:'ברכיים נופלות יחד, גו זקוף',p:'mob',t:2,f:'flow'},
  {n:'המתיחה הגדולה בעולם',cue:'לאנג׳ עמוק, סיבוב ויד לשמיים',p:'mob',t:2,f:'lunge'},
  {n:'עמידה על רגל אחת',cue:'מבט קדימה, כף רגל אוחזת ברצפה',p:'balance',t:1,f:'balance'},
- {n:'עפיפון רגל אחת',cue:'ידיים לצדדים, רגל אחורה, גו קדימה',p:'balance',t:2,f:'balance'}
+ {n:'עפיפון רגל אחת',cue:'ידיים לצדדים, רגל אחורה, גו קדימה',p:'balance',t:2,f:'balance'},
+ /* — הרחבת סשן 12: עוד 28 תרגילים לגיוון — */
+ {n:'סקוואט סומו',cue:'עמידה רחבה, ברכיים מעל האצבעות',p:'squat',t:1,f:'squat'},
+ {n:'ישיבת קיר',cue:'גב מודבק לקיר, ברכיים 90 מעלות',p:'squat',t:2,f:'squat'},
+ {n:'סקוואט פולסים',cue:'קפיצים קטנים בתחתית התנועה',p:'squat',t:3,f:'squat'},
+ {n:'לאנג׳ קדמי',cue:'צעד קדימה, בלימה שקטה',p:'lunge',t:1,f:'lunge'},
+ {n:'לאנג׳ הצלב',cue:'רגל מאחור באלכסון, אגן נשאר ישר',p:'lunge',t:3,f:'lunge'},
+ {n:'לאנג׳ שעון',cue:'קדימה, הצידה, אחורה, אותה רגל',p:'lunge',t:4,f:'lunge'},
+ {n:'שכיבות רחבות',cue:'ידיים רחב מהכתפיים, חזה בין הידיים',p:'push',t:2,f:'pushup'},
+ {n:'שכיבות טמפו 3-1-1',cue:'שלוש שניות ירידה, שנייה למטה',p:'push',t:3,f:'pushup'},
+ {n:'שכיבות שחרור ידיים',cue:'חזה לרצפה, ידיים באוויר, דחיפה',p:'push',t:3,f:'pushup'},
+ {n:'גשר צעדים',cue:'אגן למעלה, צעדים קטנים החוצה ופנימה',p:'hinge',t:2,f:'bridge'},
+ {n:'גשר טמפו 3-1-1',cue:'עלייה מהירה, שלוש שניות ירידה',p:'hinge',t:2,f:'bridge'},
+ {n:'שחיין',cue:'על הבטן, יד ורגל נגדית מתחלפות',p:'back',t:2,f:'back'},
+ {n:'סופרמן החזקה',cue:'להחזיק למעלה, לנשום רגיל',p:'back',t:3,f:'back'},
+ {n:'פלאנק זרועות ישרות',cue:'ידיים מתחת לכתפיים, לדחוף רצפה',p:'core',t:1,f:'plank'},
+ {n:'עמידת שש, יד ורגל',cue:'ליבה שקטה, בלי נדנוד אגן',p:'core',t:1,f:'bear'},
+ {n:'פלאנק כתף-טאפ',cue:'אגן קפוא, יד לכתף נגדית',p:'core',t:3,f:'plank'},
+ {n:'הרמות רגליים בשכיבה',cue:'גב תחתון לא עוזב את הרצפה',p:'core',t:3,f:'hollow'},
+ {n:'זחילת דוב צד',cue:'צעדים קטנים הצידה, אגן נמוך',p:'loco',t:3,f:'bear'},
+ {n:'הליכת סרטן אחורה',cue:'אגן מרחף, לא נוגע ברצפה',p:'loco',t:3,f:'crab'},
+ {n:'זחילת לטאה',cue:'נמוך לרצפה, צעדים ארוכים',p:'loco',t:4,f:'bear'},
+ {n:'קפיצות לרוחב',cue:'שתי רגליים יחד, צד אל צד',p:'ball',t:2,f:'jump'},
+ {n:'ספרינט במקום',cue:'ברכיים גבוה, ידיים עובדות',p:'ball',t:2,f:'jump'},
+ {n:'טאק ג׳אמפ',cue:'ברכיים לחזה, נחיתה שקטה',p:'ball',t:4,f:'jump'},
+ {n:'טוויסט בשכיבה',cue:'ברך חוצה, כתפיים על הרצפה',p:'mob',t:1,f:'flow'},
+ {n:'ישיבת סקוואט נשימות',cue:'למטה בתחתית, חמש נשימות ארוכות',p:'mob',t:1,f:'squat'},
+ {n:'סקורפיון איטי',cue:'על הבטן, עקב לכיוון היד הנגדית',p:'mob',t:3,f:'back'},
+ {n:'עמידה על רגל אחת בעיניים עצומות',cue:'עוצמים רק אחרי שמתייצבים',p:'balance',t:3,f:'balance'},
+ {n:'קפיצון ונחיתה על רגל אחת',cue:'נחיתה רכה, להחזיק שתי שניות',p:'balance',t:4,f:'balance'}
 ];
 
 /* ================== deterministic 30-day plan ================== */
@@ -424,32 +453,89 @@ const DTYPES=[
  {name:'כוח מתפרץ',   sub:'קצב ופיצוץ',          pats:['ball','squat','ball','lunge','ball','core','ball','loco'], w:30, r:15},
  {name:'איפוס',       sub:'התאוששות פעילה',      pats:['mob','balance','mob','hinge','mob','balance','mob','mob'], w:40, r:5}
 ];
-const WARMUP=[
- {n:'ריצה קלה במקום',cue:'כתפיים רפויות',f:'jump'},
- {n:'חתול-פרה',cue:'חוליה חוליה',f:'flow'},
- {n:'אינצ׳וורם',cue:'ידיים רחוק, רגליים ישרות',f:'pike'},
- {n:'סקוואט עמוק בהחזקה',cue:'לפתוח ירכיים, לנשום',f:'squat'}
+/* warmup pool — every day draws a different 4: pulse-raiser, mobility, activation */
+const WARMUPS=[
+ {n:'ריצה קלה במקום',cue:'כתפיים רפויות',f:'jump',c:'pulse'},
+ {n:'ג׳אמפינג ג׳קס קלים',cue:'קל על כפות הרגליים',f:'jump',c:'pulse'},
+ {n:'סקיפים נמוכים',cue:'קרסול קפיצי, ברכיים קדימה',f:'jump',c:'pulse'},
+ {n:'ברכיים למרפקים בהליכה',cue:'גו זקוף, סיבוב מלא',f:'lunge',c:'pulse'},
+ {n:'חתול-פרה',cue:'חוליה חוליה, עם הנשימה',f:'flow',c:'mob'},
+ {n:'אינצ׳וורם',cue:'ידיים רחוק, רגליים ישרות',f:'pike',c:'mob'},
+ {n:'סיבובי אגן גדולים',cue:'בעמידה, מקיפים לאט לשני הכיוונים',f:'balance',c:'mob'},
+ {n:'סיבובי כתפיים וידיים',cue:'מעגלים שהולכים וגדלים',f:'balance',c:'mob'},
+ {n:'סקוואט עמוק בהחזקה',cue:'לפתוח ירכיים, לנשום',f:'squat',c:'act'},
+ {n:'גשר ירכיים איטי',cue:'עצם אחר עצם, למעלה ולמטה',f:'bridge',c:'act'},
+ {n:'עמידת שש, יד ורגל',cue:'ליבה שקטה, בלי נדנוד אגן',f:'bear',c:'act'},
+ {n:'לאנג׳ עם סיבוב',cue:'סיבוב איטי מעל הרגל הקדמית',f:'lunge',c:'act'}
 ];
-function pickEx(pat,day,slot,used){
-  const maxT=Math.min(1+Math.floor((day-1)/7),4);
-  const pool=LIB.filter(e=>e.p===pat&&e.t<=maxT);
-  if(!pool.length) return LIB[0];
-  let i=(day*3+slot*5)%pool.length, tries=0;
-  while(used.has(pool[i].n)&&tries<pool.length){ i=(i+1)%pool.length; tries++; }
-  used.add(pool[i].n);
-  return pool[i];
+/* deterministic per-day randomness (mulberry32) — the peek always matches the workout */
+function rng(seed){ let a=(seed|0)+0x9E3779B9;
+  return ()=>{ a=(a+0x6D2B79F5)|0; let t=Math.imul(a^(a>>>15),1|a);
+    t=(t+Math.imul(t^(t>>>7),61|t))^t; return ((t^(t>>>14))>>>0)/4294967296; };
 }
+function pickFrom(arr,R,used){
+  let i=Math.floor(R()*arr.length), tries=0;
+  while(used.has(arr[i].n)&&tries<arr.length){ i=(i+1)%arr.length; tries++; }
+  used.add(arr[i].n); return arr[i];
+}
+function dayWarmup(day){
+  const R=rng(day*131+17), used=new Set();
+  const third=R()<.5?'mob':'act';
+  return [
+    pickFrom(WARMUPS.filter(w=>w.c==='pulse'),R,used),
+    pickFrom(WARMUPS.filter(w=>w.c==='mob'),R,used),
+    pickFrom(WARMUPS.filter(w=>w.c===third),R,used),
+    pickFrom(WARMUPS.filter(w=>w.c==='act'),R,used)
+  ];
+}
+function pickEx(pat,day,R,used,prev){
+  const maxT=Math.min(1+Math.floor((day-1)/7),4);
+  let pool=LIB.filter(e=>e.p===pat&&e.t<=maxT);
+  if(!pool.length) pool=LIB.filter(e=>e.p===pat);
+  let cand=pool.filter(e=>!used.has(e.n)&&!prev.has(e.n));
+  if(!cand.length) cand=pool.filter(e=>!used.has(e.n));
+  if(!cand.length){
+    /* the pattern ran dry for this week — borrow from the whole box
+       rather than repeat an exercise inside the same workout */
+    cand=LIB.filter(e=>e.t<=maxT&&!used.has(e.n)&&!prev.has(e.n));
+    if(!cand.length) cand=LIB.filter(e=>e.t<=maxT&&!used.has(e.n));
+    if(!cand.length) cand=pool;
+  }
+  const e=cand[Math.floor(R()*cand.length)];
+  used.add(e.n); return e;
+}
+/* day plan: shuffled order + 1-2 wildcard slots + varying format (2x8 or 3x6),
+   avoids repeating yesterday's picks. memoized, fully deterministic per day. */
+const PLANCACHE={};
 function dayPlan(day){
-  const dt=DTYPES[(day-1)%7], used=new Set();
-  const main=dt.pats.map((p,s)=>pickEx(p,day,s,used));
-  return {day,dt,main};
+  if(PLANCACHE[day]) return PLANCACHE[day];
+  const dt=DTYPES[(day-1)%7];
+  const R=rng(day*7919+3);
+  const prev=day>1?new Set(dayPlan(day-1).main.map(e=>e.n)):new Set();
+  const flow=dt.r===5;
+  const triple=!flow&&R()<.55;
+  let pats=[...dt.pats];
+  for(let i=pats.length-1;i>0;i--){ const j=Math.floor(R()*(i+1)); [pats[i],pats[j]]=[pats[j],pats[i]]; }
+  const ALLP=['squat','lunge','push','hinge','back','core','loco','ball','mob','balance'];
+  const nW=1+(R()<.5?1:0);
+  for(let k=0;k<nW;k++) pats[Math.floor(R()*pats.length)]=ALLP[Math.floor(R()*ALLP.length)];
+  if(triple) pats=pats.slice(0,6);
+  const used=new Set();
+  const main=pats.map(p=>pickEx(p,day,R,used,prev));
+  const plan={day,dt,main,rounds:triple?3:2,w:triple?Math.max(dt.w-5,20):dt.w,r:dt.r,warmup:dayWarmup(day)};
+  PLANCACHE[day]=plan; return plan;
 }
 function daySegments(plan){
   const segs=[];
-  WARMUP.forEach((w,i)=>segs.push({name:w.n,cue:w.cue,fig:w.f,secs:30,work:true,tag:`חימום ${i+1}/4`}));
-  for(let r=1;r<=2;r++) plan.main.forEach((e,i)=>{
-    segs.push({name:e.n,cue:e.cue,fig:e.f,secs:plan.dt.w,work:true,tag:`סבב ${r}/2 · תרגיל ${i+1}/8`});
-    if(!(r===2&&i===7)) segs.push({name:'מנוחה',cue:'נשימה דרך האף',fig:null,secs:plan.dt.r,work:false,tag:'עוד רגע ממשיכים'});
+  plan.warmup.forEach((w,i)=>segs.push({name:w.n,cue:w.cue,fig:w.f,secs:30,work:true,tag:`חימום ${i+1}/4`}));
+  const n=plan.main.length;
+  for(let r=1;r<=plan.rounds;r++) plan.main.forEach((e,i)=>{
+    segs.push({name:e.n,cue:e.cue,fig:e.f,secs:plan.w,work:true,tag:`סבב ${r}/${plan.rounds} · תרגיל ${i+1}/${n}`});
+    if(r===plan.rounds&&i===n-1) return;
+    const endRound=i===n-1;
+    segs.push(endRound
+      ?{name:'לנער את הגוף',cue:'סוף סבב, שתי נשימות עמוקות',fig:null,secs:20,work:false,tag:`סבב ${r} הושלם`}
+      :{name:'מנוחה',cue:'נשימה דרך האף',fig:null,secs:plan.r,work:false,tag:'עוד רגע ממשיכים'});
   });
   return segs;
 }
@@ -591,8 +677,8 @@ function peekDay(d){
     <span class="fig">${figSvg(fkey,accent)}</span>
     <div class="xtxt"><b>${name}</b><span>${cue}</span></div>
     <span class="secs">${secs} שנ׳</span></div>`;
-  const wu=WARMUP.map(w=>exline(w.n,w.cue,30,w.f,OR)).join('');
-  const main=plan.main.map(e=>exline(e.n,e.cue,plan.dt.w,e.f,TQ)).join('');
+  const wu=plan.warmup.map(w=>exline(w.n,w.cue,30,w.f,OR)).join('');
+  const main=plan.main.map(e=>exline(e.n,e.cue,plan.w,e.f,TQ)).join('');
   const status=rec
     ?`הוחתם ב-${rec.date.slice(5).split('-').reverse().join('.')} על ידי ${rec.sig}`
     :d===day?'זה היום שלך. הקופסה פתוחה.'
@@ -605,11 +691,11 @@ function peekDay(d){
     </div>
     <span class="peekstatus">${status}</span>
     <hr class="dashline">
-    <div class="sechead">חימום · סבב אחד</div>
+    <div class="sechead">חימום · מתחלף כל יום</div>
     ${wu}
-    <div class="sechead">העבודה · שני סבבים, ${plan.dt.w} שנ׳ תרגיל / ${plan.dt.r} שנ׳ מנוחה</div>
+    <div class="sechead">העבודה · ${plan.rounds===3?'שלושה סבבים':'שני סבבים'} של ${plan.main.length} תרגילים, ${plan.w} שנ׳ תרגיל / ${plan.r} שנ׳ מנוחה</div>
     ${main}
-    <p class="peeknote">התוכנית נקבעת מראש לכל יום. ככל שהשבועות מתקדמים נפתחים תרגילים קשים יותר, מה שרואים כאן זה בדיוק מה שינוגן ביום ${d}.</p>
+    <p class="peeknote">התוכנית נקבעת מראש לכל יום: סדר מעורבב, תרגיל הפתעה או שניים מחוץ לתפריט של סוג היום, ובלי לחזור על תרגילי אתמול. מה שרואים כאן זה בדיוק מה שינוגן ביום ${d}.</p>
     ${d===day&&d<=30&&!doneToday?`<button class="startbtn" style="margin-top:14px" onclick="closePeek();startDay()"><span>התחל את היום</span>${startArrow}</button>`:''}
     <button class="backhome" onclick="closePeek()">סגור הצצה</button>
   </div></div>`;
@@ -700,7 +786,7 @@ function lib(){
     <div class="today-head"><div class="dtype"><b>מבנה השבוע</b><span>שבעה סוגי ימים, מתגלגלים בלופ</span></div></div>
     <hr class="dashline">
     ${dtypes}
-    <p class="peeknote">כל יום בנוי מאותם סוגים: חימום קבוע, ואז שני סבבים של שמונה תרגילים שנבחרים מהספרייה לפי סוג היום והשבוע שבו אתה נמצא. לחיצה על יום בסולם שבקופסה מראה בדיוק מה מחכה בו.</p>
+    <p class="peeknote">כל יום נפתח בחימום שמתחלף (דופק, מוביליטי, הפעלה), ואז שני סבבים של שמונה תרגילים או שלושה סבבים של שישה, לפי היום. הסדר מעורבב, יש תרגיל הפתעה או שניים מחוץ לתפריט של סוג היום, ואין חזרה על תרגילי אתמול. לחיצה על יום בסולם שבקופסה מראה בדיוק מה מחכה בו.</p>
   </section>
 
   <section style="margin:6px 12px 0; padding:0 8px">${groups}</section>`;
