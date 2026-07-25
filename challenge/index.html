@@ -168,6 +168,66 @@ input{font-family:inherit}
   color:var(--chalk); font-size:18px; text-align:center; outline:none}
 .backhome{display:block; margin:26px auto 0; color:var(--dim); border-bottom:1px dashed var(--dim); font-size:15px}
 .confetti-note{text-align:center; color:var(--tq); font-size:15px; margin-top:14px; min-height:20px}
+
+/* — bottom nav (chalk tab strip) — */
+#nav{position:fixed; bottom:0; left:0; right:0; z-index:40; background:var(--board);
+  border-top:1px dashed #ece5d433; box-shadow:0 -8px 24px #0008}
+#nav .inner{max-width:520px; margin:0 auto; display:flex}
+#nav button{flex:1; padding:13px 4px 16px; font-family:'Secular One'; font-size:15px; color:var(--dim); position:relative}
+#nav button.on{color:var(--tq)}
+#nav button.on::after{content:''; position:absolute; bottom:9px; left:26%; right:26%; height:3px;
+  background:var(--tq); transform:rotate(-1.6deg)}
+#nav button:nth-child(2).on::after{transform:rotate(1.4deg); background:var(--or)}
+#nav button:nth-child(2).on{color:var(--or)}
+
+/* — day peek overlay — */
+#peek{position:fixed; inset:0; background:var(--bg); display:none; z-index:55; overflow-y:auto}
+#peek.on{display:block}
+.peekwrap{max-width:520px; margin:0 auto; padding:30px 0 70px}
+.exline{display:flex; align-items:center; gap:12px; padding:8px 2px; border-bottom:1px dashed #ece5d41f}
+.exline .fig{width:52px; height:52px; flex:none}
+.exline .fig svg{width:100%; height:100%}
+.exline .xtxt{flex:1; min-width:0}
+.exline b{display:block; font-size:15px; color:var(--chalk); font-weight:600}
+.exline span{font-size:12.5px; color:var(--dim); line-height:1.4}
+.exline .secs{margin-inline-start:auto; font-family:'Secular One'; color:var(--tq); font-size:15px; flex:none; white-space:nowrap}
+.exline.dimmed{opacity:.4}
+.sechead{font-family:'Secular One'; font-size:15px; color:var(--or); margin:18px 0 4px; transform:rotate(-.8deg)}
+.peeknote{font-size:12.5px; color:var(--dim); margin-top:12px; line-height:1.6}
+.peekstatus{display:inline-block; margin-top:8px; padding:3px 10px; border:1px dashed var(--tq);
+  color:var(--tq); font-size:12.5px; transform:rotate(-1.5deg)}
+
+/* — dashboard — */
+.bignum{font-family:'Secular One'; font-size:64px; line-height:1; color:var(--tq)}
+.bignum small{font-size:22px; color:var(--dim)}
+.dtape{height:8px; background:#ece5d41a; margin:12px 0 4px; position:relative}
+.dtape i{display:block; height:100%; background:linear-gradient(90deg,var(--tq),#2bbcb388)}
+.dtape span{position:absolute; top:-4px; font-size:10px; color:var(--dim)}
+.statrow{display:flex; justify-content:space-between; align-items:baseline; padding:9px 2px; border-bottom:1px dashed #ece5d422; font-size:14px; color:var(--dim)}
+.statrow b{font-family:'Secular One'; font-size:20px; color:var(--chalk); font-weight:400}
+.statrow b.tqv{color:var(--tq)} .statrow b.orv{color:var(--or)}
+.wchart{margin-top:10px}
+.wchart svg{width:100%; height:auto}
+.dashempty{color:var(--dim); font-size:13.5px; padding:10px 0 4px; line-height:1.6}
+
+/* — library — */
+.libgroup{margin-top:22px}
+.libgroup h3{font-family:'Secular One'; font-size:17px; color:var(--tq); transform:rotate(-.7deg);
+  display:flex; align-items:baseline; gap:8px}
+.libgroup h3 small{font-size:12px; color:var(--dim); font-family:'Heebo'}
+.wkbadge{font-size:11px; color:var(--or); border:1px dashed var(--or); padding:1px 7px; white-space:nowrap; transform:rotate(-2deg)}
+.wkbadge.open{color:var(--tq); border-color:var(--tq)}
+.dtypeline{display:flex; align-items:baseline; gap:10px; padding:8px 2px; border-bottom:1px dashed #ece5d41f; font-size:13.5px}
+.dtypeline i{font-style:normal; font-family:'Secular One'; color:var(--or); min-width:18px}
+.dtypeline b{color:var(--chalk); font-weight:600; min-width:86px}
+.dtypeline span{color:var(--dim); flex:1}
+.dtypeline .secs{color:var(--tq); font-family:'Secular One'; white-space:nowrap}
+
+/* — spotify row — */
+.spopen{display:inline-block; border:1px solid var(--tq); color:var(--tq); padding:4px 12px;
+  font-size:13px; text-decoration:none; transform:rotate(-1deg); white-space:nowrap}
+.spnote{font-size:12px; color:var(--dim); line-height:1.6; margin-top:8px}
+
 @media(min-width:520px){ .collide .n30{font-size:170px} }
 </style>
 </head>
@@ -175,6 +235,12 @@ input{font-family:inherit}
 <div id="app"></div>
 <div id="player"></div>
 <div id="done"></div>
+<div id="peek"></div>
+<nav id="nav"><div class="inner">
+  <button data-v="home" onclick="go('home')">הקופסה</button>
+  <button data-v="lib" onclick="go('lib')">הספרייה</button>
+  <button data-v="dash" onclick="go('dash')">לוח מצב</button>
+</div></nav>
 <script>
 /* ================== state ================== */
 const DB={
@@ -421,6 +487,12 @@ function spEmbed(url){
   const m=String(url||'').match(/spotify\.com\/(?:intl-[a-z]{2}\/)?(playlist|album|track|artist|episode|show)\/([A-Za-z0-9]+)/);
   return m?`https://open.spotify.com/embed/${m[1]}/${m[2]}?utm_source=generator&theme=0`:null;
 }
+/* deep link that opens the Spotify app itself — the embed above is capped to
+   30-second previews unless the user is logged in inside the iframe */
+function spAppLink(url){
+  const m=String(url||'').match(/spotify\.com\/(?:intl-[a-z]{2}\/)?(playlist|album|track|artist|episode|show)\/([A-Za-z0-9]+)/);
+  return m?`https://open.spotify.com/${m[1]}/${m[2]}`:'https://open.spotify.com';
+}
 
 /* ================== home ================== */
 const app=document.getElementById('app');
@@ -434,12 +506,12 @@ function home(){
   for(let d=1;d<=30;d++){
     const rec=S.days[d], p=DTYPES[(d-1)%7];
     const cls=rec?'done':(d===day?'today':'locked');
-    rows+=`<div class="row ${cls}" >
+    rows+=`<div class="row ${cls}" onclick="peekDay(${d})" style="cursor:pointer">
       <span class="dnum">${d}</span>
       <span class="dname">${p.name}</span>
       ${rec?`<span class="ddate">${rec.date.slice(5).split('-').reverse().join('.')}</span><span class="stamp">${stampSvg('בוצע')}</span>`
         :d===day?`<span class="youare">אתה כאן</span>`
-        :`<span class="ddate">נעול</span>`}
+        :`<span class="ddate">להצצה</span>`}
     </div>`;
     if(d===13&&!S.joker){
       rows+=`<div class="deadzone"><i class="tape t1"></i><i class="tape t2"></i>
@@ -473,10 +545,12 @@ function home(){
     `}
     <div class="musicrow">
       <span>מוזיקה לדרך</span>
-      <button onclick="toggleMusic()">${musicOpen?'סגור נגן':'פתח נגן ספוטיפיי'}</button>
+      <a class="spopen" href="${spAppLink(S.spotify||DEF_SP)}" target="_blank" rel="noopener">נגן בספוטיפיי ←</a>
+      <button onclick="toggleMusic()">${musicOpen?'סגור נגן מוטמע':'נגן מוטמע'}</button>
     </div>
     <div class="musicwrap ${musicOpen?'on':''}">
       ${musicOpen?`<iframe src="${spURL}" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <p class="spnote">הנגן המוטמע מוגבל על ידי ספוטיפיי ל-30 שניות משיר. פלייליסט מלא: הכפתור "נגן בספוטיפיי" פותח את האפליקציה עצמה, והמוזיקה ממשיכה ברקע בזמן האימון.</p>
       <input placeholder="הדבק קישור פלייליסט מספוטיפיי והוא יישמר" onchange="setSpotify(this.value)">`:''}
     </div>
   </section>
@@ -499,6 +573,138 @@ function home(){
 function toggleMusic(){ musicOpen=!musicOpen; home(); }
 function setSpotify(v){ if(spEmbed(v)){ S.spotify=v; DB.save(S); musicOpen=true; home(); } }
 function useJoker(){ S.joker=addDays(todayStr(),-1); DB.save(S); home(); }
+
+/* ================== views: nav / peek / dashboard / library ================== */
+let VIEW='home';
+function go(v){ VIEW=v; render(); window.scrollTo(0,0); }
+function render(){
+  if(VIEW==='dash')dash(); else if(VIEW==='lib')lib(); else home();
+  document.querySelectorAll('#nav button').forEach(b=>b.classList.toggle('on',b.dataset.v===VIEW));
+}
+
+/* — day peek: every day is open for viewing, start stays locked to today — */
+const PK=document.getElementById('peek');
+function peekDay(d){
+  const plan=dayPlan(d), rec=S.days[d], day=currentDay();
+  const doneToday=Object.values(S.days).some(x=>x.date===todayStr());
+  const exline=(name,cue,secs,fkey,accent)=>`<div class="exline">
+    <span class="fig">${figSvg(fkey,accent)}</span>
+    <div class="xtxt"><b>${name}</b><span>${cue}</span></div>
+    <span class="secs">${secs} שנ׳</span></div>`;
+  const wu=WARMUP.map(w=>exline(w.n,w.cue,30,w.f,OR)).join('');
+  const main=plan.main.map(e=>exline(e.n,e.cue,plan.dt.w,e.f,TQ)).join('');
+  const status=rec
+    ?`הוחתם ב-${rec.date.slice(5).split('-').reverse().join('.')} על ידי ${rec.sig}`
+    :d===day?'זה היום שלך. הקופסה פתוחה.'
+    :d<day?'דולג':'יום עתידי · הצצה חופשית, ההתחלה רק כשמגיעים';
+  PK.classList.add('on');
+  PK.innerHTML=`<div class="peekwrap"><div class="slip"><i class="rip"></i>
+    <div class="today-head">
+      <span class="num">${String(d).padStart(2,'0')}</span><span class="of">מתוך 30</span>
+      <div class="dtype"><b>${plan.dt.name}</b><span>${plan.dt.sub} · ‎~14 דק׳</span></div>
+    </div>
+    <span class="peekstatus">${status}</span>
+    <hr class="dashline">
+    <div class="sechead">חימום · סבב אחד</div>
+    ${wu}
+    <div class="sechead">העבודה · שני סבבים, ${plan.dt.w} שנ׳ תרגיל / ${plan.dt.r} שנ׳ מנוחה</div>
+    ${main}
+    <p class="peeknote">התוכנית נקבעת מראש לכל יום. ככל שהשבועות מתקדמים נפתחים תרגילים קשים יותר, מה שרואים כאן זה בדיוק מה שינוגן ביום ${d}.</p>
+    ${d===day&&d<=30&&!doneToday?`<button class="startbtn" style="margin-top:14px" onclick="closePeek();startDay()"><span>התחל את היום</span>${startArrow}</button>`:''}
+    <button class="backhome" onclick="closePeek()">סגור הצצה</button>
+  </div></div>`;
+}
+function closePeek(){ PK.classList.remove('on'); PK.innerHTML=''; }
+
+/* — dashboard: the numbers behind the streak — */
+function weightChart(){
+  const es=Object.entries(S.weights).map(([d,w])=>({d:+d,w:+w})).filter(e=>e.w>0).sort((a,b)=>a.d-b.d);
+  if(!es.length) return `<p class="dashempty">עוד אין שקילות רשומות. השקילה הראשונה מחכה בסוף אימון של יום שקילה (1, 8, 15, 22, 29).</p>`;
+  const W=300,H=110,pad=26;
+  const min=Math.min(...es.map(e=>e.w))-0.5, max=Math.max(...es.map(e=>e.w))+0.5;
+  const x=d=>pad+( (d-1)/29 )*(W-pad-10);
+  const y=w=>H-18-((w-min)/(max-min))*(H-38);
+  const pts=es.map(e=>`${x(e.d)},${y(e.w)}`).join(' ');
+  const dots=es.map(e=>`<circle cx="${x(e.d)}" cy="${y(e.w)}" r="4" fill="${OR}"/>
+    <text x="${x(e.d)}" y="${y(e.w)-9}" text-anchor="middle" font-size="11" fill="${CH}" font-family="Secular One">${e.w}</text>`).join('');
+  const grid=[1,8,15,22,29].map(d=>`<path d="M${x(d)} 14 L${x(d)} ${H-16}" stroke="#ece5d41c" stroke-width="1" stroke-dasharray="3 4"/>
+    <text x="${x(d)}" y="${H-4}" text-anchor="middle" font-size="10" fill="#8fa39d">${d}</text>`).join('');
+  const delta=(es[es.length-1].w-es[0].w).toFixed(1);
+  const dtxt=es.length>1?`<text x="${W-8}" y="16" text-anchor="end" font-size="12" fill="${+delta<=0?TQ:OR}" font-family="Secular One">${delta>0?'+':''}${delta} ק״ג</text>`:'';
+  return `<div class="wchart"><svg viewBox="0 0 ${W} ${H}">${grid}
+    <polyline points="${pts}" fill="none" stroke="${TQ}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+    ${dots}${dtxt}</svg></div>`;
+}
+function dash(){
+  const done=Object.keys(S.days).length, st=streak(), day=currentDay();
+  const wins=Object.values(S.days).filter(x=>x.window).length;
+  const mins=done*14;
+  const pct=Math.round(done/30*100);
+  app.innerHTML=`
+  <header class="lid"><i class="frame"></i>
+    <div class="collide"><span class="n30" style="-webkit-text-stroke-color:${OR}">${done}</span><span class="word" style="font-size:44px">לוח מצב</span></div>
+    <p class="sub">המספרים מאחורי הרצף · יום ${Math.min(day,30)} מתוך 30</p>
+  </header>
+
+  <section class="slip"><i class="rip"></i>
+    <div class="today-head">
+      <span class="bignum">${done}<small> / 30</small></span>
+      <div class="dtype"><b>ימים שהוחתמו</b><span>${pct}% מהקופסה</span></div>
+    </div>
+    <div class="dtape"><i style="width:${pct}%"></i></div>
+    <div class="statrow"><span>רצף נוכחי</span><span style="display:flex;align-items:center;gap:10px">${st?tallySvg(st):''}<b class="tqv">${st} ימים</b></span></div>
+    <div class="statrow"><span>דקות תנועה מצטברות</span><b>‎~${mins} דק׳</b></div>
+    <div class="statrow"><span>חלון אכילה נסגר עד 20:00</span><b class="${done&&wins/done>=.7?'tqv':'orv'}">${wins} מתוך ${done||0}</b></div>
+    <div class="statrow"><span>טלאי חירום</span><b class="${S.joker?'orv':'tqv'}">${S.joker?'נוצל ('+S.joker.slice(5).split('-').reverse().join('.')+')':'עוד ביד'}</b></div>
+  </section>
+
+  <section class="slip"><i class="rip"></i>
+    <div class="today-head"><div class="dtype"><b>שקילה שבועית</b><span>ימים 1 · 8 · 15 · 22 · 29</span></div></div>
+    ${weightChart()}
+  </section>
+
+  <aside class="rules">
+    <h2>מה הלוח אומר</h2>
+    <div class="rl"><i>·</i><span>הרצף חשוב מהמשקל. המשקל זז לאט, הסולם זז כל בוקר.</span></div>
+    <div class="rl"><i>·</i><span>חלון אכילה מתחת ל-70% = זה החור בסירה, לא האימונים.</span></div>
+  </aside>`;
+}
+
+/* — library: the whole box, every exercise ever planned — */
+const PATNAMES={squat:'סקוואט',lunge:'לאנג׳ים',push:'דחיקה',hinge:'ציר ירך',back:'שרשרת אחורית',core:'ליבה',loco:'זחילות ולוקומושן',ball:'כוח מתפרץ',mob:'מוביליטי',balance:'שיווי משקל'};
+function lib(){
+  const day=Math.min(currentDay(),30);
+  const curWeek=Math.min(1+Math.floor((day-1)/7),4);
+  const groups=Object.keys(PATNAMES).map(p=>{
+    const items=LIB.filter(e=>e.p===p);
+    if(!items.length)return'';
+    const rows=items.map(e=>{
+      const open=e.t<=curWeek;
+      return `<div class="exline ${open?'':'dimmed'}">
+        <span class="fig">${figSvg(e.f,open?TQ:CH)}</span>
+        <div class="xtxt"><b>${e.n}</b><span>${e.cue}</span></div>
+        <span class="wkbadge ${open?'open':''}">${open?'פתוח · שבוע '+e.t:'נפתח בשבוע '+e.t}</span>
+      </div>`;
+    }).join('');
+    return `<div class="libgroup"><h3>${PATNAMES[p]} <small>${items.length} תרגילים</small></h3>${rows}</div>`;
+  }).join('');
+  const dtypes=DTYPES.map((t,i)=>`<div class="dtypeline"><i>${'אבגדהוז'[i]}.</i><b>${t.name}</b><span>${t.sub}</span><span class="secs">${t.w}/${t.r} שנ׳</span></div>`).join('');
+  app.innerHTML=`
+  <header class="lid"><i class="frame"></i>
+    <div class="collide"><span class="n30">${LIB.length}</span><span class="word" style="font-size:44px">הספרייה</span></div>
+    <p class="sub">כל מה שבקופסה · אתה בשבוע ${curWeek} מתוך 4</p>
+    <span class="edition">תרגילים קשים נפתחים עם השבועות</span>
+  </header>
+
+  <section class="slip"><i class="rip"></i>
+    <div class="today-head"><div class="dtype"><b>מבנה השבוע</b><span>שבעה סוגי ימים, מתגלגלים בלופ</span></div></div>
+    <hr class="dashline">
+    ${dtypes}
+    <p class="peeknote">כל יום בנוי מאותם סוגים: חימום קבוע, ואז שני סבבים של שמונה תרגילים שנבחרים מהספרייה לפי סוג היום והשבוע שבו אתה נמצא. לחיצה על יום בסולם שבקופסה מראה בדיוק מה מחכה בו.</p>
+  </section>
+
+  <section style="margin:6px 12px 0; padding:0 8px">${groups}</section>`;
+}
 
 /* ================== player ================== */
 const P=document.getElementById('player');
@@ -607,7 +813,7 @@ function closeDone(){ D.classList.remove('on'); D.innerHTML=''; winOn=false; hom
 /* ================== boot ================== */
 if('speechSynthesis' in window) speechSynthesis.onvoiceschanged=()=>{HEV=undefined};
 if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
-home();
+render();
 </script>
 </body>
 </html>
