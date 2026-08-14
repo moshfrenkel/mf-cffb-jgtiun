@@ -1,4 +1,4 @@
-﻿/* MoshFit service worker ג€” offline shell cache */
+/* MoshFit service worker — offline shell cache */
 const CACHE = 'moshfit-v14';
 const ASSETS = ['./','./index.html','./app.js','./sync.js','./manifest.webmanifest','./icon.svg'];
 

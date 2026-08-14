@@ -1,4 +1,4 @@
-﻿/* MoshFit PWA ג€” CFFB-01. Local-first (localStorage); Supabase sync hooks in sync.js.
+/* MoshFit PWA — CFFB-01. Local-first (localStorage); Supabase sync hooks in sync.js.
    Chalk-box edition: chalkboards + manila clipboards, bilingual he/en, metcon scores, Spotify. */
 
 /* ---------------- LANGUAGE ---------------- */
@@ -9,127 +9,127 @@ function applyLang(){
   document.documentElement.lang = LANG;
 }
 const T = {
-  train:{he:'׳׳™׳׳•׳',en:'TRAIN'}, rest:{he:'׳׳ ׳•׳—׳”',en:'REST DAY'},
-  today:{he:'׳”׳™׳•׳',en:'Today'}, calendar:{he:'׳׳•׳—',en:'Board'}, workout:{he:'׳׳™׳׳•׳',en:'WOD'},
-  nutrition:{he:'׳×׳–׳•׳ ׳”',en:'Fuel'}, progress:{he:'׳”׳×׳§׳“׳׳•׳×',en:'Progress'},
-  todayWod:{he:'׳”׳׳™׳׳•׳ ׳©׳ ׳”׳™׳•׳',en:"TODAY'S SESSION"},
-  openFull:{he:'׳₪׳×׳— ׳׳™׳׳•׳ ׳׳׳ ג†',en:'Open full session ג†’'},
-  suppsToday:{he:'׳×׳•׳¡׳₪׳™׳ ׳”׳™׳•׳',en:'SUPPLEMENTS'},
-  nutriTitle:{he:'׳×׳–׳•׳ ׳”',en:'FUEL'}, trainDay:{he:'׳™׳•׳ ׳׳™׳׳•׳',en:'training day'}, restDay:{he:'׳™׳•׳ ׳׳ ׳•׳—׳”',en:'rest day'},
-  kcal:{he:'׳§׳׳³',en:'kcal'}, protein:{he:'׳—׳׳‘׳•׳',en:'protein'}, fat:{he:'׳©׳•׳׳',en:'fat'}, carbs:{he:'׳₪׳—׳׳³',en:'carbs'},
-  boxesShop:{he:'׳×׳₪׳¨׳™׳˜ ׳”׳™׳•׳, ׳׳¢׳§׳‘ ׳•׳×׳•׳‘׳ ׳•׳× ג†',en:"Today's menu, tracking & insights ג†’"},
-  evening:{he:'׳”׳¢׳¨׳‘',en:'TONIGHT'},
-  eveningTxt:{he:'׳׳’׳ ׳–׳™׳•׳ ׳‘-22:00 ֲ· ׳™׳¢׳“ ׳©׳™׳ ׳” 22:30 (׳§׳™׳׳” 05:30). ׳”׳©׳™׳ ׳” ׳”׳™׳ ׳”׳×׳§׳¨׳” ׳©׳ ׳”׳×׳•׳¦׳׳•׳×.',en:'Magnesium at 22:00 ֲ· sleep by 22:30 (up at 05:30). Sleep is the ceiling on your results.'},
-  checkinCta:{he:'׳¦׳³׳§-׳׳™׳ ׳™׳•׳׳™',en:'DAILY CHECK-IN'},
-  checkinGo:{he:'׳׳©׳§׳, ׳©׳™׳ ׳”, ׳׳¦׳‘ ׳¨׳•׳—, ׳›׳׳‘ ג†',en:'Weight, sleep, mood, pain ג†’'},
-  doorToDoor:{he:'׳“׳§׳•׳× ׳“׳׳× ׳׳“׳׳×',en:'minutes door to door'},
-  restNote:{he:'׳™׳•׳ ׳׳ ׳•׳—׳”. ׳×׳ ׳׳’׳•׳£ ׳׳‘׳ ׳•׳×. ׳”׳׳™׳›׳” ׳§׳׳” ׳׳ ׳‘׳ ׳׳.',en:'Rest day. Let the body build. Easy walk if you feel like it.'},
-  monoNote:{he:'׳™׳•׳ ׳׳₪׳•׳¨ ׳¢׳ ׳”׳׳•׳— = ׳™׳•׳ ׳©׳”׳’׳•׳£ ׳¦׳•׳‘׳¢ ׳׳•׳×׳ ׳׳—׳¨.',en:'A grey day on the board = the body paints you back tomorrow.'},
-  weightsH:{he:'׳׳©׳§׳׳™ ׳¢׳‘׳•׳“׳” ג€” ׳¨׳©׳•׳ ׳×׳•׳ ׳›׳“׳™',en:'WORKING WEIGHTS ג€” log as you go'},
-  weightsMini:{he:'׳ ׳©׳׳¨ ׳׳•׳˜׳•׳׳˜׳™׳×. ׳”׳©׳™׳׳™׳ ׳׳×׳¢׳“׳›׳ ׳™׳ ׳‘׳¢׳׳•׳“ ׳”׳×׳§׳“׳׳•׳×.',en:'Saved automatically. PRs update on the Progress page.'},
-  kg:{he:'׳§׳´׳’',en:'kg'}, reps:{he:'׳—׳–׳³',en:'reps'},
-  restBetween:{he:'׳׳ ׳•׳—׳” ׳‘׳™׳ ׳¡׳˜׳™׳',en:'REST BETWEEN SETS'},
-  restLbl:{he:'׳׳ ׳•׳—׳”',en:'rest'},
-  finishH:{he:'׳¡׳™׳•׳ ׳׳™׳׳•׳ ג€” ׳“׳•׳´׳—',en:'SESSION DEBRIEF'},
-  finishQ:{he:'׳׳™׳ ׳”׳™׳”? ׳׳” ׳¢׳©׳™׳×, ׳×׳—׳•׳©׳”, ׳׳™׳ ׳”׳׳¨׳₪׳§ ׳”׳’׳™׳‘',en:'How was it? What you did, how it felt, how the elbow behaved'},
-  finishPh:{he:'׳›׳׳” ׳׳™׳׳™׳ ׳‘׳™׳•׳׳...',en:'A few words for the journal...'},
-  rpe:{he:'RPE ֲ· ׳›׳׳” ׳§׳©׳” (1-10)',en:'RPE ֲ· how hard (1-10)'},
-  elbow:{he:'׳׳¨׳₪׳§ (tennis elbow)',en:'Elbow (tennis elbow)'},
-  elbOk:{he:'׳©׳§׳˜',en:'quiet'}, elbFelt:{he:'׳”׳¨׳’׳©׳×׳™',en:'felt it'}, elbPain:{he:'׳›׳׳‘',en:'pain'},
-  saveLog:{he:'׳©׳׳•׳¨ ׳‘׳׳•׳’ ֲ· ׳¡׳™׳™׳׳×׳™',en:'SAVE ג€” DONE FOR TODAY'},
-  savedWell:{he:'׳ ׳©׳׳¨ ג“ ׳›׳ ׳”׳›׳‘׳•׳“',en:'Saved ג“ well done'},
-  stop:{he:'ג¸ ׳¢׳¦׳•׳¨',en:'ג¸ stop'},
-  timer:{he:'׳˜׳™׳™׳׳¨',en:'timer'},
-  stopwatch:{he:'׳¡׳˜׳•׳₪׳¨',en:'stopwatch'},
-  finish:{he:'׳¡׳™׳•׳ ג“',en:'DONE ג“'},
-  round:{he:'׳¡׳‘׳‘',en:'ROUND'},
-  stopUp:{he:'׳¡׳•׳₪׳¨ ׳¢׳•׳׳” ֲ· ׳¢׳¦׳•׳¨ ׳›׳©׳¡׳™׳™׳׳×',en:'counting up ֲ· stop when done'},
-  scoreH:{he:'׳×׳•׳¦׳׳× ׳”׳׳˜׳§׳•׳ ג€” ׳¢׳ ׳”׳׳•׳—',en:'METCON SCORE ג€” ON THE BOARD'},
-  scoreMin:{he:'׳“׳§׳³',en:'min'}, scoreSec:{he:'׳©׳ ׳³',en:'sec'},
-  scoreRounds:{he:'׳¡׳‘׳‘׳™׳',en:'rounds'}, scoreReps:{he:'׳—׳–׳¨׳•׳×',en:'reps'},
-  scoreDone:{he:'׳”׳•׳©׳׳׳•',en:'done'}, scoreOf:{he:'׳׳×׳•׳',en:'of'},
-  scoreNotePh:{he:'׳”׳¢׳¨׳”: ׳׳©׳§׳, ׳¡׳§׳™׳™׳׳™׳ ׳’, ׳׳™׳₪׳” ׳ ׳©׳‘׳¨...',en:'Note: load, scaling, where it broke...'},
-  rx:{he:'RX ׳›׳׳• ׳©׳›׳×׳•׳‘',en:'RX as written'}, scaled:{he:'Scaled ׳׳•׳×׳׳',en:'Scaled'},
-  saveScore:{he:'׳›׳×׳•׳‘ ׳¢׳ ׳”׳׳•׳—',en:'CHALK IT UP'},
-  scoreSaved:{he:'׳ ׳›׳×׳‘ ג“',en:'Chalked ג“'},
-  musicH:{he:'׳׳•׳–׳™׳§׳” ׳׳׳™׳׳•׳',en:'BOX SOUNDTRACK'},
-  musicOpen:{he:'׳₪׳×׳— ׳ ׳’׳ ׳¡׳₪׳•׳˜׳™׳₪׳™׳™',en:'Open Spotify player'},
-  musicPh:{he:'׳”׳“׳‘׳§ ׳§׳™׳©׳•׳¨ ׳₪׳׳™׳™׳׳™׳¡׳˜/׳׳׳‘׳•׳ ׳׳¡׳₪׳•׳˜׳™׳₪׳™׳™',en:'Paste a Spotify playlist/album link'},
-  musicSet:{he:'׳”׳—׳׳£',en:'Set'},
-  musicMini:{he:'׳”׳ ׳’׳ ׳“׳•׳¨׳© ׳׳™׳ ׳˜׳¨׳ ׳˜. ׳׳₪׳©׳¨ ׳׳”׳“׳‘׳™׳§ ׳›׳ ׳§׳™׳©׳•׳¨ ׳¡׳₪׳•׳˜׳™׳₪׳™׳™ ׳•׳”׳•׳ ׳™׳™׳©׳׳¨.',en:'Player needs internet. Paste any Spotify link and it sticks.'},
-  calKick:{he:'׳׳•׳— ׳”׳‘׳׳•׳§ ֲ· 16.8ג€“12.9',en:'BLOCK BOARD ֲ· AUG 16ג€“SEP 12'},
-  calH1a:{he:'׳”׳‘׳׳•׳§',en:'THE BLOCK'}, calH1b:{he:'׳§׳“׳™׳׳”',en:'AHEAD'},
-  calFocus:{he:'CFFB-01 ֲ· 4 ׳©׳‘׳•׳¢׳•׳× ֲ· ׳”׳§׳© ׳¢׳ ׳™׳•׳ ׳׳₪׳×׳•׳— ׳׳•׳×׳•',en:'CFFB-01 ֲ· 4 weeks ֲ· tap a day to open it'},
-  legend:{he:'׳׳§׳¨׳',en:'LEGEND'},
-  legRest:{he:'׳©׳™׳ ׳” ׳•׳”׳×׳׳•׳©׳©׳•׳×',en:'sleep & recovery'},
-  nutKick:{he:'׳×׳–׳•׳ ׳” ֲ· ׳“׳-׳₪׳—׳׳™׳׳”',en:'FUEL ֲ· LOW-CARB'},
-  nutH1a:{he:'׳§׳•׳₪׳¡׳׳•׳×',en:'BOXES'}, nutH1b:{he:'׳•׳׳׳§׳¨׳•',en:'& MACROS'},
-  boxesH:{he:'׳”׳§׳•׳₪׳¡׳׳•׳×',en:'The boxes'},
-  shopH:{he:'׳¨׳©׳™׳׳× ׳§׳ ׳™׳•׳× ֲ· ׳—׳׳™׳©׳™',en:'Shopping list ֲ· Thursday'},
-  prepH:{he:'׳”׳›׳ ׳”',en:'PREP'},
-  prepTxt:{he:'׳©׳™׳©׳™ (׳׳₪׳ ׳™ ׳”׳׳¨׳•׳—׳” ׳”׳׳©׳₪׳—׳×׳™׳×): ׳׳’׳¨׳ ׳׳× ׳›׳ ׳”׳¢׳•׳£ ׳‘׳ ׳™׳ ׳’׳³׳” (׳‘׳׳™ ׳₪׳׳˜׳•׳× ׳¢׳™׳©׳•׳), ׳§׳¦׳™׳¦׳•׳× ׳‘׳§׳¨, ׳¡׳™׳¨ ׳׳•׳¨׳– ׳¢׳ ׳”׳›׳™׳¨׳™׳™׳. ׳§׳•׳ ׳™׳ ׳‘׳—׳׳™׳©׳™, ׳׳‘׳©׳׳™׳ ׳‘׳©׳™׳©׳™. ׳˜׳•׳ ׳” ׳׳ ׳¦׳¨׳™׳›׳” ׳‘׳™׳©׳•׳, ׳—׳׳‘׳•׳ ׳׳™׳™׳“׳™.',en:'Friday (before the family dinner): grill all the chicken in the Ninja (no smoke plates), beef patties, pot of rice on the stove. Shop Thursday, cook Friday. Tuna needs no cooking ג€” instant protein.'},
-  progKick:{he:'׳”׳×׳§׳“׳׳•׳×',en:'PROGRESS'},
-  progH1a:{he:'׳”׳ ׳×׳•׳ ׳™׳',en:'MY'}, progH1b:{he:'׳©׳׳™',en:'NUMBERS'},
-  prH:{he:'׳‘׳•׳¨׳¡׳× ׳”׳©׳™׳׳™׳',en:'PR EXCHANGE'},
-  prEmpty:{he:'׳¢׳•׳“ ׳׳™׳ ׳׳©׳§׳׳™׳. ׳¨׳©׳•׳ ׳׳©׳§׳׳™ ׳¢׳‘׳•׳“׳” ׳‘׳×׳•׳ ׳”׳׳™׳׳•׳, ׳•׳”׳©׳™׳׳™׳ ׳™׳•׳₪׳™׳¢׳• ׳₪׳” ׳׳•׳˜׳•׳׳˜׳™׳×.',en:'No weights yet. Log working weights inside a session and PRs show up here.'},
-  prMini:{he:'׳”׳©׳™׳ = ׳”׳¡׳˜ ׳”׳›׳™ ׳›׳‘׳“ ׳©׳¨׳©׳׳×. ג‰ˆ ׳–׳• ׳”׳¢׳¨׳›׳× 1RM (Epley).',en:'PR = heaviest set you logged. ג‰ˆ is an Epley e1RM estimate.'},
-  scoresH:{he:'׳׳•׳— ׳”׳’׳™׳¨ ֲ· ׳×׳•׳¦׳׳•׳× ׳׳˜׳§׳•׳',en:'THE CHALKBOARD ֲ· METCON SCORES'},
-  scoresEmpty:{he:'׳”׳׳•׳— ׳¢׳•׳“ ׳ ׳§׳™. ׳¡׳™׳™׳ ׳׳˜׳§׳•׳, ׳›׳×׳•׳‘ ׳×׳•׳¦׳׳”, ׳•׳”׳™׳ ׳×׳™׳©׳׳¨ ׳₪׳” ׳‘׳’׳™׳¨.',en:'Board is still clean. Finish a metcon, chalk the score, it stays here.'},
-  checkinH:{he:'׳¦׳³׳§-׳׳™׳ ׳”׳™׳•׳',en:'CHECK-IN ג€” TODAY'},
-  fWeight:{he:'׳׳©׳§׳ (׳§׳´׳’)',en:'Weight (kg)'}, fSleep:{he:'׳©׳¢׳•׳× ׳©׳™׳ ׳”',en:'Hours of sleep'},
-  fMood:{he:'׳׳¦׳‘ ׳¨׳•׳— 1-10',en:'Mood 1-10'}, fPain:{he:'׳›׳׳‘ ׳׳¨׳₪׳§/׳’׳‘ 0-3',en:'Elbow/back pain 0-3'},
-  saveCheckin:{he:'׳©׳׳•׳¨ ׳¦׳³׳§-׳׳™׳',en:'SAVE CHECK-IN'}, saved:{he:'׳ ׳©׳׳¨ ג“',en:'Saved ג“'},
-  wtrend:{he:'׳׳’׳׳× ׳׳©׳§׳ ׳’׳•׳£',en:'BODYWEIGHT TREND'},
-  wtrendEmpty:{he:'׳¦׳¨׳™׳ ׳׳₪׳—׳•׳× 2 ׳©׳§׳™׳׳•׳× ׳׳’׳¨׳£. ׳׳׳ ׳׳©׳§׳ ׳‘׳¦׳³׳§-׳׳™׳ ׳›׳ ׳™׳•׳ ׳•׳×׳¨׳׳” ׳׳× ׳”׳§׳•.',en:'Need at least 2 weigh-ins for the line. Log weight daily in the check-in.'},
-  wStart:{he:'׳”׳×׳—׳׳”',en:'start'}, wNow:{he:'׳¢׳›׳©׳™׳•',en:'now'}, wDiff:{he:'׳©׳™׳ ׳•׳™',en:'change'},
-  histH:{he:'׳׳¢׳§׳‘',en:'TRACKING'},
-  histEmpty:{he:'׳¢׳•׳“ ׳׳™׳ ׳ ׳×׳•׳ ׳™׳. ׳׳׳ ׳¦׳³׳§-׳׳™׳ ׳¨׳׳©׳•׳ ׳׳׳¢׳׳”.',en:'No data yet. Fill your first check-in above.'},
-  thDate:{he:'׳×׳׳¨׳™׳',en:'Date'}, thW:{he:'׳׳©׳§׳',en:'Weight'}, thS:{he:'׳©׳™׳ ׳”',en:'Sleep'}, thM:{he:'׳׳¦׳‘',en:'Mood'},
-  lastH:{he:'׳׳™׳׳•׳ ׳™׳ ׳׳—׳¨׳•׳ ׳™׳',en:'RECENT SESSIONS'},
-  elbLog:{ok:{he:'׳׳¨׳₪׳§ ׳©׳§׳˜',en:'elbow quiet'},felt:{he:'׳׳¨׳₪׳§ ׳”׳¨׳’׳™׳©',en:'elbow felt'},pain:{he:'׳׳¨׳₪׳§ ׳›׳׳‘',en:'elbow pain'}},
-  backupH:{he:'׳’׳™׳‘׳•׳™ ׳•׳©׳—׳–׳•׳¨',en:'BACKUP & RESTORE'},
-  backupWhat:{he:'׳›׳ ׳”׳ ׳×׳•׳ ׳™׳ ׳©׳׳ ׳™׳•׳©׳‘׳™׳ ׳¢׳ ׳”׳˜׳׳₪׳•׳ ׳”׳–׳” ׳‘׳׳‘׳“. ׳’׳‘׳” ׳׳₪׳ ׳™ ׳׳¢׳‘׳¨ ׳׳›׳©׳™׳¨ ׳׳• ׳ ׳™׳§׳•׳™ ׳“׳₪׳“׳₪׳.',en:'All your data lives on this phone only. Back up before switching device or clearing the browser.'},
-  backupCopy:{he:'׳”׳¢׳×׳§ ׳’׳™׳‘׳•׳™',en:'Copy backup'},
-  backupCopied:{he:'׳”׳•׳¢׳×׳§ ג“ ׳©׳׳•׳¨ ׳‘׳”׳¢׳¨׳•׳×/׳•׳•׳׳˜׳¡׳׳₪',en:'Copied ג“ save it in Notes/WhatsApp'},
-  backupShow:{he:'׳”׳¦׳’ ׳˜׳§׳¡׳˜ ׳׳’׳™׳‘׳•׳™ ׳™׳“׳ ׳™',en:'Show text for manual backup'},
-  restorePh:{he:'׳”׳“׳‘׳§ ׳›׳׳ ׳˜׳§׳¡׳˜ ׳’׳™׳‘׳•׳™ ׳›׳“׳™ ׳׳©׳—׳–׳¨...',en:'Paste a backup text here to restore...'},
-  restoreBtn:{he:'׳©׳—׳–׳¨ ׳׳”׳˜׳§׳¡׳˜',en:'Restore from text'},
-  restoreDone:{he:'׳©׳•׳—׳–׳¨ ג“',en:'Restored ג“'},
-  restoreBad:{he:'׳”׳˜׳§׳¡׳˜ ׳׳ ׳×׳§׳™׳',en:'Invalid backup text'},
-  restoreConfirm:{he:'׳׳©׳—׳–׳¨? ׳–׳” ׳™׳—׳׳™׳£ ׳׳× ׳”׳ ׳×׳•׳ ׳™׳ ׳”׳ ׳•׳›׳—׳™׳™׳ ׳‘׳׳›׳©׳™׳¨.',en:'Restore? This replaces the current data on this device.'},
-  eqBar:{he:'׳׳•׳˜',en:'Barbell'}, eqPlates:{he:'׳¦׳׳—׳•׳× ׳׳›׳ ׳¦׳“',en:'Plates per side'},
-  eqKb:{he:'׳§׳˜׳׳‘׳',en:'Kettlebell'}, eqDb:{he:'׳“׳׳‘׳׳™׳',en:'Dumbbells'},
-  eqRope:{he:'׳—׳‘׳ ׳§׳₪׳™׳¦׳”',en:'Jump rope'}, eqBox:{he:'׳‘׳•׳§׳¡',en:'Box'},
-  eqBand:{he:'׳’׳•׳׳™׳™׳× ׳”׳×׳ ׳’׳“׳•׳×',en:'Resistance band'}, eqMat:{he:'׳׳–׳¨׳',en:'Mat'},
-  eqRings:{he:'׳˜׳‘׳¢׳•׳×',en:'Rings'}, eqRower:{he:'׳׳›׳•׳ ׳× ׳—׳×׳™׳¨׳”',en:'Rower'},
-  eqStraps:{he:'׳¨׳¦׳•׳¢׳•׳× ׳׳©׳™׳›׳”',en:'Lifting straps'},
-  emptyBar:{he:'׳׳•׳˜ ׳¨׳™׳§, ׳‘׳׳™ ׳¦׳׳—׳•׳×',en:'empty bar, no plates'},
-  target:{he:'׳”׳׳©׳§׳ ׳׳”׳™׳•׳',en:"today's load"},
-  whyFirst:{he:'׳ ׳§׳•׳“׳× ׳₪׳×׳™׳—׳”. ׳׳›׳׳ ׳–׳” ׳׳×׳¢׳“׳›׳ ׳׳₪׳™ ׳׳” ׳©׳×׳¨׳©׳•׳',en:'starting point ג€” updates from what you log'},
-  whyUp:{he:'׳¢׳׳™׳™׳”: ׳₪׳¢׳ ׳§׳•׳“׳׳× {w} ׳•׳”׳©׳׳׳× ׳׳× ׳”׳—׳–׳¨׳•׳×',en:'moving up: last time {w} and you hit the reps'},
-  whySame:{he:'׳›׳׳• ׳₪׳¢׳ ׳§׳•׳“׳׳×, ׳§׳•׳“׳ ׳׳©׳׳™׳׳™׳ ׳—׳–׳¨׳•׳×',en:'same as last time ג€” hit the reps first'},
-  whyStick:{he:'׳”׳׳©׳§׳ ׳©׳¢׳‘׳“׳× ׳׳™׳×׳• ׳׳׳—׳¨׳•׳ ׳”',en:'what you used last time'},
-  allSets:{he:'׳›׳ ׳”׳¡׳˜׳™׳ ׳׳•׳×׳• ׳“׳‘׳¨:',en:'all sets the same:'},
-  detailSets:{he:'׳₪׳™׳¨׳•׳˜ ׳¡׳˜-׳¡׳˜ ג†“',en:'set by set ג†“'},
-  hideDetail:{he:'׳¡׳’׳•׳¨ ׳₪׳™׳¨׳•׳˜ ג†‘',en:'hide detail ג†‘'},
-  setN:{he:'׳¡׳˜',en:'set'}, addSet:{he:'+ ׳¢׳•׳“ ׳¡׳˜',en:'+ add set'},
-  kgEach:{he:'׳§׳´׳’ ׳׳™׳“',en:'kg each'},
-  actual:{he:'׳׳” ׳¢׳©׳™׳×׳™ ׳‘׳₪׳•׳¢׳:',en:'what I actually did:'},
-  stageNotePh:{he:'׳₪׳×׳§ ׳׳¢׳¦׳׳™: ׳׳™׳ ׳”׳׳ ׳”׳—׳׳§ ׳”׳–׳”...',en:'note to self: how this part went...'},
-  menuH:{he:'׳”׳×׳₪׳¨׳™׳˜ ׳©׳ ׳”׳™׳•׳',en:"TODAY'S MENU"},
-  menuMini:{he:'׳×׳₪׳¨׳™׳˜ ׳׳×׳—׳׳£ ׳׳₪׳™ ׳”׳™׳•׳ ׳‘׳©׳‘׳•׳¢. ׳¡׳׳ ׳׳” ׳§׳¨׳” ׳‘׳₪׳•׳¢׳, ׳׳–׳” ׳ ׳‘׳ ׳•׳× ׳”׳×׳•׳‘׳ ׳•׳× ׳׳׳˜׳”.',en:'The menu rotates by weekday. Mark what actually happened ג€” the insights below are built from it.'},
-  mAte:{he:'׳›׳׳×׳•׳›׳ ׳',en:'as planned'},
-  mOther:{he:'׳׳—׳¨',en:'other'},
-  mSkip:{he:'׳“׳™׳׳’׳×׳™',en:'skipped'},
-  mOtherPh:{he:'׳׳” ׳׳›׳׳× ׳‘׳₪׳•׳¢׳?',en:'what did you eat instead?'},
-  dayFoodPh:{he:'׳¢׳•׳“ ׳“׳‘׳¨׳™׳ ׳©׳ ׳›׳ ׳¡׳• ׳”׳™׳•׳ (׳ ׳©׳ ׳•׳©׳™׳, ׳©׳×׳™׳™׳”, ׳™׳¦׳™׳׳•׳× ׳׳”׳×׳•׳›׳ ׳™׳×)...',en:'anything else that went in today (snacks, drinks, off-plan)...'},
-  insightsH:{he:'׳×׳•׳‘׳ ׳•׳× ׳׳”׳¦׳׳—׳×',en:'PLATE INSIGHTS'},
-  insEmpty:{he:'׳¡׳׳ ׳׳¨׳•׳—׳•׳× ׳‘׳×׳₪׳¨׳™׳˜ ׳׳׳¢׳׳”, ׳•׳׳›׳׳ ׳•׳”׳׳׳” ׳™׳•׳₪׳™׳¢׳• ׳₪׳” ׳×׳•׳‘׳ ׳•׳× ׳׳׳™׳×׳™׳•׳× ׳׳”׳ ׳×׳•׳ ׳™׳ ׳©׳׳, ׳™׳•׳ ׳׳—׳¨׳™ ׳™׳•׳.',en:'Mark meals in the menu above ג€” real insights from your own data show up here, day after day.'},
-  foodToday:{he:'׳¡׳•׳׳ ׳• ׳”׳™׳•׳',en:'logged today'},
+  train:{he:'אימון',en:'TRAIN'}, rest:{he:'מנוחה',en:'REST DAY'},
+  today:{he:'היום',en:'Today'}, calendar:{he:'לוח',en:'Board'}, workout:{he:'אימון',en:'WOD'},
+  nutrition:{he:'תזונה',en:'Fuel'}, progress:{he:'התקדמות',en:'Progress'},
+  todayWod:{he:'האימון של היום',en:"TODAY'S SESSION"},
+  openFull:{he:'פתח אימון מלא ←',en:'Open full session →'},
+  suppsToday:{he:'תוספים היום',en:'SUPPLEMENTS'},
+  nutriTitle:{he:'תזונה',en:'FUEL'}, trainDay:{he:'יום אימון',en:'training day'}, restDay:{he:'יום מנוחה',en:'rest day'},
+  kcal:{he:'קל׳',en:'kcal'}, protein:{he:'חלבון',en:'protein'}, fat:{he:'שומן',en:'fat'}, carbs:{he:'פחמ׳',en:'carbs'},
+  boxesShop:{he:'תפריט היום, מעקב ותובנות ←',en:"Today's menu, tracking & insights →"},
+  evening:{he:'הערב',en:'TONIGHT'},
+  eveningTxt:{he:'מגנזיום ב-22:00 · יעד שינה 22:30 (קימה 05:30). השינה היא התקרה של התוצאות.',en:'Magnesium at 22:00 · sleep by 22:30 (up at 05:30). Sleep is the ceiling on your results.'},
+  checkinCta:{he:'צ׳ק-אין יומי',en:'DAILY CHECK-IN'},
+  checkinGo:{he:'משקל, שינה, מצב רוח, כאב ←',en:'Weight, sleep, mood, pain →'},
+  doorToDoor:{he:'דקות דלת לדלת',en:'minutes door to door'},
+  restNote:{he:'יום מנוחה. תן לגוף לבנות. הליכה קלה אם בא לך.',en:'Rest day. Let the body build. Easy walk if you feel like it.'},
+  monoNote:{he:'יום אפור על הלוח = יום שהגוף צובע אותך מחר.',en:'A grey day on the board = the body paints you back tomorrow.'},
+  weightsH:{he:'משקלי עבודה — רשום תוך כדי',en:'WORKING WEIGHTS — log as you go'},
+  weightsMini:{he:'נשמר אוטומטית. השיאים מתעדכנים בעמוד התקדמות.',en:'Saved automatically. PRs update on the Progress page.'},
+  kg:{he:'ק״ג',en:'kg'}, reps:{he:'חז׳',en:'reps'},
+  restBetween:{he:'מנוחה בין סטים',en:'REST BETWEEN SETS'},
+  restLbl:{he:'מנוחה',en:'rest'},
+  finishH:{he:'סיום אימון — דו״ח',en:'SESSION DEBRIEF'},
+  finishQ:{he:'איך היה? מה עשית, תחושה, איך המרפק הגיב',en:'How was it? What you did, how it felt, how the elbow behaved'},
+  finishPh:{he:'כמה מילים ביומן...',en:'A few words for the journal...'},
+  rpe:{he:'RPE · כמה קשה (1-10)',en:'RPE · how hard (1-10)'},
+  elbow:{he:'מרפק (tennis elbow)',en:'Elbow (tennis elbow)'},
+  elbOk:{he:'שקט',en:'quiet'}, elbFelt:{he:'הרגשתי',en:'felt it'}, elbPain:{he:'כאב',en:'pain'},
+  saveLog:{he:'שמור בלוג · סיימתי',en:'SAVE — DONE FOR TODAY'},
+  savedWell:{he:'נשמר ✓ כל הכבוד',en:'Saved ✓ well done'},
+  stop:{he:'⏸ עצור',en:'⏸ stop'},
+  timer:{he:'טיימר',en:'timer'},
+  stopwatch:{he:'סטופר',en:'stopwatch'},
+  finish:{he:'סיום ✓',en:'DONE ✓'},
+  round:{he:'סבב',en:'ROUND'},
+  stopUp:{he:'סופר עולה · עצור כשסיימת',en:'counting up · stop when done'},
+  scoreH:{he:'תוצאת המטקון — על הלוח',en:'METCON SCORE — ON THE BOARD'},
+  scoreMin:{he:'דק׳',en:'min'}, scoreSec:{he:'שנ׳',en:'sec'},
+  scoreRounds:{he:'סבבים',en:'rounds'}, scoreReps:{he:'חזרות',en:'reps'},
+  scoreDone:{he:'הושלמו',en:'done'}, scoreOf:{he:'מתוך',en:'of'},
+  scoreNotePh:{he:'הערה: משקל, סקיילינג, איפה נשבר...',en:'Note: load, scaling, where it broke...'},
+  rx:{he:'RX כמו שכתוב',en:'RX as written'}, scaled:{he:'Scaled מותאם',en:'Scaled'},
+  saveScore:{he:'כתוב על הלוח',en:'CHALK IT UP'},
+  scoreSaved:{he:'נכתב ✓',en:'Chalked ✓'},
+  musicH:{he:'מוזיקה לאימון',en:'BOX SOUNDTRACK'},
+  musicOpen:{he:'פתח נגן ספוטיפיי',en:'Open Spotify player'},
+  musicPh:{he:'הדבק קישור פלייליסט/אלבום מספוטיפיי',en:'Paste a Spotify playlist/album link'},
+  musicSet:{he:'החלף',en:'Set'},
+  musicMini:{he:'הנגן דורש אינטרנט. אפשר להדביק כל קישור ספוטיפיי והוא יישמר.',en:'Player needs internet. Paste any Spotify link and it sticks.'},
+  calKick:{he:'לוח הבלוק · 16.8–12.9',en:'BLOCK BOARD · AUG 16–SEP 12'},
+  calH1a:{he:'הבלוק',en:'THE BLOCK'}, calH1b:{he:'קדימה',en:'AHEAD'},
+  calFocus:{he:'CFFB-01 · 4 שבועות · הקש על יום לפתוח אותו',en:'CFFB-01 · 4 weeks · tap a day to open it'},
+  legend:{he:'מקרא',en:'LEGEND'},
+  legRest:{he:'שינה והתאוששות',en:'sleep & recovery'},
+  nutKick:{he:'תזונה · דל-פחמימה',en:'FUEL · LOW-CARB'},
+  nutH1a:{he:'קופסאות',en:'BOXES'}, nutH1b:{he:'ומאקרו',en:'& MACROS'},
+  boxesH:{he:'הקופסאות',en:'The boxes'},
+  shopH:{he:'רשימת קניות · חמישי',en:'Shopping list · Thursday'},
+  prepH:{he:'הכנה',en:'PREP'},
+  prepTxt:{he:'שישי (לפני הארוחה המשפחתית): לגרל את כל העוף בנינג׳ה (בלי פלטות עישון), קציצות בקר, סיר אורז על הכיריים. קונים בחמישי, מבשלים בשישי. טונה לא צריכה בישול, חלבון מיידי.',en:'Friday (before the family dinner): grill all the chicken in the Ninja (no smoke plates), beef patties, pot of rice on the stove. Shop Thursday, cook Friday. Tuna needs no cooking — instant protein.'},
+  progKick:{he:'התקדמות',en:'PROGRESS'},
+  progH1a:{he:'הנתונים',en:'MY'}, progH1b:{he:'שלי',en:'NUMBERS'},
+  prH:{he:'בורסת השיאים',en:'PR EXCHANGE'},
+  prEmpty:{he:'עוד אין משקלים. רשום משקלי עבודה בתוך האימון, והשיאים יופיעו פה אוטומטית.',en:'No weights yet. Log working weights inside a session and PRs show up here.'},
+  prMini:{he:'השיא = הסט הכי כבד שרשמת. ≈ זו הערכת 1RM (Epley).',en:'PR = heaviest set you logged. ≈ is an Epley e1RM estimate.'},
+  scoresH:{he:'לוח הגיר · תוצאות מטקון',en:'THE CHALKBOARD · METCON SCORES'},
+  scoresEmpty:{he:'הלוח עוד נקי. סיים מטקון, כתוב תוצאה, והיא תישאר פה בגיר.',en:'Board is still clean. Finish a metcon, chalk the score, it stays here.'},
+  checkinH:{he:'צ׳ק-אין היום',en:'CHECK-IN — TODAY'},
+  fWeight:{he:'משקל (ק״ג)',en:'Weight (kg)'}, fSleep:{he:'שעות שינה',en:'Hours of sleep'},
+  fMood:{he:'מצב רוח 1-10',en:'Mood 1-10'}, fPain:{he:'כאב מרפק/גב 0-3',en:'Elbow/back pain 0-3'},
+  saveCheckin:{he:'שמור צ׳ק-אין',en:'SAVE CHECK-IN'}, saved:{he:'נשמר ✓',en:'Saved ✓'},
+  wtrend:{he:'מגמת משקל גוף',en:'BODYWEIGHT TREND'},
+  wtrendEmpty:{he:'צריך לפחות 2 שקילות לגרף. מלא משקל בצ׳ק-אין כל יום ותראה את הקו.',en:'Need at least 2 weigh-ins for the line. Log weight daily in the check-in.'},
+  wStart:{he:'התחלה',en:'start'}, wNow:{he:'עכשיו',en:'now'}, wDiff:{he:'שינוי',en:'change'},
+  histH:{he:'מעקב',en:'TRACKING'},
+  histEmpty:{he:'עוד אין נתונים. מלא צ׳ק-אין ראשון למעלה.',en:'No data yet. Fill your first check-in above.'},
+  thDate:{he:'תאריך',en:'Date'}, thW:{he:'משקל',en:'Weight'}, thS:{he:'שינה',en:'Sleep'}, thM:{he:'מצב',en:'Mood'},
+  lastH:{he:'אימונים אחרונים',en:'RECENT SESSIONS'},
+  elbLog:{ok:{he:'מרפק שקט',en:'elbow quiet'},felt:{he:'מרפק הרגיש',en:'elbow felt'},pain:{he:'מרפק כאב',en:'elbow pain'}},
+  backupH:{he:'גיבוי ושחזור',en:'BACKUP & RESTORE'},
+  backupWhat:{he:'כל הנתונים שלך יושבים על הטלפון הזה בלבד. גבה לפני מעבר מכשיר או ניקוי דפדפן.',en:'All your data lives on this phone only. Back up before switching device or clearing the browser.'},
+  backupCopy:{he:'העתק גיבוי',en:'Copy backup'},
+  backupCopied:{he:'הועתק ✓ שמור בהערות/וואטסאפ',en:'Copied ✓ save it in Notes/WhatsApp'},
+  backupShow:{he:'הצג טקסט לגיבוי ידני',en:'Show text for manual backup'},
+  restorePh:{he:'הדבק כאן טקסט גיבוי כדי לשחזר...',en:'Paste a backup text here to restore...'},
+  restoreBtn:{he:'שחזר מהטקסט',en:'Restore from text'},
+  restoreDone:{he:'שוחזר ✓',en:'Restored ✓'},
+  restoreBad:{he:'הטקסט לא תקין',en:'Invalid backup text'},
+  restoreConfirm:{he:'לשחזר? זה יחליף את הנתונים הנוכחיים במכשיר.',en:'Restore? This replaces the current data on this device.'},
+  eqBar:{he:'מוט',en:'Barbell'}, eqPlates:{he:'צלחות לכל צד',en:'Plates per side'},
+  eqKb:{he:'קטלבל',en:'Kettlebell'}, eqDb:{he:'דמבלים',en:'Dumbbells'},
+  eqRope:{he:'חבל קפיצה',en:'Jump rope'}, eqBox:{he:'בוקס',en:'Box'},
+  eqBand:{he:'גומיית התנגדות',en:'Resistance band'}, eqMat:{he:'מזרן',en:'Mat'},
+  eqRings:{he:'טבעות',en:'Rings'}, eqRower:{he:'מכונת חתירה',en:'Rower'},
+  eqStraps:{he:'רצועות משיכה',en:'Lifting straps'},
+  emptyBar:{he:'מוט ריק, בלי צלחות',en:'empty bar, no plates'},
+  target:{he:'המשקל להיום',en:"today's load"},
+  whyFirst:{he:'נקודת פתיחה. מכאן זה מתעדכן לפי מה שתרשום',en:'starting point — updates from what you log'},
+  whyUp:{he:'עלייה: פעם קודמת {w} והשלמת את החזרות',en:'moving up: last time {w} and you hit the reps'},
+  whySame:{he:'כמו פעם קודמת, קודם משלימים חזרות',en:'same as last time — hit the reps first'},
+  whyStick:{he:'המשקל שעבדת איתו לאחרונה',en:'what you used last time'},
+  allSets:{he:'כל הסטים אותו דבר:',en:'all sets the same:'},
+  detailSets:{he:'פירוט סט-סט ↓',en:'set by set ↓'},
+  hideDetail:{he:'סגור פירוט ↑',en:'hide detail ↑'},
+  setN:{he:'סט',en:'set'}, addSet:{he:'+ עוד סט',en:'+ add set'},
+  kgEach:{he:'ק״ג ליד',en:'kg each'},
+  actual:{he:'מה עשיתי בפועל:',en:'what I actually did:'},
+  stageNotePh:{he:'פתק לעצמי: איך הלך החלק הזה...',en:'note to self: how this part went...'},
+  menuH:{he:'התפריט של היום',en:"TODAY'S MENU"},
+  menuMini:{he:'תפריט מתחלף לפי היום בשבוע. סמן מה קרה בפועל, מזה נבנות התובנות למטה.',en:'The menu rotates by weekday. Mark what actually happened — the insights below are built from it.'},
+  mAte:{he:'כמתוכנן',en:'as planned'},
+  mOther:{he:'אחר',en:'other'},
+  mSkip:{he:'דילגתי',en:'skipped'},
+  mOtherPh:{he:'מה אכלת בפועל?',en:'what did you eat instead?'},
+  dayFoodPh:{he:'עוד דברים שנכנסו היום (נשנושים, שתייה, יציאות מהתוכנית)...',en:'anything else that went in today (snacks, drinks, off-plan)...'},
+  insightsH:{he:'תובנות מהצלחת',en:'PLATE INSIGHTS'},
+  insEmpty:{he:'סמן ארוחות בתפריט למעלה, ומכאן והלאה יופיעו פה תובנות אמיתיות מהנתונים שלך, יום אחרי יום.',en:'Mark meals in the menu above — real insights from your own data show up here, day after day.'},
+  foodToday:{he:'סומנו היום',en:'logged today'},
 };
 function t(k){ return tx(T[k]); }
 
-const HE_DOW = ['׳¨׳׳©׳•׳','׳©׳ ׳™','׳©׳׳™׳©׳™','׳¨׳‘׳™׳¢׳™','׳—׳׳™׳©׳™','׳©׳™׳©׳™','׳©׳‘׳×'];
+const HE_DOW = ['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
 const EN_DOW = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 function dowName(d){ return LANG==='he' ? HE_DOW[d.getDay()] : EN_DOW[d.getDay()]; }
 
@@ -137,81 +137,81 @@ function dowName(d){ return LANG==='he' ? HE_DOW[d.getDay()] : EN_DOW[d.getDay()
 const B = (he,en)=>({he,en});
 
 const WORKOUTS = {
-  A: { code:'A', name:'FIRST STEP', focus:B('׳¨׳’׳׳™׳™׳ ֲ· ׳¡׳§׳•׳•׳׳˜','Legs ֲ· squat'), train:true,
-    lifts:[{name:'Front Squat',scheme:'5ֳ—5 ׳›׳™׳•׳',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
-    equip:[{t:'bar',lift:'Front Squat'},{t:'kb',note:B('12 ׳§׳´׳’','12 kg')},{t:'rope'},{t:'mat',note:B('׳׳§׳•׳¨ ׳‘׳¡׳•׳£','for the core work')}], stages:[
-    {tag:'SET', t:4, title:B('׳”׳›׳ ׳”','setup'), d:B('׳׳•׳˜ ׳¨׳™׳§+׳¦׳׳—׳•׳× ׳§׳˜׳ ׳•׳×, ׳§׳˜׳׳‘׳ 12, ׳—׳‘׳, ׳׳–׳¨׳. ׳׳›׳×׳•׳‘ ׳¢׳ ׳”׳׳•׳—: Front Squat, ׳¡׳˜ ׳¨׳׳©׳•׳ 20 ׳§׳´׳’.','Empty bar + small plates, 12 kg KB, rope, mat. Chalk it: Front Squat, first set 20 kg.')},
-    {tag:'WARM',t:7, title:B('׳—׳™׳׳•׳','warm-up'), d:B('׳—׳‘׳ 2 ׳“׳§׳³ ׳ ׳™׳ ׳•׳—, cat-cow ֳ—8, world\'s greatest stretch ֳ—5 ׳׳¦׳“, bodyweight squat ֳ—10 (׳¢׳¦׳™׳¨׳” ׳‘׳×׳—׳×׳™׳×, ׳׳”׳§׳©׳™׳‘ ׳׳‘׳¨׳), front squat ׳¨׳™׳§ ֳ—8.','2 min easy rope, cat-cow ֳ—8, world\'s greatest stretch ֳ—5/side, bodyweight squat ֳ—10 (pause low, listen to the knee), empty-bar front squat ֳ—8.')},
-    {tag:'STR', t:15,title:B('׳›׳•׳—','strength'), d:B('Front Squat 5ֳ—5. ׳¡׳˜ 1 ׳‘׳׳•׳˜ ׳¨׳™׳§, ׳–׳” ׳”׳›׳™׳•׳. ׳¡׳˜׳™׳ 2-5 ׳‘׳˜׳•׳•׳— 25-32 ׳§׳´׳’, ׳׳ ׳•׳—׳” 90 ׳©׳ ׳³. ׳¢׳•׳׳§ ׳¢׳“ ׳׳™׳₪׳” ׳©׳”׳‘׳¨׳ ׳©׳§׳˜׳”, ׳׳¨׳₪׳§׳™׳ ׳’׳‘׳•׳”׳™׳.','Front Squat 5ֳ—5. Set 1 empty bar ג€” calibration. Sets 2-5 at 25-32 kg, rest 90s. Depth where the knee stays quiet, elbows high.')},
-    {tag:'ACC', t:7, title:B('׳¢׳–׳¨ + ׳§׳•׳¨','accessory + core'), d:B('Glute Bridge 3ֳ—12 ֲ· Dead Bug 3ֳ—8 ׳׳¦׳“ ֲ· Side Plank 2ֳ—25 ׳©׳ ׳³ ׳׳¦׳“.','Glute Bridge 3ֳ—12 ֲ· Dead Bug 3ֳ—8/side ֲ· Side Plank 2ֳ—25s/side.')},
-    {tag:'WOD', t:9, title:B('׳׳˜׳§׳•׳ ֲ· Intervals 30/30 ֳ—9','Metcon ֲ· Intervals 30/30 ֳ—9'), d:B('׳¡׳™׳¨׳•׳’׳™׳ Air Squat / ׳—׳‘׳ (׳‘׳׳™ ׳“׳׳‘׳ ׳׳ ׳“׳¨׳¡). ׳§׳¦׳‘ ׳©׳׳₪׳©׳¨ ׳׳“׳‘׳¨ ׳‘׳• ׳׳©׳₪׳˜.','Alternate Air Squat / jump rope (no double-unders). A pace you can talk at.'),
-      timer:{mode:'interval', label:'Intervals 30/30', rounds:18, phases:[{label:B('׳¢׳‘׳•׳“׳”','WORK'),sec:30,work:1},{label:B('׳׳ ׳•׳—׳”','REST'),sec:30,work:0}], cycle:['Air Squat','Jump Rope']}},
-    {tag:'DOWN',t:3, title:B('׳©׳—׳¨׳•׳¨','cool-down'), d:B('couch stretch 45 ׳©׳ ׳³ ׳׳¦׳“, pigeon 45 ׳©׳ ׳³ ׳׳¦׳“, 10 ׳ ׳©׳™׳׳•׳×. ׳׳¨׳©׳•׳ ׳‘׳׳•׳’.','Couch stretch 45s/side, pigeon 45s/side, 10 breaths. Then log it.')},
+  A: { code:'A', name:'FIRST STEP', focus:B('רגליים · סקוואט','Legs · squat'), train:true,
+    lifts:[{name:'Front Squat',scheme:'5×5 כיול',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
+    equip:[{t:'bar',lift:'Front Squat'},{t:'kb',note:B('12 ק״ג','12 kg')},{t:'rope'},{t:'mat',note:B('לקור בסוף','for the core work')}], stages:[
+    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט ריק+צלחות קטנות, קטלבל 12, חבל, מזרן. לכתוב על הלוח: Front Squat, סט ראשון 20 ק״ג.','Empty bar + small plates, 12 kg KB, rope, mat. Chalk it: Front Squat, first set 20 kg.')},
+    {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('חבל 2 דק׳ נינוח, cat-cow ×8, world\'s greatest stretch ×5 לצד, bodyweight squat ×10 (עצירה בתחתית, להקשיב לברך), front squat ריק ×8.','2 min easy rope, cat-cow ×8, world\'s greatest stretch ×5/side, bodyweight squat ×10 (pause low, listen to the knee), empty-bar front squat ×8.')},
+    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Front Squat 5×5. סט 1 במוט ריק, זה הכיול. סטים 2-5 בטווח 25-32 ק״ג, מנוחה 90 שנ׳. עומק עד איפה שהברך שקטה, מרפקים גבוהים.','Front Squat 5×5. Set 1 empty bar — calibration. Sets 2-5 at 25-32 kg, rest 90s. Depth where the knee stays quiet, elbows high.')},
+    {tag:'ACC', t:7, title:B('עזר + קור','accessory + core'), d:B('Glute Bridge 3×12 · Dead Bug 3×8 לצד · Side Plank 2×25 שנ׳ לצד.','Glute Bridge 3×12 · Dead Bug 3×8/side · Side Plank 2×25s/side.')},
+    {tag:'WOD', t:9, title:B('מטקון · Intervals 30/30 ×9','Metcon · Intervals 30/30 ×9'), d:B('סירוגין Air Squat / חבל (בלי דאבל אנדרס). קצב שאפשר לדבר בו משפט.','Alternate Air Squat / jump rope (no double-unders). A pace you can talk at.'),
+      timer:{mode:'interval', label:'Intervals 30/30', rounds:18, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Air Squat','Jump Rope']}},
+    {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('couch stretch 45 שנ׳ לצד, pigeon 45 שנ׳ לצד, 10 נשימות. לרשום בלוג.','Couch stretch 45s/side, pigeon 45s/side, 10 breaths. Then log it.')},
   ]},
-  B: { code:'B', name:'THE NUMBER', focus:B('׳¢׳׳™׳•׳ ֲ· ׳“׳—׳™׳₪׳” ׳•׳׳©׳™׳›׳”','Upper ֲ· press & pull'), train:true,
-    lifts:[{name:'Strict Press',scheme:'5ֳ—5 (׳©׳‘׳•׳¢ ׳–׳•׳’׳™: Bench Press)',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
-    accLoads:[{name:'Bent-over Row',scheme:'3ֳ—10 ׳ ׳™׳˜׳¨׳׳™',sets:3,reps:10,start:7,inc:1,equip:'db',each:true}],
-    equip:[{t:'bar',lift:'Strict Press / Bench'},{t:'db',note:B('7 ׳§׳´׳’ ׳׳׳˜׳§׳•׳','7 kg for the metcon')},{t:'band',note:B('Face Pull + ׳¨׳”׳׳‘ ׳׳¨׳₪׳§','Face Pulls + elbow rehab')},{t:'rope'}], stages:[
-    {tag:'SET', t:4, title:B('׳”׳›׳ ׳”','setup'), d:B('׳׳•׳˜+׳¦׳׳—׳•׳× ׳§׳׳•׳×, ׳“׳׳‘׳׳™׳ 7 ׳§׳´׳’, ׳’׳•׳׳™׳™׳”. ׳©׳‘׳•׳¢ ׳–׳•׳’׳™ (2,4): ׳¡׳₪׳¡׳ ׳׳‘׳ ׳¥׳³. ׳׳›׳×׳•׳‘ ׳¢׳ ׳”׳׳•׳—: ׳™׳¢׳“ 6 ׳¡׳‘׳‘׳™׳.','Bar + light plates, 7 kg DBs, band. Even weeks (2,4): bench set up. Chalk it: target 6 rounds.')},
-    {tag:'WARM',t:7, title:B('׳—׳™׳׳•׳','warm-up'), d:B('2 ׳“׳§׳³ ׳—׳‘׳ ׳׳• ׳©׳׳˜׳, band pull-apart ֳ—15, scap push-up ֳ—10, band dislocate ֳ—10, press ׳¨׳™׳§ ֳ—8.','2 min rope or shuttle, band pull-aparts ֳ—15, scap push-ups ֳ—10, dislocates ֳ—10, empty-bar press ֳ—8.')},
-    {tag:'STR', t:15,title:B('׳›׳•׳—','strength'), d:B('׳©׳‘׳•׳¢ 1,3: Strict Press 5ֳ—5 (׳¡׳˜ 1 ׳׳•׳˜ ׳¨׳™׳§, ׳׳– 22-27 ׳§׳´׳’). ׳©׳‘׳•׳¢ 2,4: Bench Press ׳¢׳ ׳׳•׳˜ 5ֳ—5. ׳׳‘׳“ = ׳‘׳׳™ ׳›׳™׳©׳׳•׳, ׳—׳–׳¨׳” ׳׳—׳× ׳×׳׳™׳“ ׳ ׳©׳׳¨׳× ׳‘׳§׳ ׳”. ׳•׳׳– Strict Pull-up 3ֳ—3-5, ׳‘׳׳™ ׳§׳™׳₪׳™׳ ׳’. ׳׳•׳× ׳׳”׳׳¨׳₪׳§ = ׳”׳₪׳•׳׳׳₪׳™׳ ׳™׳•׳¦׳׳™׳.','Weeks 1,3: Strict Press 5ֳ—5 (set 1 empty, then 22-27 kg). Weeks 2,4: barbell Bench Press 5ֳ—5. Training alone = no failure reps, always one left in the tank. Then Strict Pull-up 3ֳ—3-5, no kipping. Any elbow signal = pullups out.')},
-    {tag:'ACC', t:7, title:B('׳¢׳–׳¨ + ׳§׳•׳¨','accessory + core'), d:B('Bent-over Row 3ֳ—10 ׳ ׳™׳˜׳¨׳׳™ ֲ· Face Pull 3ֳ—15 ֲ· eccentric wrist extension 2ֳ—15 (׳¨׳”׳׳‘ ׳׳¨׳₪׳§).','Bent-over Row 3ֳ—10 neutral ֲ· Face Pull 3ֳ—15 ֲ· eccentric wrist extension 2ֳ—15 (elbow rehab).')},
-    {tag:'WOD', t:9, title:B('׳׳˜׳§׳•׳ ֲ· AMRAP 8 ֲ· ׳”׳׳‘׳—׳','Metcon ֲ· AMRAP 8 ֲ· the test'), d:B('25 ׳§׳₪׳™׳¦׳•׳× ׳—׳‘׳ (׳׳• 2 ׳©׳׳˜׳׳™׳ ׳©׳ 20 ׳׳³) + 10 Push Press ׳“׳׳‘׳׳™׳ 7 ׳§׳´׳’. ׳™׳¢׳“: 6 ׳¡׳‘׳‘׳™׳. ׳‘׳™׳™׳¡׳׳™׳™׳: 5 (׳§׳₪׳¨׳™׳¡׳™׳, 9.8).','25 rope skips (or 2ֳ—20 m shuttles) + 10 DB Push Press at 7 kg. Target: 6 rounds. Baseline: 5 (Cyprus, Aug 9).'),
+  B: { code:'B', name:'THE NUMBER', focus:B('עליון · דחיפה ומשיכה','Upper · press & pull'), train:true,
+    lifts:[{name:'Strict Press',scheme:'5×5 (שבוע זוגי: Bench Press)',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
+    accLoads:[{name:'Bent-over Row',scheme:'3×10 ניטרלי',sets:3,reps:10,start:7,inc:1,equip:'db',each:true}],
+    equip:[{t:'bar',lift:'Strict Press / Bench'},{t:'db',note:B('7 ק״ג למטקון','7 kg for the metcon')},{t:'band',note:B('Face Pull + רהאב מרפק','Face Pulls + elbow rehab')},{t:'rope'}], stages:[
+    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט+צלחות קלות, דמבלים 7 ק״ג, גומייה. שבוע זוגי (2,4): ספסל לבנץ׳. לכתוב על הלוח: יעד 6 סבבים.','Bar + light plates, 7 kg DBs, band. Even weeks (2,4): bench set up. Chalk it: target 6 rounds.')},
+    {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('2 דק׳ חבל או שאטל, band pull-apart ×15, scap push-up ×10, band dislocate ×10, press ריק ×8.','2 min rope or shuttle, band pull-aparts ×15, scap push-ups ×10, dislocates ×10, empty-bar press ×8.')},
+    {tag:'STR', t:15,title:B('כוח','strength'), d:B('שבוע 1,3: Strict Press 5×5 (סט 1 מוט ריק, אז 22-27 ק״ג). שבוע 2,4: Bench Press עם מוט 5×5. לבד = בלי כישלון, חזרה אחת תמיד נשארת בקנה. ואז Strict Pull-up 3×3-5, בלי קיפינג. אות מהמרפק = הפולאפים יוצאים.','Weeks 1,3: Strict Press 5×5 (set 1 empty, then 22-27 kg). Weeks 2,4: barbell Bench Press 5×5. Training alone = no failure reps, always one left in the tank. Then Strict Pull-up 3×3-5, no kipping. Any elbow signal = pullups out.')},
+    {tag:'ACC', t:7, title:B('עזר + קור','accessory + core'), d:B('Bent-over Row 3×10 ניטרלי · Face Pull 3×15 · eccentric wrist extension 2×15 (רהאב מרפק).','Bent-over Row 3×10 neutral · Face Pull 3×15 · eccentric wrist extension 2×15 (elbow rehab).')},
+    {tag:'WOD', t:9, title:B('מטקון · AMRAP 8 · המבחן','Metcon · AMRAP 8 · the test'), d:B('25 קפיצות חבל (או 2 שאטלים של 20 מ׳) + 10 Push Press דמבלים 7 ק״ג. יעד: 6 סבבים. בייסליין: 5 (קפריסין, 9.8).','25 rope skips (or 2×20 m shuttles) + 10 DB Push Press at 7 kg. Target: 6 rounds. Baseline: 5 (Cyprus, Aug 9).'),
       timer:{mode:'amrap', label:'AMRAP 8', sec:480}},
-    {tag:'DOWN',t:3, title:B('׳©׳—׳¨׳•׳¨','cool-down'), d:B('׳׳×׳™׳—׳× ׳—׳–׳” ׳‘׳₪׳×׳— ׳“׳׳×, lat stretch, thoracic rotation ֳ—5 ׳׳¦׳“.','Doorway chest stretch, lat stretch, thoracic rotation ֳ—5/side.')},
+    {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('מתיחת חזה בפתח דלת, lat stretch, thoracic rotation ×5 לצד.','Doorway chest stretch, lat stretch, thoracic rotation ×5/side.')},
   ]},
-  X: { code:'X', name:'BONUS', focus:B('׳‘׳•׳ ׳•׳¡ ֲ· ׳§׳•׳ ׳“׳™׳©׳ ׳™׳ ׳’ ׳•׳׳™׳‘׳”, 30 ׳“׳§׳³, ׳¨׳©׳•׳×','Bonus ֲ· conditioning & core, 30 min, optional'), train:true,
+  X: { code:'X', name:'BONUS', focus:B('בונוס · קונדישנינג וליבה, 30 דק׳, רשות','Bonus · conditioning & core, 30 min, optional'), train:true,
     wodLoads:[{name:'KB Swing',start:12,equip:'kb',sticky:true}],
-    equip:[{t:'kb',lift:'KB Swing'},{t:'box',note:B('׳׳“׳¨׳’׳” ׳ ׳׳•׳›׳”','low step')},{t:'rope'},{t:'mat'}], stages:[
-    {tag:'SET', t:3, title:B('׳”׳›׳ ׳”','setup'), d:B('׳§׳˜׳׳‘׳ 12, ׳׳–׳¨׳, ׳—׳‘׳. ׳–׳”׳•. ׳׳ ׳”׳‘׳•׳§׳¨ ׳ ׳—׳˜׳£, ׳׳“׳׳’׳™׳ ׳‘׳׳™ ׳—׳•׳‘.','12 kg KB, mat, rope. That\'s it. Morning got eaten? Skip, no debt.')},
-    {tag:'WARM',t:5, title:B('׳—׳™׳׳•׳','warm-up'), d:B('10 inchworm, 10 air squat, 10 band pull-apart, 30 ׳©׳ ׳³ ׳—׳‘׳ ֳ—2.','10 inchworms, 10 air squats, 10 band pull-aparts, 2ֳ—30s rope.')},
-    {tag:'WOD', t:19,title:B('׳’׳•׳£ ׳”׳׳™׳׳•׳ ֲ· EMOM 18','Main ֲ· EMOM 18'), d:B('׳“׳§׳” 1: 12 KB Swing ׳¨׳•׳¡׳™ ֲ· ׳“׳§׳” 2: 10 Box Step-up ׳׳¨׳’׳ ֲ· ׳“׳§׳” 3: 30 ׳©׳ ׳³ Hollow Hold ׳׳• Plank. ֳ—6 ׳¡׳‘׳‘׳™׳. ׳“׳§׳” ׳ ׳¡׳’׳¨׳× ׳׳¢׳ 40 ׳©׳ ׳³? ׳׳•׳¨׳™׳“׳™׳ ׳—׳–׳¨׳•׳×.','Min 1: 12 Russian KB Swings ֲ· min 2: 10 Box Step-ups/leg ֲ· min 3: 30s Hollow Hold or Plank. ֳ—6 rounds. A minute past 40s of work? Cut reps.'),
-      timer:{mode:'interval', label:'EMOM 18', rounds:18, phases:[{label:B('׳“׳§׳”','MINUTE'),sec:60,work:1}], cycle:[B('12 KB Swing','12 KB Swings'),B('10 Step-up ׳׳¨׳’׳','10 Step-ups/leg'),B('30 ׳©׳ ׳³ Hollow/Plank','30s Hollow/Plank')]}},
-    {tag:'DOWN',t:3, title:B('׳©׳—׳¨׳•׳¨','cool-down'), d:B('child\'s pose, ׳׳×׳™׳—׳× ׳׳›׳•׳₪׳₪׳™ ׳™׳¨׳, ׳ ׳©׳™׳׳•׳×. ׳©׳•׳¨׳” ׳‘׳™׳•׳׳ ׳›׳•׳׳ ׳×׳—׳•׳©׳× ׳‘׳¨׳.','Child\'s pose, hip flexor stretch, breathing. Log it, knee note included.')},
+    equip:[{t:'kb',lift:'KB Swing'},{t:'box',note:B('מדרגה נמוכה','low step')},{t:'rope'},{t:'mat'}], stages:[
+    {tag:'SET', t:3, title:B('הכנה','setup'), d:B('קטלבל 12, מזרן, חבל. זהו. אם הבוקר נחטף, מדלגים בלי חוב.','12 kg KB, mat, rope. That\'s it. Morning got eaten? Skip, no debt.')},
+    {tag:'WARM',t:5, title:B('חימום','warm-up'), d:B('10 inchworm, 10 air squat, 10 band pull-apart, 30 שנ׳ חבל ×2.','10 inchworms, 10 air squats, 10 band pull-aparts, 2×30s rope.')},
+    {tag:'WOD', t:19,title:B('גוף האימון · EMOM 18','Main · EMOM 18'), d:B('דקה 1: 12 KB Swing רוסי · דקה 2: 10 Box Step-up לרגל · דקה 3: 30 שנ׳ Hollow Hold או Plank. ×6 סבבים. דקה נסגרת מעל 40 שנ׳? מורידים חזרות.','Min 1: 12 Russian KB Swings · min 2: 10 Box Step-ups/leg · min 3: 30s Hollow Hold or Plank. ×6 rounds. A minute past 40s of work? Cut reps.'),
+      timer:{mode:'interval', label:'EMOM 18', rounds:18, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('12 KB Swing','12 KB Swings'),B('10 Step-up לרגל','10 Step-ups/leg'),B('30 שנ׳ Hollow/Plank','30s Hollow/Plank')]}},
+    {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('child\'s pose, מתיחת מכופפי ירך, נשימות. שורה ביומן כולל תחושת ברך.','Child\'s pose, hip flexor stretch, breathing. Log it, knee note included.')},
   ]},
-  C: { code:'C', name:'ANCHOR', focus:B('׳¦׳™׳¨ ֲ· ׳’׳‘ ׳×׳—׳×׳•׳','Hinge ֲ· lower back'), train:true,
-    lifts:[{name:'Deadlift',scheme:'5ֳ—3 ׳›׳™׳•׳',sets:5,reps:3,start:40,inc:5,equip:'bar'}],
-    equip:[{t:'bar',lift:'Deadlift',note:B('trap bar ׳׳ ׳™׳©','trap bar if available')},{t:'straps'},{t:'kb'},{t:'rope',note:B('׳׳׳˜׳§׳•׳','for the metcon')},{t:'mat',note:B('׳׳§׳•׳¨','for the core work')}], stages:[
-    {tag:'SET', t:4, title:B('׳”׳›׳ ׳”','setup'), d:B('׳׳•׳˜ (trap bar ׳׳ ׳™׳©)+׳¦׳׳—׳•׳×, straps, ׳§׳˜׳׳‘׳, ׳׳–׳¨׳. ׳׳›׳×׳•׳‘ ׳¢׳ ׳”׳׳•׳—: Deadlift, ׳¡׳˜ ׳¨׳׳©׳•׳ 40 ׳§׳´׳’.','Bar (trap bar if available) + plates, straps, KB, mat. Chalk it: Deadlift, first set 40 kg.')},
-    {tag:'WARM',t:7, title:B('׳—׳™׳׳•׳','warm-up'), d:B('2 ׳“׳§׳³ ׳—׳‘׳, hip hinge drill ׳¢׳ ׳׳§׳ ֳ—10, glute bridge ֳ—15, good morning ׳¨׳™׳§ ֳ—10, ׳“׳“׳׳™׳₪׳˜ ׳§׳ ֳ—8.','2 min rope, stick hip-hinge drill ֳ—10, glute bridge ֳ—15, empty good mornings ֳ—10, light deadlift ֳ—8.')},
-    {tag:'STR', t:15,title:B('׳›׳•׳—','strength'), d:B('Deadlift 5ֳ—3. ׳¡׳˜ 1 ׳‘-40 ׳§׳´׳’, ׳›׳™׳•׳. ׳¡׳˜׳™׳ 2-5 ׳‘׳˜׳•׳•׳— 45-55, straps ׳׳”׳¡׳˜ ׳”׳¨׳׳©׳•׳, ׳׳ ׳•׳—׳” 2 ׳“׳§׳³. ׳”׳’׳‘ ׳׳×׳¢׳’׳? ׳”׳¡׳˜ ׳ ׳’׳׳¨ ׳©׳.','Deadlift 5ֳ—3. Set 1 at 40 kg ג€” calibration. Sets 2-5 at 45-55, straps from set one, rest 2 min. Back rounds? Set ends there.')},
-    {tag:'ACC', t:7, title:B('׳¢׳–׳¨ + ׳§׳•׳¨','accessory + core'), d:B('Single-Leg Glute Bridge 3ֳ—10 ׳׳¦׳“ ֲ· Bird Dog 3ֳ—8 ׳׳¦׳“ ֲ· Pallof Press 3ֳ—10 ׳׳¦׳“.','Single-Leg Glute Bridge 3ֳ—10/side ֲ· Bird Dog 3ֳ—8/side ֲ· Pallof Press 3ֳ—10/side.')},
-    {tag:'WOD', t:9, title:B('׳׳˜׳§׳•׳ ֲ· For Time 21-15-9','Metcon ֲ· For Time 21-15-9'), d:B('Air Squat + Sit-up, ׳•׳‘׳¡׳•׳£ ׳›׳ ׳¡׳‘׳‘ 20 ׳§׳₪׳™׳¦׳•׳× ׳—׳‘׳. ׳™׳¢׳“: ׳׳×׳—׳× ׳-8 ׳“׳§׳³.','Air Squats + Sit-ups, 20 rope skips after each round. Target: under 8 min.'),
+  C: { code:'C', name:'ANCHOR', focus:B('ציר · גב תחתון','Hinge · lower back'), train:true,
+    lifts:[{name:'Deadlift',scheme:'5×3 כיול',sets:5,reps:3,start:40,inc:5,equip:'bar'}],
+    equip:[{t:'bar',lift:'Deadlift',note:B('trap bar אם יש','trap bar if available')},{t:'straps'},{t:'kb'},{t:'rope',note:B('למטקון','for the metcon')},{t:'mat',note:B('לקור','for the core work')}], stages:[
+    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט (trap bar אם יש)+צלחות, straps, קטלבל, מזרן. לכתוב על הלוח: Deadlift, סט ראשון 40 ק״ג.','Bar (trap bar if available) + plates, straps, KB, mat. Chalk it: Deadlift, first set 40 kg.')},
+    {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('2 דק׳ חבל, hip hinge drill עם מקל ×10, glute bridge ×15, good morning ריק ×10, דדליפט קל ×8.','2 min rope, stick hip-hinge drill ×10, glute bridge ×15, empty good mornings ×10, light deadlift ×8.')},
+    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Deadlift 5×3. סט 1 ב-40 ק״ג, כיול. סטים 2-5 בטווח 45-55, straps מהסט הראשון, מנוחה 2 דק׳. הגב מתעגל? הסט נגמר שם.','Deadlift 5×3. Set 1 at 40 kg — calibration. Sets 2-5 at 45-55, straps from set one, rest 2 min. Back rounds? Set ends there.')},
+    {tag:'ACC', t:7, title:B('עזר + קור','accessory + core'), d:B('Single-Leg Glute Bridge 3×10 לצד · Bird Dog 3×8 לצד · Pallof Press 3×10 לצד.','Single-Leg Glute Bridge 3×10/side · Bird Dog 3×8/side · Pallof Press 3×10/side.')},
+    {tag:'WOD', t:9, title:B('מטקון · For Time 21-15-9','Metcon · For Time 21-15-9'), d:B('Air Squat + Sit-up, ובסוף כל סבב 20 קפיצות חבל. יעד: מתחת ל-8 דק׳.','Air Squats + Sit-ups, 20 rope skips after each round. Target: under 8 min.'),
       timer:{mode:'fortime', label:'For Time', cap:540}},
-    {tag:'DOWN',t:3, title:B('׳©׳—׳¨׳•׳¨','cool-down'), d:B('hamstring stretch ׳‘׳©׳›׳™׳‘׳”, ׳©׳—׳¨׳•׳¨ ׳’׳‘ ׳×׳—׳×׳•׳, ׳ ׳©׳™׳׳•׳×.','Lying hamstring stretch, lower-back release, breathing.')},
+    {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('hamstring stretch בשכיבה, שחרור גב תחתון, נשימות.','Lying hamstring stretch, lower-back release, breathing.')},
   ]},
-  REST: { code:'R', name:B('׳׳ ׳•׳—׳”','REST'), focus:B('׳”׳’׳•׳£ ׳‘׳•׳ ׳” ׳¢׳›׳©׳™׳•','The body is building now'), train:false, stages:[
-    {tag:'REST',t:0, title:B('׳™׳•׳ ׳׳ ׳•׳—׳”','rest day'), d:B('׳”׳׳™׳›׳” ׳§׳׳” ׳׳• ׳׳×׳™׳—׳•׳× ׳׳ ׳‘׳ ׳׳, ׳‘׳׳™ ׳׳›׳₪׳•׳×. ׳©׳™׳ ׳” ׳”׳™׳ ׳”׳׳™׳׳•׳ ׳©׳ ׳”׳™׳•׳.','Easy walk or stretching if you feel like it, never forced. Sleep is today\'s workout.')},
+  REST: { code:'R', name:B('מנוחה','REST'), focus:B('הגוף בונה עכשיו','The body is building now'), train:false, stages:[
+    {tag:'REST',t:0, title:B('יום מנוחה','rest day'), d:B('הליכה קלה או מתיחות אם בא לך, בלי לכפות. שינה היא האימון של היום.','Easy walk or stretching if you feel like it, never forced. Sleep is today\'s workout.')},
   ]},
 };
 
 const SPECIAL = {
-  '2026-07-01': { code:'1', name:'FIRST TOUCH', focus:B('׳™׳•׳ ׳₪׳×׳™׳—׳” ֲ· Re-Entry 50-60%','Opening day ֲ· re-entry 50-60%'), train:true,
-    lifts:[{name:'Front Squat',scheme:'5ֳ—5 learn',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
-    equip:[{t:'bar',lift:'Front Squat',note:B('׳§׳, ׳׳•׳׳“׳™׳ ׳×׳ ׳•׳¢׳”','light ג€” skill work')},{t:'rope'},{t:'band'},{t:'rower',note:B('׳׳׳˜׳§׳•׳','for the metcon')},{t:'mat'}], stages:[
-    {tag:'SET', t:4, title:B('׳”׳›׳ ׳”','setup'), d:B('׳”׳™׳›׳¨׳•׳× ׳¢׳ ׳”׳‘׳•׳§׳¡: ׳׳™׳₪׳” ׳”׳׳•׳˜׳•׳×, ׳”׳¦׳׳—׳•׳×, ׳”׳—׳‘׳. ׳׳”׳•׳¦׳™׳ ׳׳•׳˜ ׳¨׳™׳§/׳§׳.','Meet the box: where the bars, plates and rope live. Grab an empty/light bar.')},
-    {tag:'WARM',t:7, title:B('׳—׳™׳׳•׳','warm-up'), d:B('3 ׳“׳§׳³ ׳—׳‘׳ ׳§׳, cat-cow, band pull-apart, scap push-ups, bodyweight squat ֳ—10.','3 min easy rope, cat-cow, band pull-aparts, scap push-ups, bodyweight squat ֳ—10.')},
-    {tag:'STR', t:16,title:B('׳›׳•׳—','strength'), d:B('Front Squat ׳׳™׳׳•׳“ ׳×׳ ׳•׳¢׳” 5ֳ—5 ׳‘׳׳•׳˜ ׳¨׳™׳§/׳§׳ (20-30 ׳§׳´׳’). depth ׳׳׳, ׳’׳‘ ׳–׳§׳•׳£. ׳׳•׳׳“׳™׳, ׳׳ ׳׳¢׳׳™׳¡׳™׳.','Front Squat skill work 5ֳ—5 with an empty/light bar (20-30 kg). Full depth, upright back. Learning, not loading.')},
-    {tag:'ACC', t:6, title:B('׳¢׳–׳¨ + ׳§׳•׳¨','accessory + core'), d:B('Glute Bridge 3ֳ—12 ֲ· Dead Bug 3ֳ—8 ׳׳¦׳“.','Glute Bridge 3ֳ—12 ֲ· Dead Bug 3ֳ—8 per side.')},
-    {tag:'WOD', t:9, title:B('׳׳˜׳§׳•׳ ֲ· Intervals 30/30 ֳ—6','Metcon ֲ· Intervals 30/30 ֳ—6'), d:B('׳¡׳™׳¨׳•׳’׳™׳ Row / Air Squat. ׳§׳-׳‘׳™׳ ׳•׳ ׳™, ׳׳”׳–׳™׳¢ ׳‘׳׳™ ׳׳§׳¨׳•׳¡.','Alternate Row / Air Squat. Easy-moderate ג€” sweat, don\'t collapse.'),
-      timer:{mode:'interval', label:'Intervals 30/30', rounds:12, phases:[{label:B('׳¢׳‘׳•׳“׳”','WORK'),sec:30,work:1}], cycle:['Row','Air Squat']}},
-    {tag:'DOWN',t:3, title:B('׳©׳—׳¨׳•׳¨','cool-down'), d:B('׳׳×׳™׳—׳× hip flexors, couch stretch, 10 ׳ ׳©׳™׳׳•׳× ׳¢׳׳•׳§׳•׳×.','Hip flexor stretch, couch stretch, 10 deep breaths.')},
+  '2026-07-01': { code:'1', name:'FIRST TOUCH', focus:B('יום פתיחה · Re-Entry 50-60%','Opening day · re-entry 50-60%'), train:true,
+    lifts:[{name:'Front Squat',scheme:'5×5 learn',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
+    equip:[{t:'bar',lift:'Front Squat',note:B('קל, לומדים תנועה','light — skill work')},{t:'rope'},{t:'band'},{t:'rower',note:B('למטקון','for the metcon')},{t:'mat'}], stages:[
+    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('היכרות עם הבוקס: איפה המוטות, הצלחות, החבל. להוציא מוט ריק/קל.','Meet the box: where the bars, plates and rope live. Grab an empty/light bar.')},
+    {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('3 דק׳ חבל קל, cat-cow, band pull-apart, scap push-ups, bodyweight squat ×10.','3 min easy rope, cat-cow, band pull-aparts, scap push-ups, bodyweight squat ×10.')},
+    {tag:'STR', t:16,title:B('כוח','strength'), d:B('Front Squat לימוד תנועה 5×5 במוט ריק/קל (20-30 ק״ג). depth מלא, גב זקוף. לומדים, לא מעמיסים.','Front Squat skill work 5×5 with an empty/light bar (20-30 kg). Full depth, upright back. Learning, not loading.')},
+    {tag:'ACC', t:6, title:B('עזר + קור','accessory + core'), d:B('Glute Bridge 3×12 · Dead Bug 3×8 לצד.','Glute Bridge 3×12 · Dead Bug 3×8 per side.')},
+    {tag:'WOD', t:9, title:B('מטקון · Intervals 30/30 ×6','Metcon · Intervals 30/30 ×6'), d:B('סירוגין Row / Air Squat. קל-בינוני, להזיע בלי לקרוס.','Alternate Row / Air Squat. Easy-moderate — sweat, don\'t collapse.'),
+      timer:{mode:'interval', label:'Intervals 30/30', rounds:12, phases:[{label:B('עבודה','WORK'),sec:30,work:1}], cycle:['Row','Air Squat']}},
+    {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('מתיחת hip flexors, couch stretch, 10 נשימות עמוקות.','Hip flexor stretch, couch stretch, 10 deep breaths.')},
   ]},
-  '2026-07-02': { code:'2', name:'OPEN GATES', focus:B('׳™׳•׳ ׳₪׳×׳™׳—׳” ֲ· Re-Entry 50-60%','Opening day ֲ· re-entry 50-60%'), train:true,
-    lifts:[{name:'Strict Press',scheme:'5ֳ—5 learn',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
+  '2026-07-02': { code:'2', name:'OPEN GATES', focus:B('יום פתיחה · Re-Entry 50-60%','Opening day · re-entry 50-60%'), train:true,
+    lifts:[{name:'Strict Press',scheme:'5×5 learn',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
     wodLoads:[{name:'KB Swing',start:12,equip:'kb',sticky:true}],
-    equip:[{t:'bar',lift:'Strict Press',note:B('׳§׳, ׳׳•׳׳“׳™׳ ׳×׳ ׳•׳¢׳”','light ג€” skill work')},{t:'kb',lift:'KB Swing'},{t:'box',note:B('׳-Step-up','for step-ups')},{t:'band'},{t:'rower',note:B('׳׳—׳™׳׳•׳','for the warm-up')}], stages:[
-    {tag:'SET', t:4, title:B('׳”׳›׳ ׳”','setup'), d:B('׳׳•׳˜ ׳§׳, ׳§׳˜׳׳‘׳ 12, ׳‘׳•׳§׳¡, ׳’׳•׳׳™׳™׳”. ׳×׳—׳ ׳” ׳׳—׳× ׳ ׳§׳™׳™׳”.','Light bar, 12 kg kettlebell, box, band. One clean station.')},
-    {tag:'WARM',t:7, title:B('׳—׳™׳׳•׳','warm-up'), d:B('3 ׳“׳§׳³ ׳—׳×׳™׳¨׳”, arm circles, band face-pull, incline push-up ֳ—8.','3 min row, arm circles, band face-pulls, incline push-up ֳ—8.')},
-    {tag:'STR', t:16,title:B('׳›׳•׳—','strength'), d:B('Strict Press ׳׳™׳׳•׳“ 5ֳ—5 ׳‘׳׳•׳˜ ׳§׳ (20-25 ׳§׳´׳’). ׳©׳׳™׳˜׳” ׳׳׳׳”, ׳׳™׳‘׳” ׳׳¡׳•׳₪׳”.','Strict Press skill work 5ֳ—5 with a light bar (20-25 kg). Full control, braced core.')},
-    {tag:'ACC', t:6, title:B('׳¢׳–׳¨ + ׳§׳•׳¨','accessory + core'), d:B('Face Pull 3ֳ—15 ֲ· Pallof Press 3ֳ—10 ׳׳¦׳“.','Face Pull 3ֳ—15 ֲ· Pallof Press 3ֳ—10 per side.')},
-    {tag:'WOD', t:9, title:B('׳׳˜׳§׳•׳ ֲ· AMRAP 9','Metcon ֲ· AMRAP 9'), d:B('8 KB Swing (12 ׳§׳´׳’) ֲ· 8 Box Step-up ֲ· 8 Hollow Rock. ׳§׳¦׳‘ ׳ ׳™׳ ׳•׳—.','8 KB Swings (12 kg) ֲ· 8 Box Step-ups ֲ· 8 Hollow Rocks. Relaxed pace.'),
+    equip:[{t:'bar',lift:'Strict Press',note:B('קל, לומדים תנועה','light — skill work')},{t:'kb',lift:'KB Swing'},{t:'box',note:B('ל-Step-up','for step-ups')},{t:'band'},{t:'rower',note:B('לחימום','for the warm-up')}], stages:[
+    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט קל, קטלבל 12, בוקס, גומייה. תחנה אחת נקייה.','Light bar, 12 kg kettlebell, box, band. One clean station.')},
+    {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('3 דק׳ חתירה, arm circles, band face-pull, incline push-up ×8.','3 min row, arm circles, band face-pulls, incline push-up ×8.')},
+    {tag:'STR', t:16,title:B('כוח','strength'), d:B('Strict Press לימוד 5×5 במוט קל (20-25 ק״ג). שליטה מלאה, ליבה אסופה.','Strict Press skill work 5×5 with a light bar (20-25 kg). Full control, braced core.')},
+    {tag:'ACC', t:6, title:B('עזר + קור','accessory + core'), d:B('Face Pull 3×15 · Pallof Press 3×10 לצד.','Face Pull 3×15 · Pallof Press 3×10 per side.')},
+    {tag:'WOD', t:9, title:B('מטקון · AMRAP 9','Metcon · AMRAP 9'), d:B('8 KB Swing (12 ק״ג) · 8 Box Step-up · 8 Hollow Rock. קצב נינוח.','8 KB Swings (12 kg) · 8 Box Step-ups · 8 Hollow Rocks. Relaxed pace.'),
       timer:{mode:'amrap', label:'AMRAP 9', sec:540}},
-    {tag:'DOWN',t:3, title:B('׳©׳—׳¨׳•׳¨','cool-down'), d:B('׳׳×׳™׳—׳× ׳—׳–׳” ׳‘׳₪׳×׳— ׳“׳׳×, thoracic rotation, ׳ ׳©׳™׳׳•׳×.','Doorway chest stretch, thoracic rotation, breathing.')},
+    {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('מתיחת חזה בפתח דלת, thoracic rotation, נשימות.','Doorway chest stretch, thoracic rotation, breathing.')},
   ]},
 };
 
-/* CFFB-02 days (Mosh feedback 13.8): Sun A ֲ· Mon B ֲ· Wed X bonus ֲ· Fri C */
+/* CFFB-02 days (Mosh feedback 13.8): Sun A · Mon B · Wed X bonus · Fri C */
 const BYDOW = {0:'A',1:'B',2:'REST',3:'X',4:'REST',5:'C',6:'REST'};
 
 /* CFFB-02: start 66 kg, goal 61. High protein, mild deficit on rest days,
@@ -220,80 +220,80 @@ const NUTRITION = {
   train: { kcal:'~2000', p:'125', f:'100', c:'~120' },
   rest:  { kcal:'~1700', p:'125', f:'95', c:'~70' },
   boxes: [
-    [B('׳‘׳•׳§׳¨','Morning'), B('3 ׳‘׳™׳¦׳™׳ + ׳—׳¦׳™ ׳׳‘׳•׳§׳“׳• + ׳¢׳’׳‘׳ ׳™׳™׳”','3 eggs + half avocado + tomato'), '~22'],
-    [B('׳©׳™׳™׳§ (׳׳™׳׳•׳)','Shake (train)'), B('Whey + ׳‘׳ ׳ ׳” ׳§׳˜׳ ׳” ׳׳₪׳ ׳™, ׳׳™׳“ ׳׳—׳¨׳™','Whey + small banana pre, right after'), '~25'],
-    [B('׳§׳•׳₪׳¡׳” 1 ֲ· ׳¦׳”׳¨׳™׳™׳','Box 1 ֲ· lunch'), B('180׳’׳³ ׳—׳–׳” ׳¢׳•׳£ + ׳₪׳—׳׳™׳׳” ׳§׳˜׳ ׳” + ׳™׳¨׳§׳•׳×','180g chicken breast + small carb + veg'), '~45'],
-    [B('׳§׳•׳₪׳¡׳” 2 ֲ· ׳¢׳¨׳‘','Box 2 ֲ· dinner'), B('׳˜׳•׳ ׳” / ׳“׳’ / ׳‘׳§׳¨ ׳¨׳–׳” + ׳¡׳׳˜ + ׳—׳•׳׳•׳¡ ׳‘׳׳™׳“׳”','Tuna / fish / lean beef + salad + hummus in moderation'), '~40'],
-    [B('׳×׳•׳¡׳₪׳×','Extra'), B('׳™׳•׳’׳•׳¨׳˜ ׳™׳•׳•׳ ׳™ 0% / ׳§׳•׳˜׳’׳³ + ׳׳’׳•׳–׳™׳','0% Greek yogurt / cottage + nuts'), '~22'],
+    [B('בוקר','Morning'), B('3 ביצים + חצי אבוקדו + עגבנייה','3 eggs + half avocado + tomato'), '~22'],
+    [B('שייק (אימון)','Shake (train)'), B('Whey + בננה קטנה לפני, מיד אחרי','Whey + small banana pre, right after'), '~25'],
+    [B('קופסה 1 · צהריים','Box 1 · lunch'), B('180ג׳ חזה עוף + פחמימה קטנה + ירקות','180g chicken breast + small carb + veg'), '~45'],
+    [B('קופסה 2 · ערב','Box 2 · dinner'), B('טונה / דג / בקר רזה + סלט + חומוס במידה','Tuna / fish / lean beef + salad + hummus in moderation'), '~40'],
+    [B('תוספת','Extra'), B('יוגורט יווני 0% / קוטג׳ + אגוזים','0% Greek yogurt / cottage + nuts'), '~22'],
   ],
   shop: [
-    [B('׳—׳׳‘׳•׳','Protein'), [B('׳—׳–׳” ׳¢׳•׳£ 1.5 ׳§׳´׳’','Chicken breast 1.5 kg'),B('׳“׳’ (׳¡׳׳׳•׳/׳‘׳§׳׳”) 600 ׳’׳¨׳','Fish (salmon/cod) 600g'),B('׳˜׳•׳ ׳” ׳‘׳§׳•׳₪׳¡׳” ֳ—6','Canned tuna ֳ—6'),B('׳‘׳§׳¨ ׳¨׳–׳” 5% 500 ׳’׳¨׳','Lean beef 5% 500g'),B('׳‘׳™׳¦׳™׳ ֳ—24','Eggs ֳ—24'),B('׳™׳•׳’׳•׳¨׳˜ ׳™׳•׳•׳ ׳™ 0% ֳ—4','0% Greek yogurt ֳ—4'),B('׳§׳•׳˜׳’׳³ 5% ֳ—2','Cottage 5% ֳ—2')]],
-    [B('׳₪׳—׳׳™׳׳” (׳׳¢׳˜)','Carbs (light)'), [B('׳׳•׳¨׳–, ׳׳ ׳•׳× ׳׳“׳•׳“׳•׳×','Rice, measured portions'),B('׳‘׳˜׳˜׳” 700 ׳’׳¨׳','Sweet potato 700g'),B('׳—׳•׳׳•׳¡ ׳׳•׳›׳ ֳ—1-2','Hummus ֳ—1-2'),B('׳‘׳ ׳ ׳•׳× ֳ—5 (׳׳₪׳ ׳™ ׳׳™׳׳•׳)','Bananas ֳ—5 (pre-workout)')]],
-    [B('׳™׳¨׳§׳•׳× ׳•׳©׳•׳׳ ׳˜׳•׳‘','Veg & good fat'), [B('׳¡׳׳˜: ׳׳׳₪׳₪׳•׳, ׳¢׳’׳‘׳ ׳™׳™׳”, ׳₪׳׳₪׳, ׳—׳¡׳”','Salad: cucumber, tomato, pepper, lettuce'),B('׳‘׳¨׳•׳§׳•׳׳™, ׳›׳¨׳•׳‘׳™׳×, ׳©׳¢׳•׳¢׳™׳× ׳™׳¨׳•׳§׳”, ׳₪׳˜׳¨׳™׳•׳×','Broccoli, cauliflower, green beans, mushrooms'),B('׳‘׳¦׳, ׳©׳•׳','Onion, garlic'),B('׳׳‘׳•׳§׳“׳• ֳ—4-5','Avocado ֳ—4-5'),B('׳׳’׳•׳–׳™׳/׳©׳§׳“׳™׳, ׳©׳׳ ׳–׳™׳×','Nuts/almonds, olive oil')]],
+    [B('חלבון','Protein'), [B('חזה עוף 1.5 ק״ג','Chicken breast 1.5 kg'),B('דג (סלמון/בקלה) 600 גרם','Fish (salmon/cod) 600g'),B('טונה בקופסה ×6','Canned tuna ×6'),B('בקר רזה 5% 500 גרם','Lean beef 5% 500g'),B('ביצים ×24','Eggs ×24'),B('יוגורט יווני 0% ×4','0% Greek yogurt ×4'),B('קוטג׳ 5% ×2','Cottage 5% ×2')]],
+    [B('פחמימה (מעט)','Carbs (light)'), [B('אורז, מנות מדודות','Rice, measured portions'),B('בטטה 700 גרם','Sweet potato 700g'),B('חומוס מוכן ×1-2','Hummus ×1-2'),B('בננות ×5 (לפני אימון)','Bananas ×5 (pre-workout)')]],
+    [B('ירקות ושומן טוב','Veg & good fat'), [B('סלט: מלפפון, עגבנייה, פלפל, חסה','Salad: cucumber, tomato, pepper, lettuce'),B('ברוקולי, כרובית, שעועית ירוקה, פטריות','Broccoli, cauliflower, green beans, mushrooms'),B('בצל, שום','Onion, garlic'),B('אבוקדו ×4-5','Avocado ×4-5'),B('אגוזים/שקדים, שמן זית','Nuts/almonds, olive oil')]],
   ],
 };
 
-/* ---- daily rotating menus ג€” synced to the training week (Sun A ֲ· Mon B ֲ· Tue rest ֲ·
-   Wed C ֲ· Thu D ֲ· Fri rest+big cook ֲ· Sat rest-flex). Low-carb v2 rules: no bread/oats/
+/* ---- daily rotating menus — synced to the training week (Sun A · Mon B · Tue rest ·
+   Wed C · Thu D · Fri rest+big cook · Sat rest-flex). Low-carb v2 rules: no bread/oats/
    eggplant/zucchini/lentils, tuna in, hummus in moderation, Ninja Woodfire + stovetop only. */
 const DAYMENUS = {
-  0:[ // Sunday ֲ· A ֲ· train
-    {id:'b', when:B('׳‘׳•׳§׳¨','Morning'), what:B('3 ׳‘׳™׳¦׳™׳ ׳׳§׳•׳©׳§׳©׳•׳× ׳¢׳ ׳₪׳˜׳¨׳™׳•׳× ׳•׳‘׳¦׳ + ׳—׳¦׳™ ׳׳‘׳•׳§׳“׳•','3 scrambled eggs with mushrooms & onion + half avocado'), p:22},
-    {id:'s', when:B('׳©׳™׳™׳§','Shake'), what:B('Whey ׳׳™׳“ ׳׳—׳¨׳™ ׳”׳׳™׳׳•׳ (+ ׳‘׳ ׳ ׳” ׳§׳˜׳ ׳” ׳׳₪׳ ׳™)','Whey right after training (+ small banana before)'), p:25},
-    {id:'l', when:B('׳¦׳”׳¨׳™׳™׳','Lunch'), what:B('180׳’׳³ ׳—׳–׳” ׳¢׳•׳£ ׳׳”׳ ׳™׳ ׳’׳³׳” + ׳׳•׳¨׳– ׳׳“׳•׳“ + ׳‘׳¨׳•׳§׳•׳׳™','180g chicken breast + measured rice + broccoli'), p:45},
-    {id:'d', when:B('׳¢׳¨׳‘','Dinner'), what:B('׳“׳’ ׳‘׳’׳¨׳™׳ + ׳¡׳׳˜ ׳’׳“׳•׳ ׳‘׳©׳׳ ׳–׳™׳×','Grilled fish + big salad with olive oil'), p:35},
-    {id:'x', when:B('׳×׳•׳¡׳₪׳×','Extra'), what:B('׳™׳•׳’׳•׳¨׳˜ ׳™׳•׳•׳ ׳™ 0% + ׳—׳•׳₪׳ ׳©׳§׳“׳™׳','0% Greek yogurt + handful of almonds'), p:20},
+  0:[ // Sunday · A · train
+    {id:'b', when:B('בוקר','Morning'), what:B('3 ביצים מקושקשות עם פטריות ובצל + חצי אבוקדו','3 scrambled eggs with mushrooms & onion + half avocado'), p:22},
+    {id:'s', when:B('שייק','Shake'), what:B('Whey מיד אחרי האימון (+ בננה קטנה לפני)','Whey right after training (+ small banana before)'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('180ג׳ חזה עוף מהנינג׳ה + אורז מדוד + ברוקולי','180g chicken breast + measured rice + broccoli'), p:45},
+    {id:'d', when:B('ערב','Dinner'), what:B('דג בגריל + סלט גדול בשמן זית','Grilled fish + big salad with olive oil'), p:35},
+    {id:'x', when:B('תוספת','Extra'), what:B('יוגורט יווני 0% + חופן שקדים','0% Greek yogurt + handful of almonds'), p:20},
   ],
-  1:[ // Monday ֲ· B ֲ· train
-    {id:'b', when:B('׳‘׳•׳§׳¨','Morning'), what:B('3 ׳‘׳™׳¦׳™׳ + ׳—׳¦׳™ ׳׳‘׳•׳§׳“׳• + ׳¢׳’׳‘׳ ׳™׳™׳”','3 eggs + half avocado + tomato'), p:22},
-    {id:'s', when:B('׳©׳™׳™׳§','Shake'), what:B('Whey ׳׳—׳¨׳™ ׳”׳׳™׳׳•׳ (+ ׳‘׳ ׳ ׳” ׳§׳˜׳ ׳” ׳׳₪׳ ׳™)','Whey post-workout (+ small banana before)'), p:25},
-    {id:'l', when:B('׳¦׳”׳¨׳™׳™׳','Lunch'), what:B('׳§׳¦׳™׳¦׳•׳× ׳‘׳§׳¨ 5% + ׳‘׳˜׳˜׳” ׳§׳˜׳ ׳” + ׳©׳¢׳•׳¢׳™׳× ׳™׳¨׳•׳§׳”','5% beef patties + small sweet potato + green beans'), p:45},
-    {id:'d', when:B('׳¢׳¨׳‘','Dinner'), what:B('׳¡׳׳˜ ׳˜׳•׳ ׳” ׳’׳“׳•׳ (2 ׳§׳•׳₪׳¡׳׳•׳×) + ׳—׳•׳׳•׳¡ ׳‘׳׳™׳“׳” + ׳™׳¨׳§׳•׳×','Big tuna salad (2 cans) + hummus in moderation + veg'), p:40},
-    {id:'x', when:B('׳×׳•׳¡׳₪׳×','Extra'), what:B('׳§׳•׳˜׳’׳³ 5% + ׳׳’׳•׳–׳™׳','5% cottage + nuts'), p:20},
+  1:[ // Monday · B · train
+    {id:'b', when:B('בוקר','Morning'), what:B('3 ביצים + חצי אבוקדו + עגבנייה','3 eggs + half avocado + tomato'), p:22},
+    {id:'s', when:B('שייק','Shake'), what:B('Whey אחרי האימון (+ בננה קטנה לפני)','Whey post-workout (+ small banana before)'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('קציצות בקר 5% + בטטה קטנה + שעועית ירוקה','5% beef patties + small sweet potato + green beans'), p:45},
+    {id:'d', when:B('ערב','Dinner'), what:B('סלט טונה גדול (2 קופסאות) + חומוס במידה + ירקות','Big tuna salad (2 cans) + hummus in moderation + veg'), p:40},
+    {id:'x', when:B('תוספת','Extra'), what:B('קוטג׳ 5% + אגוזים','5% cottage + nuts'), p:20},
   ],
-  2:[ // Tuesday ֲ· rest ג€” near-zero carbs, more veg & good fat
-    {id:'b', when:B('׳‘׳•׳§׳¨','Morning'), what:B('׳—׳‘׳™׳×׳× 3 ׳‘׳™׳¦׳™׳ ׳¢׳ ׳₪׳˜׳¨׳™׳•׳× + ׳¢׳’׳‘׳ ׳™׳™׳”','3-egg omelet with mushrooms + tomato'), p:22},
-    {id:'l', when:B('׳¦׳”׳¨׳™׳™׳','Lunch'), what:B('׳—׳–׳” ׳¢׳•׳£ + ׳›׳¨׳•׳‘׳™׳× ׳׳”׳׳™׳™׳¨-׳₪׳¨׳™׳™׳¨ + ׳¡׳׳˜ (׳‘׳׳™ ׳¢׳׳™׳׳)','Chicken breast + air-fried cauliflower + salad (no starch)'), p:45},
-    {id:'d', when:B('׳¢׳¨׳‘','Dinner'), what:B('׳¡׳׳׳•׳ ׳‘׳ ׳™׳ ׳’׳³׳” + ׳©׳¢׳•׳¢׳™׳× ׳™׳¨׳•׳§׳” + ׳—׳¦׳™ ׳׳‘׳•׳§׳“׳•','Ninja salmon + green beans + half avocado'), p:35},
-    {id:'x', when:B('׳×׳•׳¡׳₪׳×','Extra'), what:B('׳™׳•׳’׳•׳¨׳˜ ׳™׳•׳•׳ ׳™ 0% + ׳©׳§׳“׳™׳','0% Greek yogurt + almonds'), p:20},
-    {id:'x2', when:B('׳×׳•׳¡׳₪׳× ׳‘׳³','Extra 2'), what:B('׳§׳•׳₪׳¡׳× ׳˜׳•׳ ׳” ׳§׳˜׳ ׳” / ׳§׳•׳˜׳’׳³ (׳׳”׳©׳׳™׳ ׳—׳׳‘׳•׳)','Small tuna can / cottage (protein top-up)'), p:18},
+  2:[ // Tuesday · rest — near-zero carbs, more veg & good fat
+    {id:'b', when:B('בוקר','Morning'), what:B('חביתת 3 ביצים עם פטריות + עגבנייה','3-egg omelet with mushrooms + tomato'), p:22},
+    {id:'l', when:B('צהריים','Lunch'), what:B('חזה עוף + כרובית מהאייר-פרייר + סלט (בלי עמילן)','Chicken breast + air-fried cauliflower + salad (no starch)'), p:45},
+    {id:'d', when:B('ערב','Dinner'), what:B('סלמון בנינג׳ה + שעועית ירוקה + חצי אבוקדו','Ninja salmon + green beans + half avocado'), p:35},
+    {id:'x', when:B('תוספת','Extra'), what:B('יוגורט יווני 0% + שקדים','0% Greek yogurt + almonds'), p:20},
+    {id:'x2', when:B('תוספת ב׳','Extra 2'), what:B('קופסת טונה קטנה / קוטג׳ (להשלים חלבון)','Small tuna can / cottage (protein top-up)'), p:18},
   ],
-  3:[ // Wednesday ֲ· C ֲ· train ג€” banana before the explosive work
-    {id:'b', when:B('׳‘׳•׳§׳¨','Morning'), what:B('׳§׳¢׳¨׳× ׳™׳•׳’׳•׳¨׳˜ ׳™׳•׳•׳ ׳™ 0% + ׳©׳§׳“׳™׳','0% Greek yogurt bowl + almonds'), p:18},
-    {id:'s', when:B('׳©׳™׳™׳§','Shake'), what:B('Whey ׳׳—׳¨׳™ ׳”׳׳™׳׳•׳ (+ ׳‘׳ ׳ ׳” ׳׳₪׳ ׳™ ׳”׳¢׳‘׳•׳“׳” ׳”׳ ׳₪׳™׳¦׳”)','Whey post-workout (+ banana before the explosive work)'), p:25},
-    {id:'l', when:B('׳¦׳”׳¨׳™׳™׳','Lunch'), what:B('׳—׳–׳” ׳¢׳•׳£ + ׳׳•׳¨׳– ׳׳“׳•׳“ + ׳₪׳׳₪׳׳™׳ ׳•׳‘׳¦׳ ׳׳”׳’׳¨׳™׳','Chicken breast + measured rice + grilled peppers & onion'), p:45},
-    {id:'d', when:B('׳¢׳¨׳‘','Dinner'), what:B('׳¡׳™׳ ׳˜׳” ׳¨׳–׳” / ׳§׳¦׳™׳¦׳•׳× ׳‘׳§׳¨ + ׳¡׳׳˜ ׳’׳“׳•׳ + ׳—׳•׳׳•׳¡ ׳‘׳׳™׳“׳”','Lean sirloin / beef patties + big salad + hummus in moderation'), p:40},
-    {id:'x', when:B('׳×׳•׳¡׳₪׳×','Extra'), what:B('׳§׳•׳˜׳’׳³ 5% + ׳™׳¨׳§׳•׳× ׳—׳×׳•׳›׳™׳','5% cottage + cut veggies'), p:22},
+  3:[ // Wednesday · C · train — banana before the explosive work
+    {id:'b', when:B('בוקר','Morning'), what:B('קערת יוגורט יווני 0% + שקדים','0% Greek yogurt bowl + almonds'), p:18},
+    {id:'s', when:B('שייק','Shake'), what:B('Whey אחרי האימון (+ בננה לפני העבודה הנפיצה)','Whey post-workout (+ banana before the explosive work)'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('חזה עוף + אורז מדוד + פלפלים ובצל מהגריל','Chicken breast + measured rice + grilled peppers & onion'), p:45},
+    {id:'d', when:B('ערב','Dinner'), what:B('סינטה רזה / קציצות בקר + סלט גדול + חומוס במידה','Lean sirloin / beef patties + big salad + hummus in moderation'), p:40},
+    {id:'x', when:B('תוספת','Extra'), what:B('קוטג׳ 5% + ירקות חתוכים','5% cottage + cut veggies'), p:22},
   ],
-  4:[ // Thursday ֲ· D ֲ· train + big prep night
-    {id:'b', when:B('׳‘׳•׳§׳¨','Morning'), what:B('3 ׳‘׳™׳¦׳™׳ + ׳—׳¦׳™ ׳׳‘׳•׳§׳“׳•','3 eggs + half avocado'), p:22},
-    {id:'s', when:B('׳©׳™׳™׳§','Shake'), what:B('Whey ׳׳—׳¨׳™ ׳”׳“׳“׳׳™׳₪׳˜ (+ ׳‘׳ ׳ ׳” ׳§׳˜׳ ׳” ׳׳₪׳ ׳™)','Whey after the deadlifts (+ small banana before)'), p:25},
-    {id:'l', when:B('׳¦׳”׳¨׳™׳™׳','Lunch'), what:B('׳¡׳׳˜ ׳˜׳•׳ ׳” + ׳‘׳˜׳˜׳” ׳§׳˜׳ ׳” + ׳™׳¨׳§׳•׳×','Tuna salad + small sweet potato + veg'), p:40},
-    {id:'d', when:B('׳¢׳¨׳‘','Dinner'), what:B('׳—׳–׳” ׳¢׳•׳£ ׳׳”׳§׳•׳₪׳¡׳׳•׳× + ׳‘׳¨׳•׳§׳•׳׳™','Chicken breast from the boxes + broccoli'), p:45},
-    {id:'x', when:B('׳×׳•׳¡׳₪׳×','Extra'), what:B('׳™׳•׳’׳•׳¨׳˜ ׳™׳•׳•׳ ׳™ 0% + ׳׳’׳•׳–׳™׳','0% Greek yogurt + nuts'), p:20},
+  4:[ // Thursday · D · train + big prep night
+    {id:'b', when:B('בוקר','Morning'), what:B('3 ביצים + חצי אבוקדו','3 eggs + half avocado'), p:22},
+    {id:'s', when:B('שייק','Shake'), what:B('Whey אחרי הדדליפט (+ בננה קטנה לפני)','Whey after the deadlifts (+ small banana before)'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('סלט טונה + בטטה קטנה + ירקות','Tuna salad + small sweet potato + veg'), p:40},
+    {id:'d', when:B('ערב','Dinner'), what:B('חזה עוף מהקופסאות + ברוקולי','Chicken breast from the boxes + broccoli'), p:45},
+    {id:'x', when:B('תוספת','Extra'), what:B('יוגורט יווני 0% + אגוזים','0% Greek yogurt + nuts'), p:20},
   ],
-  5:[ // Friday ֲ· rest ג€” the big cook happens today, family dinner inside the lines
-    {id:'b', when:B('׳‘׳•׳§׳¨','Morning'), what:B('׳—׳‘׳™׳×׳” + ׳™׳¨׳§׳•׳× + ׳§׳•׳˜׳’׳³ 5%','Omelet + veggies + 5% cottage'), p:25},
-    {id:'l', when:B('׳¦׳”׳¨׳™׳™׳','Lunch'), what:B('׳˜׳•׳ ׳” + ׳¡׳׳˜ ׳’׳“׳•׳ + ׳׳‘׳•׳§׳“׳•','Tuna + big salad + avocado'), p:35},
-    {id:'d', when:B('׳¢׳¨׳‘','Dinner'), what:B('׳׳¨׳•׳—׳” ׳׳©׳₪׳—׳×׳™׳×: ׳—׳׳‘׳•׳ + ׳™׳¨׳§, ׳‘׳’׳‘׳•׳׳•׳×, ׳‘׳׳™ ׳׳¡׳₪׳•׳¨','Family dinner: protein + veg, inside the lines, no counting'), p:40},
-    {id:'x', when:B('׳×׳•׳¡׳₪׳×','Extra'), what:B('׳™׳•׳’׳•׳¨׳˜ ׳™׳•׳•׳ ׳™ 0%','0% Greek yogurt'), p:18},
+  5:[ // Friday · rest — the big cook happens today, family dinner inside the lines
+    {id:'b', when:B('בוקר','Morning'), what:B('חביתה + ירקות + קוטג׳ 5%','Omelet + veggies + 5% cottage'), p:25},
+    {id:'l', when:B('צהריים','Lunch'), what:B('טונה + סלט גדול + אבוקדו','Tuna + big salad + avocado'), p:35},
+    {id:'d', when:B('ערב','Dinner'), what:B('ארוחה משפחתית: חלבון + ירק, בגבולות, בלי לספור','Family dinner: protein + veg, inside the lines, no counting'), p:40},
+    {id:'x', when:B('תוספת','Extra'), what:B('יוגורט יווני 0%','0% Greek yogurt'), p:18},
   ],
-  6:[ // Saturday ֲ· rest ג€” clean home food, flexible
-    {id:'b', when:B('׳‘׳•׳§׳¨','Morning'), what:B('׳‘׳™׳¦׳™׳ ׳‘׳¨׳•׳˜׳‘ ׳¢׳’׳‘׳ ׳™׳•׳× ׳¢׳ ׳”׳›׳™׳¨׳™׳™׳ (׳‘׳׳™ ׳׳—׳)','Eggs in tomato sauce on the stove (no bread)'), p:22},
-    {id:'l', when:B('׳¦׳”׳¨׳™׳™׳','Lunch'), what:B('׳¢׳•׳£ / ׳“׳’ ׳‘׳™׳×׳™ ׳ ׳§׳™ + ׳¡׳׳˜ ׳’׳“׳•׳','Clean home chicken / fish + big salad'), p:40},
-    {id:'d', when:B('׳¢׳¨׳‘','Dinner'), what:B('׳‘׳§׳¨ ׳¨׳–׳” / ׳˜׳•׳ ׳” + ׳™׳¨׳§׳•׳× ׳׳•׳§׳₪׳¦׳™׳','Lean beef / tuna + stir-fried veg'), p:35},
-    {id:'x', when:B('׳×׳•׳¡׳₪׳×','Extra'), what:B('׳§׳•׳˜׳’׳³ / ׳™׳•׳’׳•׳¨׳˜ ׳™׳•׳•׳ ׳™ + ׳׳’׳•׳–׳™׳','Cottage / Greek yogurt + nuts'), p:20},
+  6:[ // Saturday · rest — clean home food, flexible
+    {id:'b', when:B('בוקר','Morning'), what:B('ביצים ברוטב עגבניות על הכיריים (בלי לחם)','Eggs in tomato sauce on the stove (no bread)'), p:22},
+    {id:'l', when:B('צהריים','Lunch'), what:B('עוף / דג ביתי נקי + סלט גדול','Clean home chicken / fish + big salad'), p:40},
+    {id:'d', when:B('ערב','Dinner'), what:B('בקר רזה / טונה + ירקות מוקפצים','Lean beef / tuna + stir-fried veg'), p:35},
+    {id:'x', when:B('תוספת','Extra'), what:B('קוטג׳ / יוגורט יווני + אגוזים','Cottage / Greek yogurt + nuts'), p:20},
   ],
 };
 /* CFFB-02: training moved Thu->Fri, so Thu gets the rest menu and Fri the train menu */
 function menuFor(d){ const g=(d||new Date()).getDay(); const map={4:5,5:4}; return DAYMENUS[map[g]!==undefined?map[g]:g]; }
 
 const SUPPS = [
-  {id:'creatine', name:B('׳§׳¨׳™׳׳˜׳™׳ 5 ׳’׳¨׳','Creatine 5g'), when:B('׳‘׳•׳§׳¨','morning')},
-  {id:'vitd', name:B('׳•׳™׳˜׳׳™׳ D 2000','Vitamin D 2000'), when:B('׳‘׳•׳§׳¨ ׳¢׳ ׳׳•׳›׳','morning with food')},
-  {id:'whey', name:B('Whey ׳׳—׳¨׳™ ׳׳™׳׳•׳','Whey post-workout'), when:B('׳™׳׳™ ׳׳™׳׳•׳','training days')},
-  {id:'omega', name:B('׳׳•׳׳’׳” 3','Omega 3'), when:B('׳¢׳ ׳׳¨׳•׳—׳”','with a meal')},
-  {id:'mag', name:B('׳׳’׳ ׳–׳™׳•׳','Magnesium'), when:B('22:00 ׳׳₪׳ ׳™ ׳©׳™׳ ׳”','22:00 before sleep')},
+  {id:'creatine', name:B('קריאטין 5 גרם','Creatine 5g'), when:B('בוקר','morning')},
+  {id:'vitd', name:B('ויטמין D 2000','Vitamin D 2000'), when:B('בוקר עם אוכל','morning with food')},
+  {id:'whey', name:B('Whey אחרי אימון','Whey post-workout'), when:B('ימי אימון','training days')},
+  {id:'omega', name:B('אומגה 3','Omega 3'), when:B('עם ארוחה','with a meal')},
+  {id:'mag', name:B('מגנזיום','Magnesium'), when:B('22:00 לפני שינה','22:00 before sleep')},
 ];
 
 /* ---------------- STORE (local-first) ---------------- */
@@ -320,7 +320,7 @@ function importAll(str){
 /* ---------------- HELPERS ---------------- */
 function todayKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 
-/* lift log: flat list of {date, code, lift, weight, reps, sets?:[{w,r}]} ג€” source of truth
+/* lift log: flat list of {date, code, lift, weight, reps, sets?:[{w,r}]} — source of truth
    for PRs AND for the adaptive load suggestions. weight/reps = "all sets the same";
    sets[] = optional set-by-set detail that wins when present. */
 function liftGet(date, lift){
@@ -369,8 +369,8 @@ function personalRecords(){
 
 /* ---- adaptive load engine ----
    Suggestion = last logged performance for that movement. Hit the prescribed reps
-   in every set ג†’ one increment up. Missed ג†’ same weight. No history ג†’ start weight.
-   sticky (metcon loads without rep logging) ג†’ whatever you used last time. */
+   in every set → one increment up. Missed → same weight. No history → start weight.
+   sticky (metcon loads without rep logging) → whatever you used last time. */
 function roundLoad(w, equip){
   if(equip==='kb'){ const s=[4,8,12,16,20,24,28,32]; return s.reduce((a,b)=>Math.abs(b-w)<Math.abs(a-w)?b:a); }
   if(equip==='bar') return Math.round(w/2.5)*2.5;
@@ -404,7 +404,7 @@ function plateBreakdown(total, barKg){
   return {empty:false, plates:out};
 }
 
-/* ---- food log: {date, meal, status:'done'|'other'|'skip', note} ג€” real tracking,
+/* ---- food log: {date, meal, status:'done'|'other'|'skip', note} — real tracking,
    and the raw material for the daily insights. */
 function foodGet(date, mealId){
   return DB.get('foodlog',[]).find(x=>x.date===date && x.meal===mealId) || null;
@@ -418,7 +418,7 @@ function foodSet(date, mealId, status, note){
   DB.set('foodlog',log);
 }
 
-/* rule-based insights: only from what was actually logged ג€” no inventions */
+/* rule-based insights: only from what was actually logged — no inventions */
 function nutritionInsights(){
   const he = LANG==='he';
   const ins=(h,e)=> he?h:e;
@@ -435,17 +435,17 @@ function nutritionInsights(){
   if(lt.length){
     const done=lt.filter(x=>x.status==='done');
     const doneP=done.reduce((a,x)=>{ const m=menuToday.find(mm=>mm.id===x.meal); return a+(m?m.p:0); },0);
-    out.push(ins(`׳”׳™׳•׳: ${done.length}/${menuToday.length} ׳׳¨׳•׳—׳•׳× ׳›׳׳×׳•׳›׳ ׳ ֲ· ~${doneP} ׳׳×׳•׳ ${target} ׳’׳¨׳ ׳—׳׳‘׳•׳ ׳׳¡׳•׳׳`,
-                 `Today: ${done.length}/${menuToday.length} meals as planned ֲ· ~${doneP} of ${target}g protein logged`));
+    out.push(ins(`היום: ${done.length}/${menuToday.length} ארוחות כמתוכנן · ~${doneP} מתוך ${target} גרם חלבון מסומן`,
+                 `Today: ${done.length}/${menuToday.length} meals as planned · ~${doneP} of ${target}g protein logged`));
     const skip=lt.filter(x=>x.status==='skip');
     if(skip.length){
       const names=skip.map(x=>{ const m=menuToday.find(mm=>mm.id===x.meal); return m?tx(m.when):x.meal; }).join(', ');
-      out.push(ins(`׳“׳™׳׳’׳× ׳”׳™׳•׳ ׳¢׳: ${names}. ׳׳¨׳•׳—׳” ׳©׳“׳•׳׳’׳” = ׳—׳׳‘׳•׳ ׳©׳׳ ׳—׳•׳–׳¨.`,
+      out.push(ins(`דילגת היום על: ${names}. ארוחה שדולגה = חלבון שלא חוזר.`,
                    `Skipped today: ${names}. A skipped meal is protein that doesn't come back.`));
     }
   }
 
-  // last 7 days (only days you actually logged ג€” honest math)
+  // last 7 days (only days you actually logged — honest math)
   const days=[]; for(let k=0;k<7;k++){ const d=new Date(); d.setDate(d.getDate()-k); days.push({key:todayKey(d), d:new Date(d)}); }
   const tracked=days.map(({key,d})=>{
     const l=log.filter(x=>x.date===key); if(!l.length) return null;
@@ -454,7 +454,7 @@ function nutritionInsights(){
   }).filter(Boolean);
   if(tracked.length>=2){
     const pct=Math.round(100*tracked.reduce((a,x)=>a+x.done,0)/tracked.reduce((a,x)=>a+x.total,0));
-    out.push(ins(`7 ׳™׳׳™׳ ׳׳—׳¨׳•׳ ׳™׳: ${pct}% ׳׳”׳׳¨׳•׳—׳•׳× ׳›׳׳×׳•׳›׳ ׳ (${tracked.length} ׳™׳׳™׳ ׳©׳¡׳™׳׳ ׳×)`,
+    out.push(ins(`7 ימים אחרונים: ${pct}% מהארוחות כמתוכנן (${tracked.length} ימים שסימנת)`,
                  `Last 7 days: ${pct}% of meals as planned (${tracked.length} logged days)`));
     // streak of solid days (80%+), counting back from the latest logged day
     let streak=0;
@@ -463,7 +463,7 @@ function nutritionInsights(){
       if(!tr){ if(streak) break; else continue; }
       if(tr.done/tr.total>=0.8) streak++; else break;
     }
-    if(streak>=2) out.push(ins(`׳¨׳¦׳£: ${streak} ׳™׳׳™׳ ׳—׳–׳§׳™׳ ׳‘׳¨׳¦׳™׳₪׳•׳×. ׳׳ ׳×׳©׳‘׳•׳¨ ׳׳× ׳”׳©׳¨׳©׳¨׳×.`,
+    if(streak>=2) out.push(ins(`רצף: ${streak} ימים חזקים ברציפות. אל תשבור את השרשרת.`,
                                `Streak: ${streak} solid days in a row. Don't break the chain.`));
     // most-skipped meal across the week
     const skipCount={};
@@ -472,8 +472,8 @@ function nutritionInsights(){
     if(worst && worst[1]>=2){
       const m=menuToday.find(mm=>mm.id===worst[0]) || menuFor(new Date(Date.now()-86400000)).find(mm=>mm.id===worst[0]);
       const nm=m?tx(m.when):worst[0];
-      out.push(ins(`׳”׳׳¨׳•׳—׳” ׳©׳”׳›׳™ ׳ ׳•׳₪׳׳×: ${nm} (${worst[1]} ׳₪׳¢׳׳™׳ ׳”׳©׳‘׳•׳¢). ׳×׳›׳™׳ ׳׳•׳×׳” ׳׳¨׳׳©, ׳§׳•׳₪׳¡׳” ׳‘׳׳§׳¨׳¨ = ׳”׳—׳׳˜׳” ׳©׳›׳‘׳¨ ׳§׳™׳‘׳׳×.`,
-                   `Your most-dropped meal: ${nm} (${worst[1]}ֳ— this week). Prep it ahead ג€” a box in the fridge is a decision already made.`));
+      out.push(ins(`הארוחה שהכי נופלת: ${nm} (${worst[1]} פעמים השבוע). תכין אותה מראש, קופסה במקרר = החלטה שכבר קיבלת.`,
+                   `Your most-dropped meal: ${nm} (${worst[1]}× this week). Prep it ahead — a box in the fridge is a decision already made.`));
     }
   }
 
@@ -481,8 +481,8 @@ function nutritionInsights(){
   const ws=DB.get('checkins',[]).map(x=>({date:x.date,w:parseFloat(x.weight)})).filter(x=>x.date>=days[6].key && !isNaN(x.w)).sort((a,b)=>a.date<b.date?-1:1);
   if(ws.length>=2){
     const diff=+(ws[ws.length-1].w-ws[0].w).toFixed(1);
-    out.push(ins(`׳׳©׳§׳ ׳”׳©׳‘׳•׳¢: ${diff>0?'+':''}${diff} ׳§׳´׳’ (${ws[0].w} ג† ${ws[ws.length-1].w})`,
-                 `Weight this week: ${diff>0?'+':''}${diff} kg (${ws[0].w} ג†’ ${ws[ws.length-1].w})`));
+    out.push(ins(`משקל השבוע: ${diff>0?'+':''}${diff} ק״ג (${ws[0].w} ← ${ws[ws.length-1].w})`,
+                 `Weight this week: ${diff>0?'+':''}${diff} kg (${ws[0].w} → ${ws[ws.length-1].w})`));
   }
   return out;
 }
@@ -501,7 +501,7 @@ function stageNoteSet(date, code, tag, text){
 }
 
 /* metcon score log: {date, code, wod, mode, a, b, rx, note}
-   fortime: a=min b=sec ֲ· amrap: a=rounds b=reps ֲ· interval: a=rounds done b=total */
+   fortime: a=min b=sec · amrap: a=rounds b=reps · interval: a=rounds done b=total */
 function metconGet(date, code){
   return DB.get('metconlog',[]).find(x=>x.date===date && x.code===code) || null;
 }
@@ -529,7 +529,7 @@ const CH='#eceadf', TQ='#3ed3c8', OR='#f4a261';
 function figSvg(inner, vb){
   return `<svg viewBox="${vb||'0 0 100 100'}" fill="none" stroke="${CH}" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" opacity=".92">${inner}</svg>`;
 }
-/* the chalk athletes ג€” one per session type */
+/* the chalk athletes — one per session type */
 const FIGS = {
   A: figSvg(`<path d="M14 34 L86 33" stroke-width="4"/><circle cx="18" cy="33.5" r="8" stroke="${TQ}"/><circle cx="82" cy="33.5" r="8" stroke="${TQ}"/>
     <circle cx="47" cy="24" r="7"/><path d="M46 31 C44 40 42 48 40 55"/><path d="M43 36 L56 33"/>
@@ -557,7 +557,7 @@ const FIGS = {
 };
 function heroFig(code){ return FIGS[code] || (String(code).match(/^\d/) ? FIGS.S : FIGS.A); }
 
-/* bespoke chalk equipment icons ג€” hand-line style, same DNA as the athletes */
+/* bespoke chalk equipment icons — hand-line style, same DNA as the athletes */
 function eqSvg(inner){
   return `<svg viewBox="0 0 40 28" fill="none" stroke="${CH}" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
 }
@@ -622,7 +622,7 @@ function poofAt(elm, opts){
   chalkPoof(r.left+r.width/2, r.top+r.height/2, opts);
 }
 
-/* hand-drawn chalk numerals ג€” the score writes itself on the board */
+/* hand-drawn chalk numerals — the score writes itself on the board */
 const GLYPHS={
   '0':{w:40,d:'M20 8 C7 10 7 50 20 52 C33 50 33 10 20 8'},
   '1':{w:26,d:'M6 18 L16 8 L16 52'},
@@ -677,7 +677,7 @@ function countUp(elm, val, dur){
   requestAnimationFrame(step);
 }
 
-/* PR! ג€” dust burst + chalk sticker on a new personal record */
+/* PR! — dust burst + chalk sticker on a new personal record */
 function celebratePR(wrap){
   const head=wrap.querySelector('.lb-head');
   if(head && !head.querySelector('.prtag')) head.insertAdjacentHTML('beforeend','<span class="prtag">PR!</span>');
@@ -726,7 +726,7 @@ function render(){
   window.scrollTo(0,0);
 }
 function langBtn(){
-  const b = el('button','langbtn', LANG==='he' ? 'EN' : '׳¢׳‘');
+  const b = el('button','langbtn', LANG==='he' ? 'EN' : 'עב');
   b.onclick = ()=>{ LANG = LANG==='he' ? 'en' : 'he'; DB.set('lang', LANG); render(); };
   return b;
 }
@@ -746,7 +746,7 @@ function viewToday(){
 
   const dd = `<span class="lt">${d.getDate()}.${d.getMonth()+1}</span>`;
   app.appendChild(hero(
-    `${dowName(d)} ֲ· ${dd} ֲ· <b><span class="lt">CFFB-02</span></b>`,
+    `${dowName(d)} · ${dd} · <b><span class="lt">CFFB-02</span></b>`,
     `${t(isTrain?'train':'rest')} <em>${tx(p.name)}</em>`,
     tx(p.focus), isTrain?p.code:'R'
   ));
@@ -767,7 +767,7 @@ function viewToday(){
 
   app.appendChild(scribbleRow(1));
 
-  // supplements ג€” chalk checklist
+  // supplements — chalk checklist
   const sk = 'supp_'+todayKey();
   const done = DB.get(sk, {});
   const sc = el('div','board');
@@ -785,9 +785,9 @@ function viewToday(){
   });
   app.appendChild(sc);
 
-  // nutrition ג€” manila clipboard snapshot
+  // nutrition — manila clipboard snapshot
   const nc = el('div','clip');
-  nc.setAttribute('data-tab', `${t('nutriTitle')} ֲ· ${t(isTrain?'trainDay':'restDay')}`);
+  nc.setAttribute('data-tab', `${t('nutriTitle')} · ${t(isTrain?'trainDay':'restDay')}`);
   nc.innerHTML = `<div class="macros" style="--turq:#0e7c72">
       <div><b style="color:#0e7c72;text-shadow:none">${n.kcal}</b><i style="color:#6b5c38">${t('kcal')}</i></div>
       <div><b style="color:#0e7c72;text-shadow:none">${n.p}</b><i style="color:#6b5c38">${t('protein')}</i></div>
@@ -795,7 +795,7 @@ function viewToday(){
       <div><b style="color:#0e7c72;text-shadow:none">${n.c}</b><i style="color:#6b5c38">${t('carbs')}</i></div>
     </div>
     ${(()=>{ const l=DB.get('foodlog',[]).filter(x=>x.date===todayKey());
-      return l.length?`<div class="mini" style="margin-top:8px;color:#1f6e3c;font-weight:600">${l.filter(x=>x.status==='done').length}/${menuFor(d).length} ${t('mAte')} ֲ· ${l.length} ${t('foodToday')}</div>`:''; })()}
+      return l.length?`<div class="mini" style="margin-top:8px;color:#1f6e3c;font-weight:600">${l.filter(x=>x.status==='done').length}/${menuFor(d).length} ${t('mAte')} · ${l.length} ${t('foodToday')}</div>`:''; })()}
     <div class="clip-h" style="margin-top:10px;cursor:pointer" data-go>${t('boxesShop')}</div>`;
   nc.querySelector('[data-go]').onclick=()=>{ activeTab='nutrition'; render(); };
   app.appendChild(nc);
@@ -806,7 +806,7 @@ function viewToday(){
   // evening + checkin
   const ec = el('div','board');
   ec.innerHTML = `<div class="board-h">${t('evening')}</div>${squig(CH)}<div class="mini">${t('eveningTxt')}</div>
-    <div class="go" data-ci>${t('checkinCta')} ֲ· ${t('checkinGo')}</div>`;
+    <div class="go" data-ci>${t('checkinCta')} · ${t('checkinGo')}</div>`;
   ec.querySelector('[data-ci]').onclick=()=>{ activeTab='progress'; render(); };
   app.appendChild(ec);
 }
@@ -822,7 +822,7 @@ function musicBoard(){
   const bd = el('div','board');
   bd.innerHTML = `<div class="board-h o">${t('musicH')}</div>${squig(OR)}`;
   const wrap = el('div','music-wrap');
-  const openBtn = el('button','music-open', `ג™× ${t('musicOpen')}`.replace('ג™×', `<svg style="width:15px;height:15px;vertical-align:-2px" viewBox="0 0 24 24" fill="none" stroke="${OR}" stroke-width="2.2" stroke-linecap="round"><path d="M9 18.5 L9.2 5.5 L19 3.5 L19 16"/><circle cx="6.5" cy="18.5" r="2.6"/><circle cx="16.5" cy="16" r="2.6"/></svg>`));
+  const openBtn = el('button','music-open', `♪ ${t('musicOpen')}`.replace('♪', `<svg style="width:15px;height:15px;vertical-align:-2px" viewBox="0 0 24 24" fill="none" stroke="${OR}" stroke-width="2.2" stroke-linecap="round"><path d="M9 18.5 L9.2 5.5 L19 3.5 L19 16"/><circle cx="6.5" cy="18.5" r="2.6"/><circle cx="16.5" cy="16" r="2.6"/></svg>`));
   const mount = ()=>{
     const src = spotifyEmbed(DB.get('spotify', DEFAULT_SPOTIFY)) || spotifyEmbed(DEFAULT_SPOTIFY);
     wrap.innerHTML = `<iframe src="${src}" loading="lazy" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
@@ -834,7 +834,7 @@ function musicBoard(){
     wrap.querySelector('button').onclick = ()=>{
       const v = wrap.querySelector('input').value.trim();
       if(v && spotifyEmbed(v)){ DB.set('spotify', v); musicOpen=true; mount(); }
-      else { wrap.querySelector('input').value=''; wrap.querySelector('input').placeholder = LANG==='he'?'׳§׳™׳©׳•׳¨ ׳׳ ׳×׳§׳™׳, ׳ ׳¡׳” ׳©׳•׳‘':'Invalid link, try again'; }
+      else { wrap.querySelector('input').value=''; wrap.querySelector('input').placeholder = LANG==='he'?'קישור לא תקין, נסה שוב':'Invalid link, try again'; }
     };
   };
   openBtn.onclick = ()=>{ musicOpen=true; openBtn.remove(); mount(); };
@@ -845,7 +845,7 @@ function musicBoard(){
 
 /* ---- WORKOUT PLAYER ---- */
 let timer = {iv:null, idx:-1, restSec:0, repaint:null, mode:null, elapsed:0};
-/* the live athlete: a chalk figure center-screen that mirrors the running timer ג€”
+/* the live athlete: a chalk figure center-screen that mirrors the running timer —
    doing the day's lift while you work, lounging in the hammock while you rest */
 function showLiveFig(mode, label){
   let f=document.getElementById('livefig');
@@ -868,7 +868,7 @@ function clearActiveTimer(){
 function buzz(p){ if(navigator.vibrate) navigator.vibrate(p); }
 const mmss = s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
 
-/* audio beeps ג€” must init on a user gesture (timer button press) */
+/* audio beeps — must init on a user gesture (timer button press) */
 let AC=null;
 function ensureAudio(){
   try{ if(!AC) AC=new (window.AudioContext||window.webkitAudioContext)(); if(AC.state==='suspended') AC.resume(); }catch(e){}
@@ -885,7 +885,7 @@ function beep(freq, dur, vol){
     o.start(tt); o.stop(tt+(dur||0.12)+0.02);
   }catch(e){}
 }
-/* voice announcer ג€” box-style callouts (3-2-1, GO, TIME, REST, Round N) via the
+/* voice announcer — box-style callouts (3-2-1, GO, TIME, REST, Round N) via the
    built-in speech engine. English on purpose: that's how a box sounds. Falls back to beeps. */
 let VOICE=null;
 function initVoice(){
@@ -913,7 +913,7 @@ function cueSwitch(work, round){
   buzz(work?[140]:[80,50,80]);
 }
 
-/* wake lock ג€” keep the screen on while a timer runs */
+/* wake lock — keep the screen on while a timer runs */
 let wakeLock=null;
 async function acquireWake(){
   try{ if('wakeLock' in navigator){ wakeLock=await navigator.wakeLock.request('screen'); } }catch(e){}
@@ -926,7 +926,7 @@ function viewWorkout(){
   const isToday = todayKey(d)===todayKey();
   const dKey = todayKey(d);
   const dd = `<span class="lt">${d.getDate()}.${d.getMonth()+1}</span>`;
-  const kick = `<span class="lt">WOD ֲ· ${p.code}</span> ֲ· ${dowName(d)} ${dd}${isToday?` ֲ· <b>${t('today')}</b>`:''}`;
+  const kick = `<span class="lt">WOD · ${p.code}</span> · ${dowName(d)} ${dd}${isToday?` · <b>${t('today')}</b>`:''}`;
   app.appendChild(hero(kick, `${tx(p.name)}`, tx(p.focus), p.train?p.code:'R'));
 
   if(!p.train){
@@ -937,11 +937,11 @@ function viewWorkout(){
 
   app.appendChild(musicBoard());
 
-  // one big session board ג€” every stage is a collapsible chalk card that carries
+  // one big session board — every stage is a collapsible chalk card that carries
   // its own gear list / weights / timers / score, so you log where you train
   const total = p.stages.reduce((a,s)=>a+s.t,0);
   const sb = el('div','board tray');
-  sb.innerHTML = `<div class="board-h t"><span class="lt">${total}ג€²</span> ${t('doorToDoor')}</div>${squig(TQ)}`;
+  sb.innerHTML = `<div class="board-h t"><span class="lt">${total}′</span> ${t('doorToDoor')}</div>${squig(TQ)}`;
   p.stages.forEach((s,i)=>sb.appendChild(stageCard(p, s, i, dKey)));
   sb.appendChild(trayBar());
   app.appendChild(sb);
@@ -957,7 +957,7 @@ function stageCard(p, s, i, dKey){
   const st = el('div','stage'+(STAGE_OPEN[key]?' open':''));
   const lbl = timerLabel(s);
   st.innerHTML = `${i>0?zigdiv():''}
-    <div class="st-head"><span class="st-tag lt${s.tag==='WOD'?' wod':''}">${s.tag}</span><span class="st-title">${tx(s.title)}</span><span class="st-time">${s.t?s.t+'ג€²':''}</span><svg class="st-arr" viewBox="0 0 16 16" fill="none" stroke="${CH}" stroke-width="2.2" stroke-linecap="round"><path d="M8 2.5 L8 13.5 M2.5 8 L13.5 8"/></svg></div>
+    <div class="st-head"><span class="st-tag lt${s.tag==='WOD'?' wod':''}">${s.tag}</span><span class="st-title">${tx(s.title)}</span><span class="st-time">${s.t?s.t+'′':''}</span><svg class="st-arr" viewBox="0 0 16 16" fill="none" stroke="${CH}" stroke-width="2.2" stroke-linecap="round"><path d="M8 2.5 L8 13.5 M2.5 8 L13.5 8"/></svg></div>
     <div class="st-x"></div>`;
   const x = st.querySelector('.st-x');
 
@@ -1003,16 +1003,16 @@ function equipListEl(p, dKey){
     const note = q.note ? tx(q.note) : '';
     if(q.t==='bar'){
       const def = findDef(p, q.lift), sg = def ? suggestFor(def, dKey) : null;
-      row('bar', t('eqBar'), [q.lift, note].filter(Boolean).join(' ֲ· '), '20 '+t('kg'));
+      row('bar', t('eqBar'), [q.lift, note].filter(Boolean).join(' · '), '20 '+t('kg'));
       if(sg){
         const pb = plateBreakdown(sg.w, 20);
-        if(pb.empty) row('plates', t('eqPlates'), `${q.lift} ${sg.w} ${t('kg')} ֲ· ${t('emptyBar')}`, 'ג€”');
-        else row('plates', t('eqPlates'), `${q.lift} ג†’ ${sg.w} ${t('kg')}`, pb.plates.join(' + '));
+        if(pb.empty) row('plates', t('eqPlates'), `${q.lift} ${sg.w} ${t('kg')} · ${t('emptyBar')}`, '—');
+        else row('plates', t('eqPlates'), `${q.lift} → ${sg.w} ${t('kg')}`, pb.plates.join(' + '));
       }
     } else if(q.lift){
       const def = findDef(p, q.lift), sg = def ? suggestFor(def, dKey) : null;
       const wt = sg ? ((def.each ? sg.w+'+'+sg.w : String(sg.w))+' '+t('kg')) : '';
-      row(q.t, t(EQNAMES[q.t]), [q.lift, note].filter(Boolean).join(' ֲ· '), wt);
+      row(q.t, t(EQNAMES[q.t]), [q.lift, note].filter(Boolean).join(' · '), wt);
     } else {
       row(q.t, t(EQNAMES[q.t]), note, q.kg ? q.kg+' '+t('kg') : '');
     }
@@ -1031,7 +1031,7 @@ function suggLine(def, sg){
   return `<div class="sugg"><span class="sg-l">${t('target')}</span><span class="sg-w">${def.each?sg.w+'+'+sg.w:sg.w}</span><span class="sg-kg">${def.each?t('kgEach'):t('kg')}</span><span class="sg-why">${suggWhy(sg)}</span></div>`;
 }
 
-/* ---- STR: one block per lift ג€” target, quick log, optional set-by-set ---- */
+/* ---- STR: one block per lift — target, quick log, optional set-by-set ---- */
 function liftBlock(p, def, dKey){
   const rec = liftGet(dKey, def.name) || {};
   const sg = suggestFor(def, dKey);
@@ -1039,14 +1039,14 @@ function liftBlock(p, def, dKey){
   wrap.innerHTML = `
     <div class="lb-head"><b class="lt">${def.name}</b> <span class="plate"><span class="lt">${def.scheme}</span></span></div>
     ${suggLine(def, sg)}
-    <div class="lb-quick"><span class="q-lbl">${t('allSets')}</span><span class="qq"><input class="slin q-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${rec.weight??''}"><span class="x">ֳ—</span><input class="slin q-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${rec.reps??''}"></span></div>
+    <div class="lb-quick"><span class="q-lbl">${t('allSets')}</span><span class="qq"><input class="slin q-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${rec.weight??''}"><span class="x">×</span><input class="slin q-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${rec.reps??''}"></span></div>
     <button class="detbtn"></button>
     <div class="lb-sets" style="display:none"></div>`;
   const qw = wrap.querySelector('.q-w'), qr = wrap.querySelector('.q-r');
   const setsBox = wrap.querySelector('.lb-sets'), det = wrap.querySelector('.detbtn');
   let open = !!(rec.sets && rec.sets.length);
 
-  // today's entry is the standing PR (and there was history to beat) ג†’ keep the sticker up
+  // today's entry is the standing PR (and there was history to beat) → keep the sticker up
   const pr = personalRecords().find(r=>r.lift===def.name);
   const hadHistory = DB.get('liftlog',[]).some(x=>x.lift===def.name && x.date<dKey && recTopWeight(x));
   if(pr && pr.date===dKey && hadHistory)
@@ -1058,11 +1058,11 @@ function liftBlock(p, def, dKey){
     const before=(personalRecords().find(r=>r.lift===def.name)||{}).weight||0;
     liftSet(dKey, p.code, def, qw.value, qr.value, collect());
     const after=(personalRecords().find(r=>r.lift===def.name)||{}).weight||0;
-    if(before>0 && after>before) celebratePR(wrap); // beat your best ג†’ magnesium cloud
+    if(before>0 && after>before) celebratePR(wrap); // beat your best → magnesium cloud
   };
   const addSetRow = (k, v)=>{
     const r = el('div','setrow');
-    r.innerHTML = `<span class="sn">${t('setN')} ${k+1}</span><span class="qq"><input class="slin s-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${v.w??''}"><span class="x">ֳ—</span><input class="slin s-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${v.r??''}"></span>`;
+    r.innerHTML = `<span class="sn">${t('setN')} ${k+1}</span><span class="qq"><input class="slin s-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${v.w??''}"><span class="x">×</span><input class="slin s-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${v.r??''}"></span>`;
     r.querySelectorAll('input').forEach(inp=>inp.onchange=save);
     const add = setsBox.querySelector('.addset');
     if(add) setsBox.insertBefore(r, add); else setsBox.appendChild(r);
@@ -1097,7 +1097,7 @@ function loadRow(p, def, dKey){
   wrap.innerHTML = `
     <div class="lb-head"><b class="lt">${def.name}</b>${def.scheme?` <span class="plate"><span class="lt">${def.scheme}</span></span>`:''}</div>
     ${suggLine(def, sg)}
-    <div class="lb-quick"><span class="q-lbl">${t('actual')}</span><span class="qq"><input class="slin q-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${rec.weight??''}">${withReps?`<span class="x">ֳ—</span><input class="slin q-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${rec.reps??''}">`:''}</span></div>`;
+    <div class="lb-quick"><span class="q-lbl">${t('actual')}</span><span class="qq"><input class="slin q-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${rec.weight??''}">${withReps?`<span class="x">×</span><input class="slin q-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${rec.reps??''}">`:''}</span></div>`;
   const qw = wrap.querySelector('.q-w'), qr = wrap.querySelector('.q-r');
   const save = ()=>{
     const before=(personalRecords().find(r=>r.lift===def.name)||{}).weight||0;
@@ -1109,7 +1109,7 @@ function loadRow(p, def, dKey){
   return wrap;
 }
 
-/* ---- voice-to-text: a chalk mic on every note ג€” speak, it types itself ---- */
+/* ---- voice-to-text: a chalk mic on every note — speak, it types itself ---- */
 const MIC_SVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
   <path d="M12 3.2 C9.6 3.3 9 5 9.1 6.5 L9.2 11.8 C9.3 13.8 10.5 14.9 12 14.9 C13.5 14.9 14.8 13.8 14.8 11.8 L14.9 6.4 C15 5 14.4 3.2 12 3.2 Z"/>
   <path d="M5.6 11.4 a6.5 6.5 0 0 0 12.9 .2 M12 17.8 L12.1 21.2 M8.6 21.4 L15.5 21.3"/></svg>`;
@@ -1154,11 +1154,11 @@ function stageNoteEl(dKey, code, tag){
 function timerLabel(s){
   if(!s.timer){ return s.t>0 ? `${t('timer')} ${s.t}:00` : ''; }
   const tm=s.timer;
-  if(tm.mode==='fortime') return `ג–¶ ${tm.label} ֲ· ${t('stopwatch')}`;
-  return `ג–¶ ${tm.label}`;
+  if(tm.mode==='fortime') return `▶ ${tm.label} · ${t('stopwatch')}`;
+  return `▶ ${tm.label}`;
 }
 
-/* ---- rest timer between sets ג€” lives inside the strength card ---- */
+/* ---- rest timer between sets — lives inside the strength card ---- */
 function restTimerEl(){
   const rt=el('div','rest-timer slate');
   rt.innerHTML=`<div class="rt-label">${t('restBetween')}</div>
@@ -1183,10 +1183,10 @@ function runRest(sec, btn, wrap){
   timer.idx='rest'; timer.restSec=sec;
   timer.code = planFor(selectedDate).code;
   showLiveFig('rest', t('restLbl')); // the athlete hits the hammock
-  countdown(out, sec, t('restLbl'), 'GO!'); // rest over ג†’ announcer sends you back to the bar
+  countdown(out, sec, t('restLbl'), 'GO!'); // rest over → announcer sends you back to the bar
 }
 
-/* ---- metcon score ג€” lives inside the WOD card ---- */
+/* ---- metcon score — lives inside the WOD card ---- */
 function metconSection(p, wodStage, dKey){
   const tm = wodStage.timer;
   const prev = metconGet(dKey, p.code) || {};
@@ -1269,8 +1269,8 @@ function finishClip(p, dKey){
     const lifts=[].concat(p.lifts||[], p.accLoads||[], p.wodLoads||[])
       .map(lf=>liftGet(dKey,lf.name)).filter(Boolean)
       .map(x=> x.sets && x.sets.length
-        ? `${x.lift} ${x.sets.map(s=>`${s.w||'?'}ֳ—${s.r||'?'}`).join(' / ')}`
-        : `${x.lift} ${x.weight||'?'}${x.reps?'ֳ—'+x.reps:''}`);
+        ? `${x.lift} ${x.sets.map(s=>`${s.w||'?'}×${s.r||'?'}`).join(' / ')}`
+        : `${x.lift} ${x.weight||'?'}${x.reps?'×'+x.reps:''}`);
     const logs=DB.get('worklog',[]);
     const rec={date:dKey, code:p.code, name:typeof p.name==='object'?p.name.he:p.name, note, rpe:rpe?Number(rpe):null, elbow, lifts};
     const i=logs.findIndex(x=>x.date===dKey && x.code===p.code);
@@ -1357,7 +1357,7 @@ function stopwatch(out, cap){
     const s=Math.floor((Date.now()-start)/1000);
     timer.elapsed=s;
     out.innerHTML=`<span class="big">${mmss(s)}</span><span class="sub">${t('stopUp')}</span>`;
-    if(cap && s>=cap){ clearActiveTimer(); out.innerHTML='<span class="big done">capped ג“</span>'; cueDone('TIME!'); prefillForTime(cap); return; }
+    if(cap && s>=cap){ clearActiveTimer(); out.innerHTML='<span class="big done">capped ✓</span>'; cueDone('TIME!'); prefillForTime(cap); return; }
     if(cap && s>prev && s>=cap-3 && s<cap) cueCount(cap-s);
     crunchFx(out, cap && s>=cap-3);
     prev=s;
@@ -1373,7 +1373,7 @@ function interval(out, tmr){
   let prevSeg=-1, prevLeft=-1;
   const paint=()=>{
     const elapsed=(Date.now()-start)/1000;
-    if(elapsed>=total){ clearActiveTimer(); out.innerHTML='<span class="big done">'+tmr.label+' ג“</span>'; cueDone('TIME!'); return; }
+    if(elapsed>=total){ clearActiveTimer(); out.innerHTML='<span class="big done">'+tmr.label+' ✓</span>'; cueDone('TIME!'); return; }
     let acc=0, si=0;
     for(; si<segs.length; si++){ if(elapsed < acc+segs[si].dur) break; acc+=segs[si].dur; }
     const seg=segs[si], phase=tmr.phases[seg.ph];
@@ -1381,7 +1381,7 @@ function interval(out, tmr){
     const ex=exForRound(seg.r), cls=phase.work?'work':'rest';
     out.innerHTML=`<span class="rd">${t('round')} ${seg.r+1}/${tmr.rounds}</span>`+
       `<span class="big ${cls}">${mmss(left)}</span>`+
-      `<span class="sub">${tx(phase.label)}${ex?' ֲ· '+ex:''}</span>`;
+      `<span class="sub">${tx(phase.label)}${ex?' · '+ex:''}</span>`;
     if(si!==prevSeg) showLiveFig(phase.work?'work':'rest', phase.work?ex:tx(phase.label)); // figure works/rests with the phase
     if(si!==prevSeg && prevSeg!==-1) cueSwitch(phase.work, phase.work ? seg.r+1 : null); // announcer calls the round
     else if(left!==prevLeft && left<=3) cueCount(left);
@@ -1393,13 +1393,13 @@ function interval(out, tmr){
 
 /* ---- CALENDAR (whole block ahead) ---- */
 function viewCalendar(){
-  app.appendChild(hero(`<span class="lt">CFFB-02</span> ֲ· ${t('calKick')}`, `${t('calH1a')} <em>${t('calH1b')}</em>`, t('calFocus'), null));
+  app.appendChild(hero(`<span class="lt">CFFB-02</span> · ${t('calKick')}`, `${t('calH1a')} <em>${t('calH1b')}</em>`, t('calFocus'), null));
 
   const doneDates = new Set(DB.get('worklog',[]).map(x=>x.date).concat(DB.get('metconlog',[]).map(x=>x.date)));
 
   const bd = el('div','board tray');
   const grid = el('div','cal');
-  (LANG==='he'?['׳','׳‘','׳’','׳“','׳”','׳•','׳©']:['S','M','T','W','T','F','S']).forEach(h=>grid.appendChild(el('div','cal-h',h)));
+  (LANG==='he'?['א','ב','ג','ד','ה','ו','ש']:['S','M','T','W','T','F','S']).forEach(h=>grid.appendChild(el('div','cal-h',h)));
 
   const start = new Date(BLOCK_START);
   start.setDate(start.getDate() - start.getDay());
@@ -1413,7 +1413,7 @@ function viewCalendar(){
     const k = todayKey(d);
     const done = doneDates.has(k);
     const cell = el('div','cal-cell '+(p.train?'tr':'rt')+(k===tk?' today':'')+(done?' done-day':''));
-    cell.innerHTML = `<span class="cd lt">${d.getDate()}.${d.getMonth()+1}</span><span class="cl">${p.train?p.code:'ֲ·'}</span>`;
+    cell.innerHTML = `<span class="cd lt">${d.getDate()}.${d.getMonth()+1}</span><span class="cl">${p.train?p.code:'·'}</span>`;
     if(done){ // don't-break-the-chain ring draws itself, one after another
       cell.insertAdjacentHTML('beforeend',
         `<svg class="done-ring" viewBox="0 0 50 44" style="--d:${(doneN*0.12).toFixed(2)}s"><path d="M25 5 C9 7 3 16 5 26 C7 37 22 42 33 38 C45 34 47 18 39 10 C33 3 27 3 21 6"/></svg>`);
@@ -1429,13 +1429,13 @@ function viewCalendar(){
 
   const lg = el('div','board'); lg.innerHTML=`<div class="board-h">${t('legend')}</div>${squig(CH)}`;
   const items = [
-    ['A','GROUNDED', LANG==='he'?'׳¨׳’׳׳™׳™׳, ׳¡׳§׳•׳•׳׳˜ + ׳׳׳ ׳’׳³':'legs, squat + lunge'],
-    ['B','OVERHEAD', LANG==='he'?'׳₪׳׳’ ׳’׳•׳£ ׳¢׳׳™׳•׳':'upper body'],
-    ['C','EXPLODE', LANG==='he'?'׳›׳•׳—-׳׳”׳™׳¨׳•׳×':'speed-strength'],
-    ['D','ANCHOR', LANG==='he'?'׳¦׳™׳¨, ׳’׳‘ ׳×׳—׳×׳•׳':'hinge, lower back'],
-    ['1','FIRST TOUCH', LANG==='he'?'׳™׳•׳ ׳₪׳×׳™׳—׳” 1.7':'opening day Jul 1'],
-    ['2','OPEN GATES', LANG==='he'?'׳™׳•׳ ׳₪׳×׳™׳—׳” 2.7':'opening day Jul 2'],
-    ['ֲ·', LANG==='he'?'׳׳ ׳•׳—׳”':'REST', t('legRest')],
+    ['A','GROUNDED', LANG==='he'?'רגליים, סקוואט + לאנג׳':'legs, squat + lunge'],
+    ['B','OVERHEAD', LANG==='he'?'פלג גוף עליון':'upper body'],
+    ['C','EXPLODE', LANG==='he'?'כוח-מהירות':'speed-strength'],
+    ['D','ANCHOR', LANG==='he'?'ציר, גב תחתון':'hinge, lower back'],
+    ['1','FIRST TOUCH', LANG==='he'?'יום פתיחה 1.7':'opening day Jul 1'],
+    ['2','OPEN GATES', LANG==='he'?'יום פתיחה 2.7':'opening day Jul 2'],
+    ['·', LANG==='he'?'מנוחה':'REST', t('legRest')],
   ];
   items.forEach(([c,n,f])=>{ const r=el('div','leg'); r.innerHTML=`<span class="leg-c lt">${c}</span><b>${n}</b><i>${f}</i>`; lg.appendChild(r); });
   app.appendChild(lg);
@@ -1448,13 +1448,13 @@ function viewNutrition(){
   app.appendChild(hero(t('nutKick'), `${t('nutH1a')} <em>${t('nutH1b')}</em>`, null, null));
 
   const mb = el('div','board');
-  mb.innerHTML = `<div class="board-h t">${t('today')} ֲ· ${t(isTrain?'trainDay':'restDay')}</div>${squig(TQ)}
+  mb.innerHTML = `<div class="board-h t">${t('today')} · ${t(isTrain?'trainDay':'restDay')}</div>${squig(TQ)}
     <div class="macros"><div><b>${n.kcal}</b><i>${t('kcal')}</i></div><div><b>${n.p}</b><i>${t('protein')}</i></div><div><b>${n.f}</b><i>${t('fat')}</i></div><div><b>${n.c}</b><i>${t('carbs')}</i></div></div>`;
   app.appendChild(mb);
 
-  // today's rotating menu ג€” mark what actually happened, meal by meal
+  // today's rotating menu — mark what actually happened, meal by meal
   const dKey = todayKey();
-  const bc=el('div','clip'); bc.setAttribute('data-tab', `${t('menuH')} ֲ· ${dowName(new Date())}`);
+  const bc=el('div','clip'); bc.setAttribute('data-tab', `${t('menuH')} · ${dowName(new Date())}`);
   bc.appendChild(el('div','mini', t('menuMini')));
   menuFor(new Date()).forEach(m=>bc.appendChild(mealRow(m, dKey)));
   const dayNote=el('textarea','score-note'); dayNote.rows=2; dayNote.placeholder=t('dayFoodPh');
@@ -1463,7 +1463,7 @@ function viewNutrition(){
   bc.appendChild(dayNote); addMic(dayNote);
   app.appendChild(bc);
 
-  // insights ג€” built only from what was logged
+  // insights — built only from what was logged
   const ib=el('div','board');
   ib.innerHTML=`<div class="board-h o">${t('insightsH')}</div>${squig(OR)}`;
   const lines=nutritionInsights();
@@ -1489,9 +1489,9 @@ function mealRow(m, dKey){
   const row=el('div','meal');
   row.innerHTML=`<div class="m-top"><span class="b-when">${tx(m.when)}</span><span>${tx(m.what)}</span><span class="b-p lt">${m.p}g</span></div>
     <div class="seg m-seg">
-      <button class="seg-b" data-s="done">ג“ ${t('mAte')}</button>
-      <button class="seg-b" data-s="other">ג‰ˆ ${t('mOther')}</button>
-      <button class="seg-b" data-s="skip">ג— ${t('mSkip')}</button>
+      <button class="seg-b" data-s="done">✓ ${t('mAte')}</button>
+      <button class="seg-b" data-s="other">≈ ${t('mOther')}</button>
+      <button class="seg-b" data-s="skip">✗ ${t('mSkip')}</button>
     </div>
     <input class="m-note" type="text" placeholder="${t('mOtherPh')}" value="${cur.note||''}" style="display:none">`;
   const noteIn=row.querySelector('.m-note');
@@ -1528,7 +1528,7 @@ function viewProgress(){
   } else {
     scores.slice(0,14).forEach((m,i)=>{
       const row = el('div','chalkline'+(scores.length>3 && i===2?' wiped':'')); // one entry half-wiped, on purpose
-      const rxTag = m.rx==='rx' ? ' ֲ· RX' : (m.rx==='sc' ? ' ֲ· Scaled' : '');
+      const rxTag = m.rx==='rx' ? ' · RX' : (m.rx==='sc' ? ' · Scaled' : '');
       row.innerHTML = `<span class="cl-date">${(m.date||'').slice(5)}</span>
         <span class="cl-what"><span class="lt">${m.wod}</span>${rxTag}${m.note?`<i>${m.note}</i>`:''}</span>
         <span class="cl-score${m.mode==='fortime'?' o':''}">${metconScoreStr(m)}</span>`;
@@ -1538,7 +1538,7 @@ function viewProgress(){
   sb.appendChild(trayBar());
   app.appendChild(sb);
 
-  // ---- personal records ג€” the PR exchange ----
+  // ---- personal records — the PR exchange ----
   const prs = personalRecords();
   const pc = el('div','board');
   pc.innerHTML=`<div class="board-h t">${t('prH')}</div>${squig(TQ)}`;
@@ -1548,8 +1548,8 @@ function viewProgress(){
     prs.forEach(r=>{
       const row=el('div','prrow');
       row.innerHTML=`<div class="pr-lift"><b>${r.lift}</b><span class="plate"><span class="lt">SET ${((r.date||'').slice(5)).replace('-','.')}</span></span></div>
-        <div class="pr-val"><span class="pr-w">${r.weight}<small>${t('kg')}</small></span><span class="pr-x">ֳ— ${r.reps||'?'}</span></div>
-        ${r.est?`<div class="pr-e" title="e1RM">ג‰ˆ${r.est}</div>`:''}`;
+        <div class="pr-val"><span class="pr-w">${r.weight}<small>${t('kg')}</small></span><span class="pr-x">× ${r.reps||'?'}</span></div>
+        ${r.est?`<div class="pr-e" title="e1RM">≈${r.est}</div>`:''}`;
       pc.appendChild(row);
     });
     pc.appendChild(el('div','mini',t('prMini')));
@@ -1594,8 +1594,8 @@ function viewProgress(){
     logs.slice(0,8).forEach(l=>{
       const meta=[]; if(l.rpe) meta.push('RPE '+l.rpe); if(l.elbow&&T.elbLog[l.elbow]) meta.push(tx(T.elbLog[l.elbow]));
       const r=el('div','logrow');
-      r.innerHTML=`<span class="latin">${l.date}</span><b>${l.code} ֲ· ${l.name}${meta.length?' ֲ· '+meta.join(' ֲ· '):''}</b>`+
-        (l.lifts&&l.lifts.length?`<i class="latin lf-tags">${l.lifts.join('  ֲ·  ')}</i>`:'')+
+      r.innerHTML=`<span class="latin">${l.date}</span><b>${l.code} · ${l.name}${meta.length?' · '+meta.join(' · '):''}</b>`+
+        (l.lifts&&l.lifts.length?`<i class="latin lf-tags">${l.lifts.join('  ·  ')}</i>`:'')+
         (l.note?`<i>${l.note}</i>`:'');
       lc.appendChild(r);
     });
