@@ -147,7 +147,14 @@ const WORKOUTS = {
     {tag:'WOD', t:9, title:B('מטקון · Intervals 30/30 ×9','Metcon · Intervals 30/30 ×9'), d:B('סירוגין Air Squat / חבל (בלי דאבל אנדרס). קצב שאפשר לדבר בו משפט.','Alternate Air Squat / jump rope (no double-unders). A pace you can talk at.'),
       timer:{mode:'interval', label:'Intervals 30/30', rounds:18, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Air Squat','Jump Rope']}},
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('couch stretch 45 שנ׳ לצד, pigeon 45 שנ׳ לצד, 10 נשימות. לרשום בלוג.','Couch stretch 45s/side, pigeon 45s/side, 10 breaths. Then log it.')},
-  ]},
+  ], wodWeeks:{
+    2:{tag:'WOD', t:9, title:B('מטקון · Intervals 40/20 ×9','Metcon · Intervals 40/20 ×9'), d:B('סבב: KB Swing 12 ק״ג → Mountain Climbers → חבל. עבודה 40, מנוחה 20.','Rotate: 12 kg KB Swings → Mountain Climbers → rope. 40s on, 20s off.'),
+      timer:{mode:'interval', label:'Intervals 40/20', rounds:9, phases:[{label:B('עבודה','WORK'),sec:40,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:['KB Swing','Mountain Climbers','Jump Rope']}},
+    3:{tag:'WOD', t:9, title:B('מטקון · Intervals 30/30 ×10','Metcon · Intervals 30/30 ×10'), d:B('סירוגין שאטל 20 מ׳ הלוך-חזור / Goblet Squat קטלבל 12. הקצב עולה מול שבוע 1.','Alternate 20 m shuttle / 12 kg Goblet Squat. Faster than week 1.'),
+      timer:{mode:'interval', label:'Intervals 30/30', rounds:20, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Shuttle 20m','Goblet Squat']}},
+    4:{tag:'WOD', t:6, title:B('מטקון · Intervals 30/30 ×6 · דילוד','Metcon · Intervals 30/30 ×6 · deload'), d:B('קל ונינוח: חבל / Step-up. שומרים אנרגיה למבחן של שישי.','Easy: rope / step-ups. Saving it for Friday\'s test.'),
+      timer:{mode:'interval', label:'Intervals 30/30', rounds:12, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Jump Rope','Step-up']}},
+  }},
   B: { code:'B', name:'THE NUMBER', focus:B('עליון · דחיפה ומשיכה','Upper · press & pull'), train:true,
     lifts:[{name:'Strict Press',scheme:'5×5 (שבוע זוגי: Bench Press)',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
     accLoads:[{name:'Bent-over Row',scheme:'3×10 ניטרלי',sets:3,reps:10,start:7,inc:1,equip:'db',each:true}],
@@ -159,7 +166,14 @@ const WORKOUTS = {
     {tag:'WOD', t:9, title:B('מטקון · AMRAP 8 · המבחן','Metcon · AMRAP 8 · the test'), d:B('25 קפיצות חבל (או 2 שאטלים של 20 מ׳) + 10 Push Press דמבלים 7 ק״ג. יעד: 6 סבבים. בייסליין: 5 (קפריסין, 9.8).','25 rope skips (or 2×20 m shuttles) + 10 DB Push Press at 7 kg. Target: 6 rounds. Baseline: 5 (Cyprus, Aug 9).'),
       timer:{mode:'amrap', label:'AMRAP 8', sec:480}},
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('מתיחת חזה בפתח דלת, lat stretch, thoracic rotation ×5 לצד.','Doorway chest stretch, lat stretch, thoracic rotation ×5/side.')},
-  ]},
+  ], wodWeeks:{
+    2:{tag:'WOD', t:9, title:B('מטקון · AMRAP 9','Metcon · AMRAP 9'), d:B('6 Push-up · 8 DB Push Press 7 ק״ג · 10 Sit-up. קצב אחיד, בלי ספרינט בסבב הראשון.','6 Push-ups · 8 DB Push Press 7 kg · 10 Sit-ups. Even pace, no first-round sprint.'),
+      timer:{mode:'amrap', label:'AMRAP 9', sec:540}},
+    3:{tag:'WOD', t:9, title:B('מטקון · AMRAP 10','Metcon · AMRAP 10'), d:B('10 KB Swing 12 ק״ג · 8 Push-up · 20 קפיצות חבל. לרשום סבבים, זה נתון לבלוק 3.','10 KB Swings 12 kg · 8 Push-ups · 20 rope skips. Log the rounds — data for block 3.'),
+      timer:{mode:'amrap', label:'AMRAP 10', sec:600}},
+    4:{tag:'WOD', t:6, title:B('מטקון · AMRAP 6 · דילוד','Metcon · AMRAP 6 · deload'), d:B('5 Push-up · 10 Air Squat · 15 קפיצות חבל. קל בכוונה, המבחן בשישי.','5 Push-ups · 10 Air Squats · 15 rope skips. Deliberately easy — the test is Friday.'),
+      timer:{mode:'amrap', label:'AMRAP 6', sec:360}},
+  }},
   X: { code:'X', name:'BONUS', focus:B('בונוס · קונדישנינג וליבה, 30 דק׳, רשות','Bonus · conditioning & core, 30 min, optional'), train:true,
     wodLoads:[{name:'KB Swing',start:12,equip:'kb',sticky:true}],
     equip:[{t:'kb',lift:'KB Swing'},{t:'box',note:B('מדרגה נמוכה','low step')},{t:'rope'},{t:'mat'}], stages:[
@@ -168,7 +182,14 @@ const WORKOUTS = {
     {tag:'WOD', t:19,title:B('גוף האימון · EMOM 18','Main · EMOM 18'), d:B('דקה 1: 12 KB Swing רוסי · דקה 2: 10 Box Step-up לרגל · דקה 3: 30 שנ׳ Hollow Hold או Plank. ×6 סבבים. דקה נסגרת מעל 40 שנ׳? מורידים חזרות.','Min 1: 12 Russian KB Swings · min 2: 10 Box Step-ups/leg · min 3: 30s Hollow Hold or Plank. ×6 rounds. A minute past 40s of work? Cut reps.'),
       timer:{mode:'interval', label:'EMOM 18', rounds:18, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('12 KB Swing','12 KB Swings'),B('10 Step-up לרגל','10 Step-ups/leg'),B('30 שנ׳ Hollow/Plank','30s Hollow/Plank')]}},
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('child\'s pose, מתיחת מכופפי ירך, נשימות. שורה ביומן כולל תחושת ברך.','Child\'s pose, hip flexor stretch, breathing. Log it, knee note included.')},
-  ]},
+  ], wodWeeks:{
+    2:{tag:'WOD', t:19, title:B('גוף האימון · EMOM 18','Main · EMOM 18'), d:B('דקה 1: 10 Goblet Squat קטלבל 12 · דקה 2: 8 Push-up · דקה 3: 30 שנ׳ Side Plank (חצי לכל צד). ×6.','Min 1: 10 Goblet Squats 12 kg · min 2: 8 Push-ups · min 3: 30s Side Plank (half per side). ×6.'),
+      timer:{mode:'interval', label:'EMOM 18', rounds:18, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('10 Goblet Squat','10 Goblet Squats'),B('8 Push-up','8 Push-ups'),B('30 שנ׳ Side Plank','30s Side Plank')]}},
+    3:{tag:'WOD', t:19, title:B('גוף האימון · EMOM 18','Main · EMOM 18'), d:B('דקה 1: 12 KB Swing · דקה 2: 6 Burpee step-out (בלי קפיצה) · דקה 3: 30 שנ׳ Plank עם טפיחות כתף. ×6.','Min 1: 12 KB Swings · min 2: 6 step-out Burpees (no jump) · min 3: 30s Plank shoulder taps. ×6.'),
+      timer:{mode:'interval', label:'EMOM 18', rounds:18, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('12 KB Swing','12 KB Swings'),B('6 Burpee step-out','6 step-out Burpees'),B('30 שנ׳ טפיחות כתף','30s shoulder taps')]}},
+    4:{tag:'WOD', t:19, title:B('גוף האימון · EMOM 18 · קל','Main · EMOM 18 · easy'), d:B('דקה 1: 8 Goblet Squat · דקה 2: 20 קפיצות חבל · דקה 3: 30 שנ׳ Plank. ×6. שבוע מבחן, שומרים רעננות.','Min 1: 8 Goblet Squats · min 2: 20 rope skips · min 3: 30s Plank. ×6. Test week — stay fresh.'),
+      timer:{mode:'interval', label:'EMOM 18', rounds:18, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('8 Goblet Squat','8 Goblet Squats'),B('20 קפיצות חבל','20 rope skips'),B('30 שנ׳ Plank','30s Plank')]}},
+  }},
   C: { code:'C', name:'ANCHOR', focus:B('ציר · גב תחתון','Hinge · lower back'), train:true,
     lifts:[{name:'Deadlift',scheme:'5×3 כיול',sets:5,reps:3,start:40,inc:5,equip:'bar'}],
     equip:[{t:'bar',lift:'Deadlift',note:B('trap bar אם יש','trap bar if available')},{t:'straps'},{t:'kb'},{t:'rope',note:B('למטקון','for the metcon')},{t:'mat',note:B('לקור','for the core work')}], stages:[
@@ -179,7 +200,14 @@ const WORKOUTS = {
     {tag:'WOD', t:9, title:B('מטקון · For Time 21-15-9','Metcon · For Time 21-15-9'), d:B('Air Squat + Sit-up, ובסוף כל סבב 20 קפיצות חבל. יעד: מתחת ל-8 דק׳.','Air Squats + Sit-ups, 20 rope skips after each round. Target: under 8 min.'),
       timer:{mode:'fortime', label:'For Time', cap:540}},
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('hamstring stretch בשכיבה, שחרור גב תחתון, נשימות.','Lying hamstring stretch, lower-back release, breathing.')},
-  ]},
+  ], wodWeeks:{
+    2:{tag:'WOD', t:9, title:B('מטקון · For Time 15-12-9','Metcon · For Time 15-12-9'), d:B('KB Swing 12 ק״ג + Push-up, ובסוף כל סבב 20 קפיצות חבל. יעד: מתחת ל-7 דק׳.','12 kg KB Swings + Push-ups, 20 rope skips after each round. Target: under 7 min.'),
+      timer:{mode:'fortime', label:'For Time', cap:540}},
+    3:{tag:'WOD', t:9, title:B('מטקון · For Time 21-15-9','Metcon · For Time 21-15-9'), d:B('Goblet Squat קטלבל 12 + Sit-up, ובסוף כל סבב 2 שאטלים של 20 מ׳.','12 kg Goblet Squats + Sit-ups, 2×20 m shuttles after each round.'),
+      timer:{mode:'fortime', label:'For Time', cap:540}},
+    4:{tag:'WOD', t:9, title:B('מטקון · AMRAP 8 · יום המבחן','Metcon · AMRAP 8 · TEST DAY'), d:B('25 קפיצות חבל + 10 DB Push Press 7 ק״ג. בדיוק כמו שבוע 1, בכוונה: זה המספר שסוגר את הבלוק. יעד: לעבור את התוצאה של שבוע 1.','25 rope skips + 10 DB Push Press 7 kg. Same as week 1 on purpose — this number closes the block. Target: beat week 1.'),
+      timer:{mode:'amrap', label:'AMRAP 8', sec:480}},
+  }},
   REST: { code:'R', name:B('מנוחה','REST'), focus:B('הגוף בונה עכשיו','The body is building now'), train:false, stages:[
     {tag:'REST',t:0, title:B('יום מנוחה','rest day'), d:B('הליכה קלה או מתיחות אם בא לך, בלי לכפות. שינה היא האימון של היום.','Easy walk or stretching if you feel like it, never forced. Sleep is today\'s workout.')},
   ]},
@@ -517,10 +545,16 @@ function metconScoreStr(m){
   return `${m.a??'?'}/${m.b??'?'}`;
 }
 
+/* CFFB-02: fixed per-day protocol, fresh metcon content every week (Mosh, 13.8) */
+function blockWeek(d){ const ms=d-BLOCK_START; if(ms<0) return 1; return Math.min(4, Math.floor(ms/(7*86400000))+1); }
 function planFor(d){
   const k = todayKey(d);
   if(SPECIAL[k]) return SPECIAL[k];
-  return WORKOUTS[BYDOW[d.getDay()]];
+  const w = WORKOUTS[BYDOW[d.getDay()]];
+  if(!w || !w.wodWeeks) return w;
+  const ov = w.wodWeeks[blockWeek(d)];
+  if(!ov) return w;
+  return Object.assign({}, w, {stages: w.stages.map(s=>s.tag==='WOD'?ov:s)});
 }
 function el(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
 
