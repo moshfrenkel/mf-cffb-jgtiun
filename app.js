@@ -116,6 +116,9 @@ const T = {
   kgEach:{he:'ק״ג ליד',en:'kg each'},
   actual:{he:'מה עשיתי בפועל:',en:'what I actually did:'},
   stageNotePh:{he:'פתק לעצמי: איך הלך החלק הזה...',en:'note to self: how this part went...'},
+  sendMarcus:{he:'שלח למרקוס',en:'SEND TO MARCUS'},
+  sendMarcusOk:{he:'הועתק ✓ הדבק בתיבת הזריקות',en:'Copied ✓ paste it in the HQ inbox'},
+  sendMarcusMini:{he:'מעתיק את הלוג של היום בלבד. פותחים את הקונסולה בטלפון, מדביקים בתיבת הזריקות, ומרקוס נותן פידבק והתאמות באותו ערב.',en:"Copies today's log only. Open the pocket console, paste it in the inbox, and Marcus sends back feedback and adjustments the same evening."},
   menuH:{he:'התפריט של היום',en:"TODAY'S MENU"},
   menuMini:{he:'תפריט מתחלף לפי היום בשבוע. סמן מה קרה בפועל, מזה נבנות התובנות למטה.',en:'The menu rotates by weekday. Mark what actually happened — the insights below are built from it.'},
   mAte:{he:'כמתוכנן',en:'as planned'},
@@ -543,6 +546,69 @@ function metconScoreStr(m){
   if(m.mode==='fortime') return `${m.a||0}:${String(m.b||0).padStart(2,'0')}`;
   if(m.mode==='amrap')   return `${m.a||0}R${m.b?'+'+m.b:''}`;
   return `${m.a??'?'}/${m.b??'?'}`;
+}
+
+/* ---- DAY DIGEST (16.8) ----
+   exportAll() dumps the whole history as JSON: perfect for a device switch,
+   useless as a message. This builds ONE day, in plain text a human reads and a
+   script parses. The first line is the handshake: `MFLOG v1 <date> <code>` is
+   what automation\marcus-inbox.mjs looks for in the HQ inbox. */
+function dayDigest(dKey){
+  dKey = dKey || todayKey();
+  const L = [];
+  const w = DB.get('worklog',[]).find(x=>x.date===dKey) || null;
+  let p = null; try{ p = planFor(new Date(dKey+'T12:00:00')); }catch(e){}
+  const code = (w && w.code) || (p && p.code) || '?';
+  const name = (w && w.name) || (p && p.name ? tx(p.name) : '');
+  L.push(`MFLOG v1 ${dKey} ${code}`);
+  L.push(`אימון ${code}${name?' · '+name:''}`);
+
+  const lifts = DB.get('liftlog',[]).filter(x=>x.date===dKey);
+  if(lifts.length) L.push('כוח: ' + lifts.map(x=> x.sets && x.sets.length
+    ? `${x.lift} ${x.sets.map(s=>`${s.w||'?'}×${s.r||'?'}`).join(' / ')}`
+    : `${x.lift} ${x.weight||'?'}${x.reps?'×'+x.reps:''}`).join(' | '));
+  else L.push('כוח: לא נרשם');
+
+  const mets = DB.get('metconlog',[]).filter(x=>x.date===dKey);
+  if(mets.length) mets.forEach(m=> L.push(`מטקון: ${m.wod||''} · ${metconScoreStr(m)} · ${m.rx?'RX':'Scaled'}${m.note?' · '+m.note:''}`));
+  else L.push('מטקון: לא נרשם');
+
+  if(w){
+    const bits = [];
+    if(w.rpe) bits.push('RPE '+w.rpe);
+    if(w.elbow && T.elbLog && T.elbLog[w.elbow]) bits.push('מרפק: '+tx(T.elbLog[w.elbow]));
+    if(bits.length) L.push('תחושה: ' + bits.join(' · '));
+    if(w.note) L.push('הערה: ' + w.note);
+  }
+
+  DB.get('stagenotes',[]).filter(x=>x.date===dKey).forEach(n=> L.push(`פתק (${n.tag}): ${n.text}`));
+
+  const ck = DB.get('checkins',[]).find(x=>x.date===dKey);
+  if(ck && ck.weight) L.push('משקל: ' + ck.weight + ' ק״ג');
+
+  L.push('--');
+  L.push('נשלח מהאפליקציה בסוף האימון. מרקוס: פידבק והתאמות לאימון הבא.');
+  return L.join('\n');
+}
+
+/* one button, used in two places: the finish dossier and the progress board */
+function sendMarcusBtn(dKey){
+  const wrap = el('div','');
+  const btn = el('button','music-open', t('sendMarcus'));
+  const ta = el('textarea','score-note'); ta.rows=4; ta.style.display='none'; ta.readOnly=true;
+  btn.onclick = async ()=>{
+    const txt = dayDigest(dKey);
+    ta.value = txt;
+    let ok=false;
+    try{ await navigator.clipboard.writeText(txt); ok=true; }catch(e){}
+    if(!ok){ ta.style.display='block'; ta.focus(); ta.select(); try{ document.execCommand('copy'); ok=true; }catch(e){} }
+    btn.textContent = t('sendMarcusOk'); buzz([120,60,120]);
+    setTimeout(()=>btn.textContent=t('sendMarcus'), 3000);
+  };
+  wrap.appendChild(btn);
+  wrap.appendChild(el('div','mini', t('sendMarcusMini')));
+  wrap.appendChild(ta);
+  return wrap;
 }
 
 /* CFFB-02: fixed per-day protocol, fresh metcon content every week (Mosh, 13.8) */
@@ -1356,6 +1422,7 @@ function finishClip(p, dKey){
     setTimeout(()=>{ activeTab='progress'; render(); }, 1800);
   };
   c.appendChild(save);
+  c.appendChild(sendMarcusBtn(dKey)); // רושמים, ואז שולחים למרקוס
   return c;
 }
 
@@ -1671,6 +1738,7 @@ function viewProgress(){
         (l.note?`<i>${l.note}</i>`:'');
       lc.appendChild(r);
     });
+    lc.appendChild(sendMarcusBtn(logs[0].date)); // אפשר לשלוח גם אחרי שהמסך התחלף
     app.appendChild(lc);
   }
 
