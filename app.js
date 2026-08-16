@@ -145,15 +145,15 @@ const WORKOUTS = {
     {tag:'STR', t:15,title:B('כוח','strength'), d:B('Front Squat 5×5. סט 1 במוט ריק, זה הכיול. סטים 2-5 בטווח 25-32 ק״ג, מנוחה 90 שנ׳. עומק עד איפה שהברך שקטה, מרפקים גבוהים.','Front Squat 5×5. Set 1 empty bar — calibration. Sets 2-5 at 25-32 kg, rest 90s. Depth where the knee stays quiet, elbows high.')},
     {tag:'ACC', t:7, title:B('עזר + קור','accessory + core'), d:B('Glute Bridge 3×12 · Dead Bug 3×8 לצד · Side Plank 2×25 שנ׳ לצד.','Glute Bridge 3×12 · Dead Bug 3×8/side · Side Plank 2×25s/side.')},
     {tag:'WOD', t:9, title:B('מטקון · Intervals 30/30 ×9','Metcon · Intervals 30/30 ×9'), d:B('סירוגין Air Squat / חבל (בלי דאבל אנדרס). קצב שאפשר לדבר בו משפט.','Alternate Air Squat / jump rope (no double-unders). A pace you can talk at.'),
-      timer:{mode:'interval', label:'Intervals 30/30', rounds:18, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Air Squat','Jump Rope']}},
+      timer:{mode:'interval', label:'Intervals 30/30', rounds:9, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Air Squat','Jump Rope']}},
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('couch stretch 45 שנ׳ לצד, pigeon 45 שנ׳ לצד, 10 נשימות. לרשום בלוג.','Couch stretch 45s/side, pigeon 45s/side, 10 breaths. Then log it.')},
   ], wodWeeks:{
     2:{tag:'WOD', t:9, title:B('מטקון · Intervals 40/20 ×9','Metcon · Intervals 40/20 ×9'), d:B('סבב: KB Swing 12 ק״ג → Mountain Climbers → חבל. עבודה 40, מנוחה 20.','Rotate: 12 kg KB Swings → Mountain Climbers → rope. 40s on, 20s off.'),
       timer:{mode:'interval', label:'Intervals 40/20', rounds:9, phases:[{label:B('עבודה','WORK'),sec:40,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:['KB Swing','Mountain Climbers','Jump Rope']}},
-    3:{tag:'WOD', t:9, title:B('מטקון · Intervals 30/30 ×10','Metcon · Intervals 30/30 ×10'), d:B('סירוגין שאטל 20 מ׳ הלוך-חזור / Goblet Squat קטלבל 12. הקצב עולה מול שבוע 1.','Alternate 20 m shuttle / 12 kg Goblet Squat. Faster than week 1.'),
-      timer:{mode:'interval', label:'Intervals 30/30', rounds:20, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Shuttle 20m','Goblet Squat']}},
+    3:{tag:'WOD', t:10, title:B('מטקון · Intervals 30/30 ×10','Metcon · Intervals 30/30 ×10'), d:B('סירוגין שאטל 20 מ׳ הלוך-חזור / Goblet Squat קטלבל 12. הקצב עולה מול שבוע 1.','Alternate 20 m shuttle / 12 kg Goblet Squat. Faster than week 1.'),
+      timer:{mode:'interval', label:'Intervals 30/30', rounds:10, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Shuttle 20m','Goblet Squat']}},
     4:{tag:'WOD', t:6, title:B('מטקון · Intervals 30/30 ×6 · דילוד','Metcon · Intervals 30/30 ×6 · deload'), d:B('קל ונינוח: חבל / Step-up. שומרים אנרגיה למבחן של שישי.','Easy: rope / step-ups. Saving it for Friday\'s test.'),
-      timer:{mode:'interval', label:'Intervals 30/30', rounds:12, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Jump Rope','Step-up']}},
+      timer:{mode:'interval', label:'Intervals 30/30', rounds:6, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Jump Rope','Step-up']}},
   }},
   B: { code:'B', name:'THE NUMBER', focus:B('עליון · דחיפה ומשיכה','Upper · press & pull'), train:true,
     lifts:[{name:'Strict Press',scheme:'5×5 (שבוע זוגי: Bench Press)',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
@@ -169,7 +169,7 @@ const WORKOUTS = {
   ], wodWeeks:{
     2:{tag:'WOD', t:9, title:B('מטקון · AMRAP 9','Metcon · AMRAP 9'), d:B('6 Push-up · 8 DB Push Press 7 ק״ג · 10 Sit-up. קצב אחיד, בלי ספרינט בסבב הראשון.','6 Push-ups · 8 DB Push Press 7 kg · 10 Sit-ups. Even pace, no first-round sprint.'),
       timer:{mode:'amrap', label:'AMRAP 9', sec:540}},
-    3:{tag:'WOD', t:9, title:B('מטקון · AMRAP 10','Metcon · AMRAP 10'), d:B('10 KB Swing 12 ק״ג · 8 Push-up · 20 קפיצות חבל. לרשום סבבים, זה נתון לבלוק 3.','10 KB Swings 12 kg · 8 Push-ups · 20 rope skips. Log the rounds — data for block 3.'),
+    3:{tag:'WOD', t:10, title:B('מטקון · AMRAP 10','Metcon · AMRAP 10'), d:B('10 KB Swing 12 ק״ג · 8 Push-up · 20 קפיצות חבל. לרשום סבבים, זה נתון לבלוק 3.','10 KB Swings 12 kg · 8 Push-ups · 20 rope skips. Log the rounds — data for block 3.'),
       timer:{mode:'amrap', label:'AMRAP 10', sec:600}},
     4:{tag:'WOD', t:6, title:B('מטקון · AMRAP 6 · דילוד','Metcon · AMRAP 6 · deload'), d:B('5 Push-up · 10 Air Squat · 15 קפיצות חבל. קל בכוונה, המבחן בשישי.','5 Push-ups · 10 Air Squats · 15 rope skips. Deliberately easy — the test is Friday.'),
       timer:{mode:'amrap', label:'AMRAP 6', sec:360}},
@@ -221,8 +221,8 @@ const SPECIAL = {
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('3 דק׳ חבל קל, cat-cow, band pull-apart, scap push-ups, bodyweight squat ×10.','3 min easy rope, cat-cow, band pull-aparts, scap push-ups, bodyweight squat ×10.')},
     {tag:'STR', t:16,title:B('כוח','strength'), d:B('Front Squat לימוד תנועה 5×5 במוט ריק/קל (20-30 ק״ג). depth מלא, גב זקוף. לומדים, לא מעמיסים.','Front Squat skill work 5×5 with an empty/light bar (20-30 kg). Full depth, upright back. Learning, not loading.')},
     {tag:'ACC', t:6, title:B('עזר + קור','accessory + core'), d:B('Glute Bridge 3×12 · Dead Bug 3×8 לצד.','Glute Bridge 3×12 · Dead Bug 3×8 per side.')},
-    {tag:'WOD', t:9, title:B('מטקון · Intervals 30/30 ×6','Metcon · Intervals 30/30 ×6'), d:B('סירוגין Row / Air Squat. קל-בינוני, להזיע בלי לקרוס.','Alternate Row / Air Squat. Easy-moderate — sweat, don\'t collapse.'),
-      timer:{mode:'interval', label:'Intervals 30/30', rounds:12, phases:[{label:B('עבודה','WORK'),sec:30,work:1}], cycle:['Row','Air Squat']}},
+    {tag:'WOD', t:6, title:B('מטקון · Intervals 30/30 ×6','Metcon · Intervals 30/30 ×6'), d:B('סירוגין Row / Air Squat. קל-בינוני, להזיע בלי לקרוס.','Alternate Row / Air Squat. Easy-moderate — sweat, don\'t collapse.'),
+      timer:{mode:'interval', label:'Intervals 30/30', rounds:6, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Row','Air Squat']}},
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('מתיחת hip flexors, couch stretch, 10 נשימות עמוקות.','Hip flexor stretch, couch stretch, 10 deep breaths.')},
   ]},
   '2026-07-02': { code:'2', name:'OPEN GATES', focus:B('יום פתיחה · Re-Entry 50-60%','Opening day · re-entry 50-60%'), train:true,
@@ -556,6 +556,44 @@ function planFor(d){
   if(!ov) return w;
   return Object.assign({}, w, {stages: w.stages.map(s=>s.tag==='WOD'?ov:s)});
 }
+/* ---- PLAN GUARD (16.8) ----
+   Bug we are never repeating: a 30/30 metcon was entered as rounds:18 (counting
+   30-second segments instead of full cycles), so a 9-minute piece ran 18 minutes.
+   `rounds` = full cycles, and one cycle runs ALL phases. This check walks every
+   stage that carries a timer, computes the real duration, and shouts in the
+   console when it drifts from the `t` printed on the card (or from the ×N in the
+   title). Cheap, runs once at boot, never touches the UI. */
+function timerSeconds(tm){
+  if(!tm) return null;
+  if(tm.mode==='interval') return (tm.rounds||0) * (tm.phases||[]).reduce((a,p)=>a+(p.sec||0),0);
+  if(tm.mode==='amrap')    return tm.sec||0;
+  if(tm.mode==='fortime')  return tm.cap||0;
+  return null;
+}
+function auditPlanTimers(tol){
+  const slack = tol==null ? 60 : tol; // a stage may hold up to a minute of setup slack
+  const bad=[];
+  const check=(where, st)=>{
+    if(!st || !st.timer) return;
+    const sec=timerSeconds(st.timer); if(sec==null) return;
+    const want=(st.t||0)*60;
+    const name=(st.title && (st.title.he||st.title)) || st.tag || '?';
+    if(Math.abs(sec-want)>slack) bad.push(`${where} · ${name}: טיימר ${Math.round(sec/60*10)/10} דק׳ מול t=${st.t} על הכרטיס`);
+    if(sec>want) bad.push(`${where} · ${name}: הטיימר ארוך מהזמן שכתוב בכרטיס`);
+    const m=String(name).match(/[×x](\d+)/); // "Intervals 30/30 ×9" must be 9 full cycles
+    if(m && st.timer.mode==='interval' && +m[1]!==st.timer.rounds)
+      bad.push(`${where} · ${name}: הכותרת אומרת ×${m[1]} אבל rounds=${st.timer.rounds}`);
+  };
+  Object.keys(WORKOUTS).forEach(k=>{
+    (WORKOUTS[k].stages||[]).forEach(st=>check(`אימון ${k}`, st));
+    Object.keys(WORKOUTS[k].wodWeeks||{}).forEach(w=>check(`אימון ${k} שבוע ${w}`, WORKOUTS[k].wodWeeks[w]));
+  });
+  Object.keys(SPECIAL).forEach(k=>(SPECIAL[k].stages||[]).forEach(st=>check(k, st)));
+  if(bad.length) console.warn('[plan-guard] אי-התאמה בין הטיימר לתוכנית:\n'+[...new Set(bad)].join('\n'));
+  else console.log('[plan-guard] כל הטיימרים תואמים לתוכנית ✓');
+  return bad;
+}
+
 function el(tag, cls, html){ const e=document.createElement(tag); if(cls)e.className=cls; if(html!=null)e.innerHTML=html; return e; }
 
 /* ---------------- CHALK ART (bespoke SVG, no icons/emoji) ---------------- */
@@ -1739,6 +1777,9 @@ render();
 document.addEventListener('visibilitychange', ()=>{
   if(document.visibilityState==='visible' && timer.iv){ acquireWake(); if(timer.repaint) timer.repaint(); }
 });
+
+/* plan sanity check — console only, so a broken block is caught before a workout */
+try{ auditPlanTimers(); }catch(e){ console.warn('[plan-guard] failed', e); }
 
 /* service worker */
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('./sw.js').catch(()=>{}); }
