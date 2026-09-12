@@ -57,7 +57,7 @@ const T = {
   musicPh:{he:'הדבק קישור פלייליסט/אלבום מספוטיפיי',en:'Paste a Spotify playlist/album link'},
   musicSet:{he:'החלף',en:'Set'},
   musicMini:{he:'הנגן דורש אינטרנט. אפשר להדביק כל קישור ספוטיפיי והוא יישמר.',en:'Player needs internet. Paste any Spotify link and it sticks.'},
-  calKick:{he:'לוח הבלוק · 16.8–12.9',en:'BLOCK BOARD · AUG 16–SEP 12'},
+  calKick:{he:'לוח הבלוק · 13.9–10.10',en:'BLOCK BOARD · SEP 13–OCT 10'},
   calH1a:{he:'הבלוק',en:'THE BLOCK'}, calH1b:{he:'קדימה',en:'AHEAD'},
   calFocus:{he:'CFFB-01 · 4 שבועות · הקש על יום לפתוח אותו',en:'CFFB-01 · 4 weeks · tap a day to open it'},
   legend:{he:'מקרא',en:'LEGEND'},
@@ -140,15 +140,15 @@ function dowName(d){ return LANG==='he' ? HE_DOW[d.getDay()] : EN_DOW[d.getDay()
 const B = (he,en)=>({he,en});
 
 const WORKOUTS = {
-  A: { code:'A', name:'FIRST STEP', focus:B('רגליים · סקוואט','Legs · squat'), train:true,
+  A: { code:'A', name:'CLEAN START', focus:B('רגליים · סקוואט','Legs · squat'), train:true,
     lifts:[{name:'Front Squat',scheme:'5×5 כיול',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
     equip:[{t:'bar',lift:'Front Squat'},{t:'kb',note:B('12 ק״ג','12 kg')},{t:'rope'},{t:'mat',note:B('לקור בסוף','for the core work')}], stages:[
     {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט ריק+צלחות קטנות, קטלבל 12, חבל, מזרן. לכתוב על הלוח: Front Squat, סט ראשון 20 ק״ג.','Empty bar + small plates, 12 kg KB, rope, mat. Chalk it: Front Squat, first set 20 kg.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('חבל 2 דק׳ נינוח, cat-cow ×8, world\'s greatest stretch ×5 לצד, bodyweight squat ×10 (עצירה בתחתית, להקשיב לברך), front squat ריק ×8.','2 min easy rope, cat-cow ×8, world\'s greatest stretch ×5/side, bodyweight squat ×10 (pause low, listen to the knee), empty-bar front squat ×8.')},
-    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Front Squat 5×5. סט 1 במוט ריק, זה הכיול. סטים 2-5 בטווח 25-32 ק״ג, מנוחה 90 שנ׳. עומק עד איפה שהברך שקטה, מרפקים גבוהים.','Front Squat 5×5. Set 1 empty bar — calibration. Sets 2-5 at 25-32 kg, rest 90s. Depth where the knee stays quiet, elbows high.')},
-    {tag:'ACC', t:7, title:B('עזר + קור','accessory + core'), d:B('Glute Bridge 3×12 · Dead Bug 3×8 לצד · Side Plank 2×25 שנ׳ לצד.','Glute Bridge 3×12 · Dead Bug 3×8/side · Side Plank 2×25s/side.')},
-    {tag:'WOD', t:9, title:B('מטקון · Intervals 30/30 ×9','Metcon · Intervals 30/30 ×9'), d:B('סירוגין Air Squat / חבל (בלי דאבל אנדרס). קצב שאפשר לדבר בו משפט.','Alternate Air Squat / jump rope (no double-unders). A pace you can talk at.'),
-      timer:{mode:'interval', label:'Intervals 30/30', rounds:9, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Air Squat','Jump Rope']}},
+    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Front Squat 5×5. סט 1 במוט ריק 20, זה הכיול. סטים 2-5 בטווח 25 עד 27.5 ק״ג, מנוחה 90 שנ׳. עומק עד איפה שהברך שקטה, מרפקים גבוהים, גב זקוף.','Front Squat 5×5. Set 1 empty bar at 20 — calibration. Sets 2-5 at 25 to 27.5 kg, rest 90s. Depth where the knee stays quiet, elbows high, back upright.')},
+    {tag:'ACC', t:7, title:B('עזר + קור','accessory + core'), d:B('Reverse Lunge דמבל יד אחת 3×8 לכל רגל, מתחילים ברגל ימין והצד החלש קובע את המספר · Dead Bug 3×8 לצד · Side Plank 2×25 שנ׳ לצד.','Single-DB Reverse Lunge 3×8/leg, right leg first — the weak side sets the number · Dead Bug 3×8/side · Side Plank 2×25s/side.')},
+    {tag:'WOD', t:9, title:B('מטקון · 9 דקות סירוגין 30/30 רצוף','Metcon · 9 min continuous, swap every 30s'), d:B('מחליפים בין Air Squat לחבל כל 30 שניות, בלי מנוחה, 9 דקות עבודה רצופה (בלי דאבל אנדרס). קצב שאפשר לדבר בו משפט קצר. לרשום חזרות בפילוח נפרד לחבל ולסקוואט. בייסליין להשוות אליו: 443 חזרות (16.8). יעד היום: 400 ומעלה, אחרי 13 יום הפסקה.','Swap between Air Squats and rope every 30 seconds, no rest, 9 minutes of continuous work (no double-unders). A pace you can say a short sentence at. Log reps split by movement. Baseline to beat: 443 reps (Aug 16). Today: 400+, after 13 days off.'),
+      timer:{mode:'interval', label:'30/30 continuous', rounds:18, phases:[{label:B('עבודה','WORK'),sec:30,work:1}], cycle:['Air Squat','Jump Rope']}},
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('couch stretch 45 שנ׳ לצד, pigeon 45 שנ׳ לצד, 10 נשימות. לרשום בלוג.','Couch stretch 45s/side, pigeon 45s/side, 10 breaths. Then log it.')},
   ], wodWeeks:{
     2:{tag:'WOD', t:9, title:B('מטקון · Intervals 40/20 ×9','Metcon · Intervals 40/20 ×9'), d:B('סבב: KB Swing 12 ק״ג → Mountain Climbers → חבל. עבודה 40, מנוחה 20.','Rotate: 12 kg KB Swings → Mountain Climbers → rope. 40s on, 20s off.'),
@@ -158,22 +158,22 @@ const WORKOUTS = {
     4:{tag:'WOD', t:6, title:B('מטקון · Intervals 30/30 ×6 · דילוד','Metcon · Intervals 30/30 ×6 · deload'), d:B('קל ונינוח: חבל / Step-up. שומרים אנרגיה למבחן של שישי.','Easy: rope / step-ups. Saving it for Friday\'s test.'),
       timer:{mode:'interval', label:'Intervals 30/30', rounds:6, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:['Jump Rope','Step-up']}},
   }},
-  B: { code:'B', name:'THE NUMBER', focus:B('עליון · דחיפה ומשיכה','Upper · press & pull'), train:true,
-    lifts:[{name:'Strict Press',scheme:'5×5 (שבוע זוגי: Bench Press)',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
+  B: { code:'B', name:'PULL YOUR WEIGHT', focus:B('דחיפה מעל הראש + משיכה','Overhead press + pull'), train:true,
+    lifts:[{name:'Strict Press',scheme:'5×5',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
     accLoads:[{name:'Bent-over Row',scheme:'3×10 ניטרלי',sets:3,reps:10,start:7,inc:1,equip:'db',each:true}],
-    equip:[{t:'bar',lift:'Strict Press / Bench'},{t:'db',note:B('7 ק״ג למטקון','7 kg for the metcon')},{t:'band',note:B('Face Pull + רהאב מרפק','Face Pulls + elbow rehab')},{t:'rope'}], stages:[
-    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט+צלחות קלות, דמבלים 7 ק״ג, גומייה. שבוע זוגי (2,4): ספסל לבנץ׳. לכתוב על הלוח: יעד 6 סבבים.','Bar + light plates, 7 kg DBs, band. Even weeks (2,4): bench set up. Chalk it: target 6 rounds.')},
+    equip:[{t:'bar',lift:'Strict Press'},{t:'db',note:B('7 ק״ג למטקון','7 kg for the metcon')},{t:'band',note:B('Face Pull + רהאב מרפק','Face Pulls + elbow rehab')},{t:'rope'}], stages:[
+    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט+צלחות קלות, דמבלים 7 ק״ג, גומייה, מזרן, מתח. לכתוב על הלוח: Strict Press 35.','Bar + light plates, 7 kg DBs, band, mat, pull-up bar. Chalk it: Strict Press 35.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('2 דק׳ חבל או שאטל, band pull-apart ×15, scap push-up ×10, band dislocate ×10, press ריק ×8.','2 min rope or shuttle, band pull-aparts ×15, scap push-ups ×10, dislocates ×10, empty-bar press ×8.')},
-    {tag:'STR', t:15,title:B('כוח','strength'), d:B('שבוע 1,3: Strict Press 5×5 (סט 1 מוט ריק, אז 22-27 ק״ג). שבוע 2,4: Bench Press עם מוט 5×5. לבד = בלי כישלון, חזרה אחת תמיד נשארת בקנה. ואז Strict Pull-up 3×3-5, בלי קיפינג. אות מהמרפק = הפולאפים יוצאים.','Weeks 1,3: Strict Press 5×5 (set 1 empty, then 22-27 kg). Weeks 2,4: barbell Bench Press 5×5. Training alone = no failure reps, always one left in the tank. Then Strict Pull-up 3×3-5, no kipping. Any elbow signal = pullups out.')},
+    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Strict Press 5×5. סט 1 מוט ריק 20, אז 30 עד 35 ק״ג, מנוחה 90 שנ׳. ליבה אסופה, צלעות סגורות, בלי קשת בגב. הצקה בשכמת ימין = יורדים משקל, לא מקצרים טווח. לבד = בלי כישלון, חזרה אחת תמיד בקנה. ואז Strict Pull-up 3×3-5, עצירה מלאה למטה, בלי קיפינג בכל הבלוק. אות מהמרפק = הפולאפים יוצאים באותו רגע.','Strict Press 5×5. Set 1 empty bar at 20, then 30 to 35 kg, rest 90s. Braced core, ribs down, no back arch. Right scapula complaining = drop the weight, do not shorten the range. Alone = no failure reps, always one in the tank. Then Strict Pull-up 3×3-5, full stop at the bottom, no kipping all block. Any elbow signal = pullups out on the spot.')},
     {tag:'ACC', t:7, title:B('עזר + קור','accessory + core'), d:B('Bent-over Row 3×10 ניטרלי · Face Pull 3×15 · eccentric wrist extension 2×15 (רהאב מרפק).','Bent-over Row 3×10 neutral · Face Pull 3×15 · eccentric wrist extension 2×15 (elbow rehab).')},
-    {tag:'WOD', t:9, title:B('מטקון · AMRAP 8 · המבחן','Metcon · AMRAP 8 · the test'), d:B('25 קפיצות חבל (או 2 שאטלים של 20 מ׳) + 10 Push Press דמבלים 7 ק״ג. יעד: 6 סבבים. בייסליין: 5 (קפריסין, 9.8).','25 rope skips (or 2×20 m shuttles) + 10 DB Push Press at 7 kg. Target: 6 rounds. Baseline: 5 (Cyprus, Aug 9).'),
+    {tag:'WOD', t:9, title:B('מטקון · AMRAP 8 · המבחן','Metcon · AMRAP 8 · the test'), d:B('25 קפיצות חבל (או 2 שאטלים של 20 מ׳) + 10 Push Press דמבלים 7 ק״ג. זה אותו מבחן שרץ שוב ב-9.10 וסוגר את הבלוק. היום: לרשום מספר נקי.','25 rope skips (or 2×20 m shuttles) + 10 DB Push Press at 7 kg. Same test runs again on Oct 9 and closes the block. Today: just put a clean number on the board.'),
       timer:{mode:'amrap', label:'AMRAP 8', sec:480}},
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('מתיחת חזה בפתח דלת, lat stretch, thoracic rotation ×5 לצד.','Doorway chest stretch, lat stretch, thoracic rotation ×5/side.')},
   ], wodWeeks:{
     2:{tag:'WOD', t:9, title:B('מטקון · AMRAP 9','Metcon · AMRAP 9'), d:B('6 Push-up · 8 DB Push Press 7 ק״ג · 10 Sit-up. קצב אחיד, בלי ספרינט בסבב הראשון.','6 Push-ups · 8 DB Push Press 7 kg · 10 Sit-ups. Even pace, no first-round sprint.'),
       timer:{mode:'amrap', label:'AMRAP 9', sec:540}},
-    3:{tag:'WOD', t:10, title:B('מטקון · AMRAP 10','Metcon · AMRAP 10'), d:B('10 KB Swing 12 ק״ג · 8 Push-up · 20 קפיצות חבל. לרשום סבבים, זה נתון לבלוק 3.','10 KB Swings 12 kg · 8 Push-ups · 20 rope skips. Log the rounds — data for block 3.'),
-      timer:{mode:'amrap', label:'AMRAP 10', sec:600}},
+    3:{tag:'WOD', t:9, title:B('מטקון · AMRAP 9','Metcon · AMRAP 9'), d:B('10 KB Swing 12 ק״ג · 8 Push-up · 20 קפיצות חבל. לרשום סבבים, זה נתון לבלוק 3.','10 KB Swings 12 kg · 8 Push-ups · 20 rope skips. Log the rounds — data for block 3.'),
+      timer:{mode:'amrap', label:'AMRAP 9', sec:540}},
     4:{tag:'WOD', t:6, title:B('מטקון · AMRAP 6 · דילוד','Metcon · AMRAP 6 · deload'), d:B('5 Push-up · 10 Air Squat · 15 קפיצות חבל. קל בכוונה, המבחן בשישי.','5 Push-ups · 10 Air Squats · 15 rope skips. Deliberately easy — the test is Friday.'),
       timer:{mode:'amrap', label:'AMRAP 6', sec:360}},
   }},
@@ -193,13 +193,30 @@ const WORKOUTS = {
     4:{tag:'WOD', t:19, title:B('גוף האימון · EMOM 18 · קל','Main · EMOM 18 · easy'), d:B('דקה 1: 8 Goblet Squat · דקה 2: 20 קפיצות חבל · דקה 3: 30 שנ׳ Plank. ×6. שבוע מבחן, שומרים רעננות.','Min 1: 8 Goblet Squats · min 2: 20 rope skips · min 3: 30s Plank. ×6. Test week — stay fresh.'),
       timer:{mode:'interval', label:'EMOM 18', rounds:18, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('8 Goblet Squat','8 Goblet Squats'),B('20 קפיצות חבל','20 rope skips'),B('30 שנ׳ Plank','30s Plank')]}},
   }},
-  C: { code:'C', name:'ANCHOR', focus:B('ציר · גב תחתון','Hinge · lower back'), train:true,
+  C: { code:'C', name:'NEW NUMBER', focus:B('דחיפה אופקית · בנץ׳','Horizontal press · bench'), train:true,
+    lifts:[{name:'Bench Press',scheme:'5×5 כיול',sets:5,reps:5,start:20,inc:2.5,equip:'bar'}],
+    accLoads:[{name:'Bent-over Row',scheme:'3×10 ניטרלי',sets:3,reps:10,start:7,inc:1,equip:'db',each:true}],
+    equip:[{t:'bar',lift:'Bench Press',note:B('צלחות בקפיצות של 2.5','plates in 2.5 kg steps')},{t:'db',note:B('לחתירה','for the rows')},{t:'band'},{t:'kb',note:B('12 ק״ג למטקון','12 kg for the metcon')},{t:'mat'}], stages:[
+    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט, ספסל, צלחות בקפיצות של 2.5, דמבלס, גומייה, מזרן. עמודי ביטחון בגובה החזה, או מוט בגובה שאפשר לגלגל ממנו. לכתוב על הלוח: Bench — כיול.','Bar, bench, plates in 2.5 kg steps, DBs, band, mat. Safety pins at chest height, or a bar you can roll off. Chalk it: Bench — calibration.')},
+    {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('חבל 2 דקות, scap push-up ×10, push-up ×8, band pull-apart ×15, בנץ׳ מוט ריק ×10.','2 min rope, scap push-ups ×10, push-ups ×8, band pull-aparts ×15, empty-bar bench ×10.')},
+    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Bench Press 5×5. שבוע 1 הוא כיול מלא: 20 ואז 25 ואז 30, ואם הסט החמישי עדיין נראה כמו הראשון, 32.5. שכמות אסופות אחורה ולמטה, מוט לקו הפטמה, רגליים נעוצות. לבד = בלי כישלון, חזרה אחת תמיד נשארת בקנה. המשקל שיצא הוא הבייסליין, לרשום בעיגול.','Bench Press 5×5. Week 1 is a full calibration: 20, then 25, then 30, and if set five still looks like set one, 32.5. Scapulae packed back and down, bar to nipple line, feet planted. Alone = no failure reps, always one left in the tank. Whatever lands is the baseline — circle it in the log.')},
+    {tag:'ACC', t:7, title:B('עזר + ליבה','accessory + core'), d:B('Bent-over Row דמבלס אחיזה ניטרלית 3×10 · Pallof Press 3×10 לצד · Hollow Hold 3×20 שנ׳ · eccentric wrist extension 2×15 (רהאב מרפק).','Neutral-grip DB Bent-over Row 3×10 · Pallof Press 3×10/side · Hollow Hold 3×20s · eccentric wrist extension 2×15 (elbow rehab).')},
+    {tag:'WOD', t:9, title:B('מטקון · EMOM 9','Metcon · EMOM 9'), d:B('דקה 1: 12 KB Swing 12 ק״ג (רוסי, גובה עיניים) · דקה 2: 10 Push-up · דקה 3: 30 שנ׳ Plank. שלושה סבבים. דקה שנסגרת מעל 40 שנ׳? מורידים חזרות.','Min 1: 12 Russian KB Swings 12 kg · min 2: 10 Push-ups · min 3: 30s Plank. Three rounds. A minute running past 40s of work? Cut reps.'),
+      timer:{mode:'interval', label:'EMOM 9', rounds:9, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('12 KB Swing','12 KB Swings'),B('10 Push-up','10 Push-ups'),B('30 שנ׳ Plank','30s Plank')]}},
+    {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('מתיחת חזה בפתח דלת, child pose, נשימות. שורה ביומן.','Doorway chest stretch, child pose, breathing. Then log it.')},
+  ], wodWeeks:{
+    2:{tag:'WOD', t:9, title:B('מטקון · EMOM 9','Metcon · EMOM 9'), d:B('דקה 1: 10 Goblet Squat 12 ק״ג · דקה 2: 8 Push-up · דקה 3: 30 שנ׳ Side Plank (חצי לכל צד). שלושה סבבים, צפוף יותר משבוע 1.','Min 1: 10 Goblet Squats 12 kg · min 2: 8 Push-ups · min 3: 30s Side Plank (half per side). Three rounds, denser than week 1.'),
+      timer:{mode:'interval', label:'EMOM 9', rounds:9, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('10 Goblet Squat','10 Goblet Squats'),B('8 Push-up','8 Push-ups'),B('30 שנ׳ Side Plank','30s Side Plank')]}},
+    4:{tag:'WOD', t:9, title:B('מטקון · EMOM 9 · קל','Metcon · EMOM 9 · easy'), d:B('דקה 1: 8 Goblet Squat · דקה 2: 20 קפיצות חבל · דקה 3: 30 שנ׳ Plank. שבוע מבחן, שומרים רעננות לשישי.','Min 1: 8 Goblet Squats · min 2: 20 rope skips · min 3: 30s Plank. Test week — stay fresh for Friday.'),
+      timer:{mode:'interval', label:'EMOM 9', rounds:9, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('8 Goblet Squat','8 Goblet Squats'),B('20 קפיצות חבל','20 rope skips'),B('30 שנ׳ Plank','30s Plank')]}},
+  }},
+  D: { code:'D', name:'ANCHOR', focus:B('ציר · גב תחתון','Hinge · lower back'), train:true,
     lifts:[{name:'Deadlift',scheme:'5×3 כיול',sets:5,reps:3,start:40,inc:5,equip:'bar'}],
     equip:[{t:'bar',lift:'Deadlift',note:B('trap bar אם יש','trap bar if available')},{t:'straps'},{t:'kb'},{t:'rope',note:B('למטקון','for the metcon')},{t:'mat',note:B('לקור','for the core work')}], stages:[
-    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט (trap bar אם יש)+צלחות, straps, קטלבל, מזרן. לכתוב על הלוח: Deadlift, סט ראשון 40 ק״ג.','Bar (trap bar if available) + plates, straps, KB, mat. Chalk it: Deadlift, first set 40 kg.')},
+    {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט (trap bar אם יש)+צלחות, straps, קטלבל, דמבל לחתירה, מזרן. לכתוב על הלוח: Deadlift 60.','Bar (trap bar if available) + plates, straps, KB, a DB for the rows, mat. Chalk it: Deadlift 60.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('2 דק׳ חבל, hip hinge drill עם מקל ×10, glute bridge ×15, good morning ריק ×10, דדליפט קל ×8.','2 min rope, stick hip-hinge drill ×10, glute bridge ×15, empty good mornings ×10, light deadlift ×8.')},
-    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Deadlift 5×3. סט 1 ב-40 ק״ג, כיול. סטים 2-5 בטווח 45-55, straps מהסט הראשון, מנוחה 2 דק׳. הגב מתעגל? הסט נגמר שם.','Deadlift 5×3. Set 1 at 40 kg — calibration. Sets 2-5 at 45-55, straps from set one, rest 2 min. Back rounds? Set ends there.')},
-    {tag:'ACC', t:7, title:B('עזר + קור','accessory + core'), d:B('Single-Leg Glute Bridge 3×10 לצד · Bird Dog 3×8 לצד · Pallof Press 3×10 לצד.','Single-Leg Glute Bridge 3×10/side · Bird Dog 3×8/side · Pallof Press 3×10/side.')},
+    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Deadlift 5×3. סט 1 ב-40 ק״ג, כיול. סטים 2-5 בטווח 50 עד 60, straps מהסט הראשון (מרפק), מנוחה 2 דק׳. גב ניטרלי, המוט נוגע ברגל כל הדרך. הגב מתעגל? הסט נגמר שם.','Deadlift 5×3. Set 1 at 40 kg — calibration. Sets 2-5 at 50 to 60, straps from set one (elbow), rest 2 min. Neutral back, bar shaving the leg the whole way. Back rounds? Set ends there.')},
+    {tag:'ACC', t:7, title:B('עזר + ליבה','accessory + core'), d:B('Single-Arm DB Row 3×10 לכל צד, מתחילים ימין · Single-Leg Glute Bridge 3×10 לצד · Bird Dog 3×8 לצד.','Single-Arm DB Row 3×10/side, right arm first · Single-Leg Glute Bridge 3×10/side · Bird Dog 3×8/side.')},
     {tag:'WOD', t:9, title:B('מטקון · For Time 21-15-9','Metcon · For Time 21-15-9'), d:B('Air Squat + Sit-up, ובסוף כל סבב 20 קפיצות חבל. יעד: מתחת ל-8 דק׳.','Air Squats + Sit-ups, 20 rope skips after each round. Target: under 8 min.'),
       timer:{mode:'fortime', label:'For Time', cap:540}},
     {tag:'DOWN',t:3, title:B('שחרור','cool-down'), d:B('hamstring stretch בשכיבה, שחרור גב תחתון, נשימות.','Lying hamstring stretch, lower-back release, breathing.')},
@@ -242,20 +259,46 @@ const SPECIAL = {
   ]},
 };
 
-/* CFFB-02 days (Mosh feedback 13.8): Sun A · Mon B · Wed X bonus · Fri C */
-const BYDOW = {0:'A',1:'B',2:'REST',3:'X',4:'REST',5:'C',6:'REST'};
+/* ---- CFFB-03 HOLIDAY CALENDAR (Marcus, 12.9.2026) ----
+   Rosh Hashanah, Yom Kippur and the whole of Sukkot sit inside this block.
+   CFFB-02 died on exactly this kind of routine break, so the moves are written
+   down once, here, instead of being improvised at 06:00. 14 mandatory sessions,
+   not 16 — week 3 is planned small on purpose so that it still counts. */
+SPECIAL['2026-09-21'] = WORKOUTS.REST; // Yom Kippur
+SPECIAL['2026-09-22'] = WORKOUTS.B;    // day B moved off Yom Kippur
+SPECIAL['2026-09-23'] = WORKOUTS.REST; // Wed cleared so two press days do not stack
+SPECIAL['2026-09-24'] = WORKOUTS.C;    // day C moved to Thursday
+SPECIAL['2026-09-28'] = WORKOUTS.REST; // Sukkot chol hamoed — holiday mode, 2 days only
+SPECIAL['2026-09-30'] = WORKOUTS.D;    // the second mandatory day of holiday week
+SPECIAL['2026-10-02'] = WORKOUTS.X;    // Hoshana Rabbah — bonus only, no debt
+SPECIAL['2026-10-03'] = WORKOUTS.REST; // Shmini Atzeret / Simchat Torah
 
-/* CFFB-02: start 66 kg, goal 61. High protein, mild deficit on rest days,
-   maintenance on training days (Marcus, 13.8). */
+/* HOLIDAY MODE: week 3 keeps only the two big lifts and cuts the metcon short.
+   A week that is planned to be small is a week that gets closed. */
+WORKOUTS.A.wodWeeks[3] = {tag:'WOD', t:4, title:B('מטקון · Intervals 20/20 ×6 · מצב חג','Metcon · Intervals 20/20 ×6 · holiday mode'), d:B('סירוגין Air Squat / חבל. קצר בכוונה: השבוע הזה נמדד בהופעה, לא בעומס.','Alternate Air Squat / rope. Deliberately short — this week is measured by showing up, not by load.'),
+  timer:{mode:'interval', label:'Intervals 20/20', rounds:6, phases:[{label:B('עבודה','WORK'),sec:20,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:['Air Squat','Jump Rope']}};
+WORKOUTS.D.wodWeeks[3] = {tag:'WOD', t:6, title:B('מטקון · For Time 12-9-6 · מצב חג','Metcon · For Time 12-9-6 · holiday mode'), d:B('Goblet Squat 12 ק״ג + Sit-up. בלי חבל, בלי גג גבוה. להיכנס ולצאת.','12 kg Goblet Squats + Sit-ups. No rope, no long cap. In and out.'),
+  timer:{mode:'fortime', label:'For Time', cap:360}};
+
+/* CFFB-03 days (Mosh, 12.9): Sun A legs · Mon B overhead · Wed C bench · Fri D hinge · Sat X bonus.
+   Every main lift gets its own day. Wed (C) is the flex valve: it drops first and the week still counts.
+   Holiday moves (Yom Kippur, Sukkot) live in SPECIAL, keyed by date. */
+const BYDOW = {0:'A',1:'B',2:'REST',3:'C',4:'REST',5:'D',6:'X'};
+
+/* CFFB-03 (Marcus, 12.9): 67.8 kg, 25.2% BF, waist 91. Target is waist 79 by
+   30.1.2027, which is 0.35 kg of fat a week, which is a ~400 kcal daily deficit
+   against an estimated 2200-2350 burn. These are the numbers of
+   data/nutrition/daily-protocol-2026-09.md — five fixed slots, 10:00-21:00, no flour. */
 const NUTRITION = {
-  train: { kcal:'~2000', p:'125', f:'100', c:'~120' },
-  rest:  { kcal:'~1700', p:'125', f:'95', c:'~70' },
+  train: { kcal:'~1980', p:'159', f:'70', c:'~175' },
+  rest:  { kcal:'~1650', p:'151', f:'80', c:'~70' },
   boxes: [
-    [B('בוקר','Morning'), B('3 ביצים + חצי אבוקדו + עגבנייה','3 eggs + half avocado + tomato'), '~22'],
-    [B('שייק (אימון)','Shake (train)'), B('Whey + בננה קטנה לפני, מיד אחרי','Whey + small banana pre, right after'), '~25'],
-    [B('קופסה 1 · צהריים','Box 1 · lunch'), B('180ג׳ חזה עוף + פחמימה קטנה + ירקות','180g chicken breast + small carb + veg'), '~45'],
-    [B('קופסה 2 · ערב','Box 2 · dinner'), B('טונה / דג / בקר רזה + סלט + חומוס במידה','Tuna / fish / lean beef + salad + hummus in moderation'), '~40'],
-    [B('תוספת','Extra'), B('יוגורט יווני 0% / קוטג׳ + אגוזים','0% Greek yogurt / cottage + nuts'), '~22'],
+    [B('סלוט 0 · רשות','Slot 0 · optional'), B('מיד אחרי האימון: Whey במים + בננה. דילגת? העוף בצהריים עולה ל-220ג׳','Right after training: whey in water + banana. Skipped it? Lunch chicken goes to 220g'), '~25'],
+    [B('סלוט 1 · 10:00','Slot 1 · 10:00'), B('קפוצ׳ינו 200 מ״ל חלב + כפית טחינה גולמית מוקצפת פנימה','Cappuccino, 200 ml milk + a teaspoon of raw tahini whipped in'), '~10'],
+    [B('סלוט 2 · 13:00','Slot 2 · 13:00'), B('160ג׳ חזה עוף + 200ג׳ אורז מבושל + קופסת ירקות + כף שמן זית','160g chicken breast + 200g cooked rice + veg box + a spoon of olive oil'), '~50'],
+    [B('סלוט 3 · 16:30','Slot 3 · 16:30'), B('2 כדורי שומן מהקופסה שבתיק. זה מה שקונה את הערב','2 fat balls from the box in your bag. This is what buys the evening'), '~9'],
+    [B('סלוט 4 · 19:30','Slot 4 · 19:30'), B('ארוחה מהרוטציה (טונה / סלמון / בקר / ביצים / ירך עוף) + סלט גדול','From the rotation (tuna / salmon / beef / eggs / chicken thigh) + a big salad'), '~45'],
+    [B('סלוט 5 · 20:45','Slot 5 · 20:45'), B('יוגורט חלבון 20ג׳. אחרי 21:00 מים ותה, וזה גם מה שמאפשר כיבוי אור ב-23:00','20g protein yogurt. After 21:00 water and tea only — same move that makes lights-out at 23:00 possible'), '~20'],
   ],
   shop: [
     [B('חלבון','Protein'), [B('חזה עוף 1.5 ק״ג','Chicken breast 1.5 kg'),B('דג (סלמון/בקלה) 600 גרם','Fish (salmon/cod) 600g'),B('טונה בקופסה ×6','Canned tuna ×6'),B('בקר רזה 5% 500 גרם','Lean beef 5% 500g'),B('ביצים ×24','Eggs ×24'),B('יוגורט יווני 0% ×4','0% Greek yogurt ×4'),B('קוטג׳ 5% ×2','Cottage 5% ×2')]],
@@ -615,8 +658,9 @@ function sendMarcusBtn(dKey){
 function blockWeek(d){ const ms=d-BLOCK_START; if(ms<0) return 1; return Math.min(4, Math.floor(ms/(7*86400000))+1); }
 function planFor(d){
   const k = todayKey(d);
-  if(SPECIAL[k]) return SPECIAL[k];
-  const w = WORKOUTS[BYDOW[d.getDay()]];
+  /* CFFB-03: a SPECIAL day is usually a moved training day (Yom Kippur, Sukkot),
+     so it must still pick up the right week's metcon instead of week 1's. */
+  const w = SPECIAL[k] || WORKOUTS[BYDOW[d.getDay()]];
   if(!w || !w.wodWeeks) return w;
   const ov = w.wodWeeks[blockWeek(d)];
   if(!ov) return w;
@@ -843,8 +887,8 @@ const app = document.getElementById('view');
 let activeTab = 'today';
 let selectedDate = new Date(); // which day the workout player shows
 let musicOpen = false;         // session-level: keep the player open across tab switches
-const BLOCK_START = new Date('2026-08-16T12:00:00');
-const BLOCK_END   = new Date('2026-09-12T12:00:00');
+const BLOCK_START = new Date('2026-09-13T12:00:00');
+const BLOCK_END   = new Date('2026-10-10T12:00:00');
 
 function render(){
   applyLang();
