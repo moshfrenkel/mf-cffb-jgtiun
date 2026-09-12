@@ -336,7 +336,7 @@ const NUTRITION = {
     [B('סלוט 2 · 13:00','Slot 2 · 13:00'), B('160ג׳ חזה עוף + 200ג׳ אורז מבושל + קופסת ירקות + כף שמן זית','160g chicken breast + 200g cooked rice + veg box + a spoon of olive oil'), '~50'],
     [B('סלוט 3 · 16:30','Slot 3 · 16:30'), B('2 כדורי שומן מהקופסה שבתיק. זה מה שקונה את הערב','2 fat balls from the box in your bag. This is what buys the evening'), '~9'],
     [B('סלוט 4 · 19:30','Slot 4 · 19:30'), B('ארוחה מהרוטציה (טונה / סלמון / בקר / ביצים / ירך עוף) + סלט גדול','From the rotation (tuna / salmon / beef / eggs / chicken thigh) + a big salad'), '~45'],
-    [B('סלוט 5 · 20:45','Slot 5 · 20:45'), B('יוגורט חלבון 20ג׳. אחרי 21:00 מים ותה, וזה גם מה שמאפשר כיבוי אור ב-23:00','20g protein yogurt. After 21:00 water and tea only — same move that makes lights-out at 23:00 possible'), '~20'],
+    [B('סלוט 5 · 20:45','Slot 5 · 20:45'), B('יוגורט חלבון 20ג׳. אחרי 21:00 מים ותה, וזה גם מה שמאפשר כיבוי אור ב-22:30','20g protein yogurt. After 21:00 water and tea only — same move that makes lights-out at 22:30 possible'), '~20'],
   ],
   shop: [
     [B('חלבון','Protein'), [B('חזה עוף 1.5 ק״ג','Chicken breast 1.5 kg'),B('דג (סלמון/בקלה) 600 גרם','Fish (salmon/cod) 600g'),B('טונה בקופסה ×6','Canned tuna ×6'),B('בקר רזה 5% 500 גרם','Lean beef 5% 500g'),B('ביצים ×24','Eggs ×24'),B('יוגורט יווני 0% ×4','0% Greek yogurt ×4'),B('קוטג׳ 5% ×2','Cottage 5% ×2')]],

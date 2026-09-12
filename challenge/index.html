@@ -259,6 +259,8 @@ input{font-family:inherit}
   <button data-v="lib" onclick="go('lib')">הספרייה</button>
   <button data-v="dash" onclick="go('dash')">לוח מצב</button>
 </div></nav>
+<script src="../config.js"></script>
+<script src="state.js"></script>
 <script>
 /* ================== state ================== */
 const DB={
@@ -797,6 +799,14 @@ function dash(){
     ${weightChart()}
   </section>
 
+  <section class="slip"><i class="rip"></i>
+    <div class="today-head"><div class="dtype"><b>שורת מצב למערכת</b><span>נגיעה מעתיקה. מדביקים בקטלוג פעם אחת, ומרקוס יודע מתי הקופסה נגמרת</span></div></div>
+    <div class="statrow" onclick="CH30State&&CH30State.copy(S)" style="cursor:pointer">
+      <span>קוד מצב</span>
+      <b id="ch30code" dir="ltr" style="font-family:ui-monospace,monospace;font-size:12px;letter-spacing:0">${window.CH30State?CH30State.code(S):'—'}</b>
+    </div>
+  </section>
+
   <aside class="rules">
     <h2>מה הלוח אומר</h2>
     <div class="rl"><i>·</i><span>הרצף חשוב מהמשקל. המשקל זז לאט, הסולם זז כל בוקר.</span></div>
@@ -939,6 +949,7 @@ function stampDay(day){
   if(!S.start)S.start=todayStr();
   if(w&&w.value)S.weights[day]=parseFloat(w.value);
   DB.save(S);
+  if(window.CH30State)CH30State.publish(S);
   document.getElementById('bigstamp').classList.add('show');
   document.getElementById('stampbtn').style.visibility='hidden';
   document.getElementById('cnote').textContent=`נרשמת בסולם, ${sig}. רצף: ${streak()} ימים.`;
