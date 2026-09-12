@@ -1027,6 +1027,23 @@ function hero(kick, h1, focus, figCode){
   return h;
 }
 
+/* throw away the cached shell and reload from the server. localStorage is not
+   touched, so nothing Mosh logged is lost. Used by the update button on the
+   progress screen and by the small update line on Today. */
+async function pullFreshShell(){
+  try{
+    if('caches' in window){
+      const ks = await caches.keys();
+      await Promise.all(ks.map(k=>caches.delete(k)));
+    }
+    if(navigator.serviceWorker){
+      const rs = await navigator.serviceWorker.getRegistrations();
+      await Promise.all(rs.map(r=>r.unregister()));
+    }
+  }catch(e){}
+  location.replace(location.pathname + '?fresh=' + Date.now());
+}
+
 /* ---- NEXT BLOCK STRIP (12.9.2026) ----
    Mosh's own diagnosis: a block that starts tomorrow is invisible today, because
    the Today screen only ever renders today. This strip shows up on any day before
@@ -1126,6 +1143,15 @@ function viewToday(){
     <div class="go" data-ci>${t('checkinCta')} · ${t('checkinGo')}</div>`;
   ec.querySelector('[data-ci]').onclick=()=>{ activeTab='progress'; render(); };
   app.appendChild(ec);
+
+  /* the update escape hatch used to live only on the progress screen, which is
+     exactly the screen you don't open when the app looks wrong. One line here,
+     the same action. */
+  const uline = el('div','mini');
+  uline.style.cssText = 'margin-top:14px;text-align:center;opacity:.65;cursor:pointer;text-decoration:underline';
+  uline.textContent = LANG==='he' ? 'התוכנית נראית ישנה? משוך עדכון' : 'Plan looks stale? Pull an update';
+  uline.onclick = ()=>{ uline.textContent = LANG==='he'?'מושך...':'pulling...'; pullFreshShell(); };
+  app.appendChild(uline);
 }
 
 /* ---- SPOTIFY ---- */
@@ -1954,20 +1980,7 @@ function backupBoard(){
   const up = el('button','music-open','משוך את הבלוק העדכני');
   up.style.marginTop = '12px';
   const upMini = el('div','mini','מוריד מחדש את קוד האפליקציה מהשרת. הנתונים שלך לא נמחקים.');
-  up.onclick = async ()=>{
-    up.textContent = 'מושך...';
-    try{
-      if('caches' in window){
-        const ks = await caches.keys();
-        await Promise.all(ks.map(k=>caches.delete(k)));
-      }
-      if(navigator.serviceWorker){
-        const rs = await navigator.serviceWorker.getRegistrations();
-        await Promise.all(rs.map(r=>r.unregister()));
-      }
-    }catch(e){}
-    location.replace(location.pathname + '?fresh=' + Date.now());
-  };
+  up.onclick = ()=>{ up.textContent = 'מושך...'; pullFreshShell(); };
   bd.appendChild(up);
   bd.appendChild(upMini);
 
