@@ -1906,6 +1906,42 @@ function backupBoard(){
   bd.appendChild(showLink);
   bd.appendChild(ta);
 
+  /* pull the newest block onto the phone. Local data lives in localStorage,
+     which this does not touch: only the cached app shell is thrown away. */
+  const up = el('button','music-open','משוך את הבלוק העדכני');
+  up.style.marginTop = '12px';
+  const upMini = el('div','mini','מוריד מחדש את קוד האפליקציה מהשרת. הנתונים שלך לא נמחקים.');
+  up.onclick = async ()=>{
+    up.textContent = 'מושך...';
+    try{
+      if('caches' in window){
+        const ks = await caches.keys();
+        await Promise.all(ks.map(k=>caches.delete(k)));
+      }
+      if(navigator.serviceWorker){
+        const rs = await navigator.serviceWorker.getRegistrations();
+        await Promise.all(rs.map(r=>r.unregister()));
+      }
+    }catch(e){}
+    location.replace(location.pathname + '?fresh=' + Date.now());
+  };
+  bd.appendChild(up);
+  bd.appendChild(upMini);
+
+  /* which build is actually running, so "did it update" stops being a guess */
+  const ver = el('div','mini','גרסה: בודק...');
+  ver.style.marginTop = '6px';
+  if(navigator.serviceWorker && navigator.serviceWorker.controller){
+    navigator.serviceWorker.addEventListener('message', ev=>{
+      if(ev.data && ev.data.build) ver.textContent = 'גרסה על הטלפון: ' + ev.data.build;
+    });
+    navigator.serviceWorker.controller.postMessage('build');
+    setTimeout(()=>{ if(ver.textContent.indexOf('בודק')>-1) ver.textContent='גרסה: ישנה, לחץ "משוך את הבלוק העדכני"'; }, 1500);
+  } else {
+    ver.textContent = 'גרסה: רצה ישירות מהרשת (בלי מטמון)';
+  }
+  bd.appendChild(ver);
+
   // restore
   const rWrap = el('div','rest-timer'); rWrap.style.borderTopColor='var(--faint)';
   const rTa = el('textarea','score-note'); rTa.rows=3; rTa.placeholder=t('restorePh');
