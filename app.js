@@ -397,8 +397,34 @@ const DAYMENUS = {
     {id:'x', when:B('תוספת','Extra'), what:B('קוטג׳ / יוגורט יווני + אגוזים','Cottage / Greek yogurt + nuts'), p:20},
   ],
 };
-/* CFFB-02: training moved Thu->Fri, so Thu gets the rest menu and Fri the train menu */
-function menuFor(d){ const g=(d||new Date()).getDay(); const map={4:5,5:4}; return DAYMENUS[map[g]!==undefined?map[g]:g]; }
+/* CFFB-03 (Mosh, 12.9): the rotating DAYMENUS above are the old plan and are no
+   longer what the nutrition screen ticks. daily-protocol-2026-09.md replaced them
+   with five fixed slots in a 10:00-21:00 window, on purpose: variety costs
+   decisions, and decisions are the thing that breaks. Slot 0 only exists on a
+   training day. DAYMENUS stays for now only as the source of the shopping-list
+   ideas; nothing renders it. */
+const SLOTS = {
+  train: [
+    {id:'s0', when:B('סלוט 0 · רשות','Slot 0 · optional'), what:B('מיד אחרי האימון: Whey במים + בננה','Right after training: whey in water + banana'), p:25},
+    {id:'s1', when:B('סלוט 1 · 10:00','Slot 1 · 10:00'), what:B('קפוצ׳ינו 200 מ״ל + כפית טחינה גולמית מוקצפת','Cappuccino 200 ml + a teaspoon of whipped raw tahini'), p:10},
+    {id:'s2', when:B('סלוט 2 · 13:00','Slot 2 · 13:00'), what:B('160ג׳ עוף + 200ג׳ אורז + קופסת ירקות + כף שמן זית','160g chicken + 200g rice + veg box + a spoon of olive oil'), p:50},
+    {id:'s3', when:B('סלוט 3 · 16:30','Slot 3 · 16:30'), what:B('2 כדורי שומן מהקופסה שבתיק','2 fat balls from the box in your bag'), p:9},
+    {id:'s4', when:B('סלוט 4 · 19:30','Slot 4 · 19:30'), what:B('ארוחה מהרוטציה (טונה / סלמון / בקר / ביצים / ירך עוף) + סלט גדול','From the rotation (tuna / salmon / beef / eggs / chicken thigh) + a big salad'), p:45},
+    {id:'s5', when:B('סלוט 5 · 20:45','Slot 5 · 20:45'), what:B('יוגורט חלבון. אחרי 21:00 מים ותה בלבד','Protein yogurt. After 21:00 water and tea only'), p:20},
+  ],
+  rest: [
+    {id:'s1', when:B('סלוט 1 · 10:00','Slot 1 · 10:00'), what:B('קפוצ׳ינו + כפית טחינה','Cappuccino + a teaspoon of tahini'), p:10},
+    {id:'s2', when:B('סלוט 2 · 13:00','Slot 2 · 13:00'), what:B('180ג׳ עוף + 100ג׳ אורז + קופסת ירקות + כף שמן זית','180g chicken + 100g rice + veg box + a spoon of olive oil'), p:56},
+    {id:'s3', when:B('סלוט 3 · 16:30','Slot 3 · 16:30'), what:B('2 כדורי שומן + 30ג׳ שקדים','2 fat balls + 30g almonds'), p:15},
+    {id:'s4', when:B('סלוט 4 · 19:30','Slot 4 · 19:30'), what:B('ארוחה מהרוטציה + סלט גדול','From the rotation + a big salad'), p:45},
+    {id:'s5', when:B('סלוט 5 · 20:45','Slot 5 · 20:45'), what:B('יוגורט חלבון, ועוד מנה קטנה אם רעב','Protein yogurt, plus a small extra if hungry'), p:25},
+  ],
+};
+function menuFor(d){
+  let tr = true;
+  try{ tr = planFor(d || new Date()).train; }catch(e){}
+  return tr ? SLOTS.train : SLOTS.rest;
+}
 
 const SUPPS = [
   {id:'creatine', name:B('קריאטין 5 גרם','Creatine 5g'), when:B('בוקר','morning')},
@@ -663,6 +689,16 @@ function dayDigest(dKey){
   }
 
   DB.get('stagenotes',[]).filter(x=>x.date===dKey).forEach(n=> L.push(`פתק (${n.tag}): ${n.text}`));
+
+  const slots = menuFor(new Date(dKey+'T12:00:00'));
+  const eaten = slots.map(m=>{
+    const f = foodGet(dKey, m.id) || {};
+    const mark = f.status==='done' ? 'V' : f.status==='other' ? '~' : f.status==='skip' ? 'X' : '-';
+    return mark + tx(m.when).replace(/^סלוט /,'').split(' ·')[0] + (f.note? '('+f.note+')' : '');
+  }).join(' ');
+  L.push('תזונה: ' + eaten + '   [V אכל · ~ אחר · X דילג · - לא סומן]');
+  const foodNote = stageNoteGet(dKey,'FOOD','day');
+  if(foodNote) L.push('הערת אוכל: ' + foodNote);
 
   const ck = DB.get('checkins',[]).find(x=>x.date===dKey);
   if(ck && ck.weight) L.push('משקל: ' + ck.weight + ' ק״ג');
