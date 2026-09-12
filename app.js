@@ -1,4 +1,4 @@
-/* MoshFit PWA — CFFB-01. Local-first (localStorage); Supabase sync hooks in sync.js.
+/* MoshFit PWA — CFFB-03. Local-first (localStorage); Supabase sync hooks in sync.js.
    Chalk-box edition: chalkboards + manila clipboards, bilingual he/en, metcon scores, Spotify. */
 
 /* ---------------- LANGUAGE ---------------- */
@@ -19,7 +19,7 @@ const T = {
   kcal:{he:'קל׳',en:'kcal'}, protein:{he:'חלבון',en:'protein'}, fat:{he:'שומן',en:'fat'}, carbs:{he:'פחמ׳',en:'carbs'},
   boxesShop:{he:'תפריט היום, מעקב ותובנות ←',en:"Today's menu, tracking & insights →"},
   evening:{he:'הערב',en:'TONIGHT'},
-  eveningTxt:{he:'מגנזיום ב-22:00 · יעד שינה 22:30 (קימה 05:30). השינה היא התקרה של התוצאות.',en:'Magnesium at 22:00 · sleep by 22:30 (up at 05:30). Sleep is the ceiling on your results.'},
+  eveningTxt:{he:'מגנזיום ב-22:00 · כיבוי אור 22:30 בלילות שלפני אימון · קימה 05:15, יציאה 05:45. השינה היא התקרה של התוצאות.',en:'Magnesium at 22:00 · lights out 22:30 on pre-training nights · up 05:15, out 05:45. Sleep is the ceiling on your results.'},
   checkinCta:{he:'צ׳ק-אין יומי',en:'DAILY CHECK-IN'},
   checkinGo:{he:'משקל, שינה, מצב רוח, כאב ←',en:'Weight, sleep, mood, pain →'},
   doorToDoor:{he:'דקות דלת לדלת',en:'minutes door to door'},
@@ -59,7 +59,14 @@ const T = {
   musicMini:{he:'הנגן דורש אינטרנט. אפשר להדביק כל קישור ספוטיפיי והוא יישמר.',en:'Player needs internet. Paste any Spotify link and it sticks.'},
   calKick:{he:'לוח הבלוק · 13.9–10.10',en:'BLOCK BOARD · SEP 13–OCT 10'},
   calH1a:{he:'הבלוק',en:'THE BLOCK'}, calH1b:{he:'קדימה',en:'AHEAD'},
-  calFocus:{he:'CFFB-01 · 4 שבועות · הקש על יום לפתוח אותו',en:'CFFB-01 · 4 weeks · tap a day to open it'},
+  calFocus:{he:'4 שבועות · הקש על יום לפתוח אותו',en:'4 weeks · tap a day to open it'},
+  nextKick:{he:'הבלוק הבא',en:'NEXT BLOCK'},
+  nextTom:{he:'מתחיל מחר בבוקר',en:'starts tomorrow morning'},
+  nextToday:{he:'מתחיל היום',en:'starts today'},
+  nextIn:{he:'מתחיל בעוד',en:'starts in'},
+  nextDays:{he:'ימים',en:'days'},
+  nextOpen:{he:'הצץ ביום הראשון',en:'Peek at day one'},
+  nextBoard:{he:'ללוח הבלוק המלא',en:'Full block board'},
   legend:{he:'מקרא',en:'LEGEND'},
   legRest:{he:'שינה והתאוששות',en:'sleep & recovery'},
   nutKick:{he:'תזונה · דל-פחמימה',en:'FUEL · LOW-CARB'},
@@ -980,6 +987,17 @@ let selectedDate = new Date(); // which day the workout player shows
 let musicOpen = false;         // session-level: keep the player open across tab switches
 const BLOCK_START = new Date('2026-09-13T12:00:00');
 const BLOCK_END   = new Date('2026-10-10T12:00:00');
+/* 12.9.2026: the plan data was already CFFB-03 but every headline still printed
+   "CFFB-02" (and the calendar sub-line "CFFB-01"), so a brand new block looked
+   like the old one on the phone. One constant now, used wherever a block name
+   is shown. Change it here when the block changes, nowhere else. */
+const BLOCK_CODE  = 'CFFB-03';
+function daysUntilBlock(from){
+  const n = from || new Date();
+  const a = new Date(n.getFullYear(), n.getMonth(), n.getDate());
+  const b = new Date(BLOCK_START.getFullYear(), BLOCK_START.getMonth(), BLOCK_START.getDate());
+  return Math.round((b - a) / 86400000);
+}
 
 function render(){
   applyLang();
@@ -1009,6 +1027,29 @@ function hero(kick, h1, focus, figCode){
   return h;
 }
 
+/* ---- NEXT BLOCK STRIP (12.9.2026) ----
+   Mosh's own diagnosis: a block that starts tomorrow is invisible today, because
+   the Today screen only ever renders today. This strip shows up on any day before
+   BLOCK_START and puts day one one tap away. It disappears by itself the morning
+   the block opens, so nothing to clean up later. */
+function nextBlockBoard(){
+  const left = daysUntilBlock();
+  if(left <= 0) return null;
+  const p  = planFor(BLOCK_START);
+  const s  = BLOCK_START, e = BLOCK_END;
+  const rng = `${s.getDate()}.${s.getMonth()+1}–${e.getDate()}.${e.getMonth()+1}`;
+  const when = left===1 ? t('nextTom') : `${t('nextIn')} ${left} ${t('nextDays')}`;
+  const bd = el('div','board tray');
+  bd.innerHTML = `<div class="board-h o">${t('nextKick')} · <span class="lt">${BLOCK_CODE}</span></div>${squig(OR)}
+    <div class="mini" style="font-weight:700">${when} · <span class="lt">${rng}</span></div>
+    <div class="mini" style="margin-top:6px">${LANG==='he'?'יום ראשון':'Day one'}: <b>${p.code} · ${tx(p.name)}</b> — ${tx(p.focus)}</div>
+    <div class="go" data-peek>${t('nextOpen')}</div>
+    <div class="go" data-board style="margin-top:6px">${t('nextBoard')}</div>`;
+  bd.querySelector('[data-peek]').onclick  = ()=>{ selectedDate=new Date(BLOCK_START); activeTab='workout'; render(); };
+  bd.querySelector('[data-board]').onclick = ()=>{ activeTab='calendar'; render(); };
+  return bd;
+}
+
 /* ---- TODAY ---- */
 function viewToday(){
   const d = new Date();
@@ -1019,10 +1060,13 @@ function viewToday(){
 
   const dd = `<span class="lt">${d.getDate()}.${d.getMonth()+1}</span>`;
   app.appendChild(hero(
-    `${dowName(d)} · ${dd} · <b><span class="lt">CFFB-02</span></b>`,
+    `${dowName(d)} · ${dd} · <b><span class="lt">${BLOCK_CODE}</span></b>`,
     `${t(isTrain?'train':'rest')} <em>${tx(p.name)}</em>`,
     tx(p.focus), isTrain?p.code:'R'
   ));
+
+  const nb = nextBlockBoard();
+  if(nb) app.appendChild(nb);
 
   if(isTrain){
     const bd = el('div','board tray tappable');
@@ -1667,7 +1711,7 @@ function interval(out, tmr){
 
 /* ---- CALENDAR (whole block ahead) ---- */
 function viewCalendar(){
-  app.appendChild(hero(`<span class="lt">CFFB-02</span> · ${t('calKick')}`, `${t('calH1a')} <em>${t('calH1b')}</em>`, t('calFocus'), null));
+  app.appendChild(hero(`<span class="lt">${BLOCK_CODE}</span> · ${t('calKick')}`, `${t('calH1a')} <em>${t('calH1b')}</em>`, t('calFocus'), null));
 
   const doneDates = new Set(DB.get('worklog',[]).map(x=>x.date).concat(DB.get('metconlog',[]).map(x=>x.date)));
 
@@ -1707,8 +1751,7 @@ function viewCalendar(){
     ['B','OVERHEAD', LANG==='he'?'פלג גוף עליון':'upper body'],
     ['C','EXPLODE', LANG==='he'?'כוח-מהירות':'speed-strength'],
     ['D','ANCHOR', LANG==='he'?'ציר, גב תחתון':'hinge, lower back'],
-    ['1','FIRST TOUCH', LANG==='he'?'יום פתיחה 1.7':'opening day Jul 1'],
-    ['2','OPEN GATES', LANG==='he'?'יום פתיחה 2.7':'opening day Jul 2'],
+    ['X','BONUS', LANG==='he'?'קונדישנינג וליבה, רשות':'conditioning & core, optional'],
     ['·', LANG==='he'?'מנוחה':'REST', t('legRest')],
   ];
   items.forEach(([c,n,f])=>{ const r=el('div','leg'); r.innerHTML=`<span class="leg-c lt">${c}</span><b>${n}</b><i>${f}</i>`; lg.appendChild(r); });
