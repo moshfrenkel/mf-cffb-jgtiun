@@ -280,6 +280,44 @@ WORKOUTS.A.wodWeeks[3] = {tag:'WOD', t:4, title:B('מטקון · Intervals 20/20
 WORKOUTS.D.wodWeeks[3] = {tag:'WOD', t:6, title:B('מטקון · For Time 12-9-6 · מצב חג','Metcon · For Time 12-9-6 · holiday mode'), d:B('Goblet Squat 12 ק״ג + Sit-up. בלי חבל, בלי גג גבוה. להיכנס ולצאת.','12 kg Goblet Squats + Sit-ups. No rope, no long cap. In and out.'),
   timer:{mode:'fortime', label:'For Time', cap:360}};
 
+/* ---- METCON POOL v2 (Mosh feedback, 12.9.2026) ----
+   He read the plan and said the metcons repeat the same movements. Correct.
+   The pool goes from 7 movements to ~22 on the same equipment, the per-day
+   protocol does not move, and the two measurement metcons are left untouched
+   (day A week 1 vs the 443-rep baseline, and the AMRAP 8 that closes the block).
+   Push-ups are on DB handles or fists everywhere: the 25.8 elbow whisper came
+   from push-ups, i.e. a loaded wrist in full extension, not from pressing. */
+const setWod = (w, st) => { const i = w.stages.findIndex(x => x.tag === 'WOD'); if (i >= 0) w.stages[i] = st; };
+
+/* day A · legs · intervals. Week 1 is the measurement and stays as it is. */
+WORKOUTS.A.wodWeeks[2] = {tag:'WOD', t:9, title:B('מטקון · Intervals 40/20 ×9','Metcon · Intervals 40/20 ×9'), d:B('שלישייה מתחלפת: שאטל 20 מ׳ הלוך-חזור → Reverse Lunge עם דמבל אחד בחזה → חבל. עבודה 40, מנוחה 20. הריאה היא המשקל היחיד שעולה השבוע, הרגל עובדת חד-צדדית.','Rotate three: 20 m shuttle → single-DB front-rack Reverse Lunge → rope. 40s on, 20s off. The lunge is the only thing that gets heavier this week, and the leg works one side at a time.'),
+  timer:{mode:'interval', label:'Intervals 40/20', rounds:9, phases:[{label:B('עבודה','WORK'),sec:40,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:[B('שאטל 20 מ׳','Shuttle 20m'),B('Reverse Lunge דמבל','DB Reverse Lunge'),B('חבל','Jump Rope')]}};
+WORKOUTS.A.wodWeeks[3] = {tag:'WOD', t:4, title:B('מטקון · Intervals 20/20 ×6 · מצב חג','Metcon · Intervals 20/20 ×6 · holiday mode'), d:B('סירוגין Split Squat (משקל גוף, מתחלפים כל סבב) / Step-up למדרגה נמוכה. קצר בכוונה: השבוע הזה נמדד בהופעה, לא בעומס.','Alternate bodyweight Split Squat (switch legs each round) / low Step-up. Deliberately short — this week is measured by showing up, not by load.'),
+  timer:{mode:'interval', label:'Intervals 20/20', rounds:6, phases:[{label:B('עבודה','WORK'),sec:20,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:[B('Split Squat','Split Squat'),B('Step-up','Step-up')]}};
+WORKOUTS.A.wodWeeks[4] = {tag:'WOD', t:6, title:B('מטקון · Intervals 30/30 ×6 · דילוד','Metcon · Intervals 30/30 ×6 · deload'), d:B('סירוגין Bear Crawl 10 מ׳ הלוך-חזור / Air Squat נינוח. שבוע מבחן, שומרים את הרגליים לשישי.','Alternate 10 m Bear Crawl out and back / easy Air Squat. Test week — the legs are being saved for Friday.'),
+  timer:{mode:'interval', label:'Intervals 30/30', rounds:6, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:[B('Bear Crawl','Bear Crawl'),B('Air Squat','Air Squat')]}};
+
+/* day B · overhead + pull · AMRAP. Week 1 is the block test and stays as it is. */
+WORKOUTS.B.wodWeeks[2] = {tag:'WOD', t:9, title:B('מטקון · AMRAP 9','Metcon · AMRAP 9'), d:B('5 Inverted Row (מוט נמוך, אחיזה ניטרלית או תחתית, אף פעם לא רחבה מלמעלה) · 8 DB Strict Press 7 ק״ג · 10 Flutter Kick לכל צד. קצב אחיד, בלי ספרינט בסבב הראשון.','5 Inverted Rows (low bar, neutral or underhand grip, never wide overhand) · 8 DB Strict Press 7 kg · 10 Flutter Kicks per side. Even pace, no first-round sprint.'),
+  timer:{mode:'amrap', label:'AMRAP 9', sec:540}};
+WORKOUTS.B.wodWeeks[4] = {tag:'WOD', t:6, title:B('מטקון · AMRAP 6 · דילוד','Metcon · AMRAP 6 · deload'), d:B('4 Inverted Row · 8 DB Push Press קל · 12 Band Pull-apart. קל בכוונה, המבחן בשישי.','4 Inverted Rows · 8 light DB Push Press · 12 Band Pull-aparts. Deliberately easy — the test is Friday.'),
+  timer:{mode:'amrap', label:'AMRAP 6', sec:360}};
+
+/* day C · bench · EMOM. Legs, carry and core here, so it does not repeat the
+   pressing and rowing that the strength and accessory blocks already cover. */
+setWod(WORKOUTS.C, {tag:'WOD', t:9, title:B('מטקון · EMOM 9','Metcon · EMOM 9'), d:B('דקה 1: 12 KB Swing 12 ק״ג (רוסי, גובה עיניים) · דקה 2: Suitcase Carry 20 מ׳ הלוך-חזור, דמבל ביד אחת, מתחלפים בכל סבב · דקה 3: 30 שנ׳ Hollow Hold. שלושה סבבים. אין קטלבל בסטודיו? Romanian Deadlift עם דמבל 12 חזרות באותה דקה.','Min 1: 12 Russian KB Swings 12 kg · min 2: 20 m Suitcase Carry out and back, one DB, swap hands each round · min 3: 30s Hollow Hold. Three rounds. No kettlebell in the studio? Swap in 12 DB Romanian Deadlifts in that minute.'),
+  timer:{mode:'interval', label:'EMOM 9', rounds:9, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('12 KB Swing','12 KB Swings'),B('Suitcase Carry 20 מ׳','20m Suitcase Carry'),B('30 שנ׳ Hollow','30s Hollow')]}});
+WORKOUTS.C.wodWeeks[2] = {tag:'WOD', t:9, title:B('מטקון · EMOM 9','Metcon · EMOM 9'), d:B('דקה 1: 8 Renegade Row (דמבלס, אחיזה ניטרלית, אגן לא מסתובב) · דקה 2: 10 Air Squat · דקה 3: 30 שנ׳ Side Plank, 15 לכל צד. שלושה סבבים.','Min 1: 8 Renegade Rows (DBs, neutral grip, hips do not rotate) · min 2: 10 Air Squats · min 3: 30s Side Plank, 15 per side. Three rounds.'),
+  timer:{mode:'interval', label:'EMOM 9', rounds:9, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('8 Renegade Row','8 Renegade Rows'),B('10 Air Squat','10 Air Squats'),B('30 שנ׳ Side Plank','30s Side Plank')]}};
+WORKOUTS.C.wodWeeks[4] = {tag:'WOD', t:9, title:B('מטקון · EMOM 9 · קל','Metcon · EMOM 9 · easy'), d:B('דקה 1: 12 Band Pull-apart · דקה 2: 20 קפיצות חבל · דקה 3: 30 שנ׳ Plank. שבוע מבחן, שומרים רעננות לשישי.','Min 1: 12 Band Pull-aparts · min 2: 20 rope skips · min 3: 30s Plank. Test week — stay fresh for Friday.'),
+  timer:{mode:'interval', label:'EMOM 9', rounds:9, phases:[{label:B('דקה','MINUTE'),sec:60,work:1}], cycle:[B('12 Band Pull-apart','12 Band Pull-aparts'),B('20 קפיצות חבל','20 rope skips'),B('30 שנ׳ Plank','30s Plank')]}};
+
+/* day D · hinge · for time. Week 4 is the closing test and stays as it is. */
+setWod(WORKOUTS.D, {tag:'WOD', t:9, title:B('מטקון · For Time 21-15-9','Metcon · For Time 21-15-9'), d:B('Air Squat + Push-up (על ידיות דמבל או על אגרופים, לא כף יד שטוחה — שם נולדה הלחישה במרפק ב-25.8), ובסוף כל סבב 20 קפיצות חבל. יעד: מתחת ל-8 דק׳.','Air Squats + Push-ups (on DB handles or fists, never flat palms — that is where the 25.8 elbow whisper came from), 20 rope skips after each round. Target: under 8 min.'),
+  timer:{mode:'fortime', label:'For Time', cap:540}});
+WORKOUTS.D.wodWeeks[2] = {tag:'WOD', t:9, title:B('מטקון · For Time 15-12-9','Metcon · For Time 15-12-9'), d:B('KB Swing 12 ק״ג + V-up, ובסוף כל סבב 2 שאטלים של 20 מ׳. יעד: מתחת ל-7 דק׳. אין V-up נקי? Sit-up.','12 kg KB Swings + V-ups, 2×20 m shuttles after each round. Target: under 7 min. No clean V-up? Sit-ups.'),
+  timer:{mode:'fortime', label:'For Time', cap:540}};
+
 /* CFFB-03 days (Mosh, 12.9): Sun A legs · Mon B overhead · Wed C bench · Fri D hinge · Sat X bonus.
    Every main lift gets its own day. Wed (C) is the flex valve: it drops first and the week still counts.
    Holiday moves (Yom Kippur, Sukkot) live in SPECIAL, keyed by date. */
