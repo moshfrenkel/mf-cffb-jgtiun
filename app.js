@@ -723,6 +723,23 @@ function sendMarcusBtn(dKey){
     setTimeout(()=>btn.textContent=t('sendMarcus'), 3000);
   };
   wrap.appendChild(btn);
+
+  /* one tap to the coach. The project URL is asked for once and kept locally,
+     because it only exists after Mosh creates the project on his phone. */
+  const open = el('button','music-open', 'פתח את מרקוס והדבק');
+  open.style.marginInlineStart = '8px';
+  open.onclick = ()=>{
+    let url = '';
+    try{ url = localStorage.getItem('marcusProjectUrl') || ''; }catch(e){}
+    if(!url){
+      url = prompt('הדבק כאן פעם אחת את הכתובת של פרויקט MARCUS מאפליקציית Claude', 'https://claude.ai/project/') || '';
+      if(!url || url.indexOf('http') !== 0) return;
+      try{ localStorage.setItem('marcusProjectUrl', url); }catch(e){}
+    }
+    window.open(url, '_blank', 'noopener');
+  };
+  wrap.appendChild(open);
+
   wrap.appendChild(el('div','mini', t('sendMarcusMini')));
   wrap.appendChild(ta);
   return wrap;
