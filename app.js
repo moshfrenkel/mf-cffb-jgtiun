@@ -112,6 +112,8 @@ const T = {
   eqStraps:{he:'רצועות משיכה',en:'Lifting straps'},
   emptyBar:{he:'מוט ריק, בלי צלחות',en:'empty bar, no plates'},
   target:{he:'המשקל להיום',en:"today's load"},
+  whyPlan:{he:'לפי הבלוק לשבוע הזה',en:'from the block for this week'},
+  warmUp:{he:'חימום, לא נספר:',en:'warm-up, not counted:'},
   whyFirst:{he:'נקודת פתיחה. מכאן זה מתעדכן לפי מה שתרשום',en:'starting point — updates from what you log'},
   whyUp:{he:'עלייה: פעם קודמת {w} והשלמת את החזרות',en:'moving up: last time {w} and you hit the reps'},
   whySame:{he:'כמו פעם קודמת, קודם משלימים חזרות',en:'same as last time — hit the reps first'},
@@ -219,10 +221,10 @@ const WORKOUTS = {
   }},
   D: { code:'D', name:'ANCHOR', focus:B('ציר · גב תחתון','Hinge · lower back'), train:true,
     lifts:[{name:'Deadlift',scheme:'5×3 כיול',sets:5,reps:3,start:40,inc:5,equip:'bar'}],
-    equip:[{t:'bar',lift:'Deadlift',note:B('trap bar אם יש','trap bar if available')},{t:'straps'},{t:'kb'},{t:'rope',note:B('למטקון','for the metcon')},{t:'mat',note:B('לקור','for the core work')}], stages:[
+    equip:[{t:'bar',lift:'Deadlift',note:B('trap bar אם יש','trap bar if available')},{t:'kb'},{t:'rope',note:B('למטקון','for the metcon')},{t:'mat',note:B('לקור','for the core work')}], stages:[
     {tag:'SET', t:4, title:B('הכנה','setup'), d:B('מוט (trap bar אם יש)+צלחות, straps, קטלבל, דמבל לחתירה, מזרן. לכתוב על הלוח: Deadlift 60.','Bar (trap bar if available) + plates, straps, KB, a DB for the rows, mat. Chalk it: Deadlift 60.')},
     {tag:'WARM',t:7, title:B('חימום','warm-up'), d:B('2 דק׳ חבל, hip hinge drill עם מקל ×10, glute bridge ×15, good morning ריק ×10, דדליפט קל ×8.','2 min rope, stick hip-hinge drill ×10, glute bridge ×15, empty good mornings ×10, light deadlift ×8.')},
-    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Deadlift 5×3. סט 1 ב-40 ק״ג, כיול. סטים 2-5 בטווח 50 עד 60, straps מהסט הראשון (מרפק), מנוחה 2 דק׳. גב ניטרלי, המוט נוגע ברגל כל הדרך. הגב מתעגל? הסט נגמר שם.','Deadlift 5×3. Set 1 at 40 kg — calibration. Sets 2-5 at 50 to 60, straps from set one (elbow), rest 2 min. Neutral back, bar shaving the leg the whole way. Back rounds? Set ends there.')},
+    {tag:'STR', t:15,title:B('כוח','strength'), d:B('Deadlift 5×3. סט 1 ב-40 ק״ג, כיול. סטים 2-5 בטווח 50 עד 60, בלי straps (אין), אחיזה כפולה עליונה, מנוחה 2 דק׳. גב ניטרלי, המוט נוגע ברגל כל הדרך. הגב מתעגל? הסט נגמר שם.','Deadlift 5×3. Set 1 at 40 kg — calibration. Sets 2-5 at 50 to 60, no straps (none on hand), double-overhand grip, rest 2 min. Neutral back, bar shaving the leg the whole way. Back rounds? Set ends there.')},
     {tag:'ACC', t:7, title:B('עזר + ליבה','accessory + core'), d:B('Single-Arm DB Row 3×10 לכל צד, מתחילים ימין · Single-Leg Glute Bridge 3×10 לצד · Bird Dog 3×8 לצד.','Single-Arm DB Row 3×10/side, right arm first · Single-Leg Glute Bridge 3×10/side · Bird Dog 3×8/side.')},
     {tag:'WOD', t:9, title:B('מטקון · For Time 21-15-9','Metcon · For Time 21-15-9'), d:B('Air Squat + Sit-up, ובסוף כל סבב 20 קפיצות חבל. יעד: מתחת ל-8 דק׳.','Air Squats + Sit-ups, 20 rope skips after each round. Target: under 8 min.'),
       timer:{mode:'fortime', label:'For Time', cap:540}},
@@ -324,6 +326,28 @@ setWod(WORKOUTS.D, {tag:'WOD', t:9, title:B('מטקון · For Time 21-15-9','Me
   timer:{mode:'fortime', label:'For Time', cap:540}});
 WORKOUTS.D.wodWeeks[2] = {tag:'WOD', t:9, title:B('מטקון · For Time 15-12-9','Metcon · For Time 15-12-9'), d:B('KB Swing 12 ק״ג + V-up, ובסוף כל סבב 2 שאטלים של 20 מ׳. יעד: מתחת ל-7 דק׳. אין V-up נקי? Sit-up.','12 kg KB Swings + V-ups, 2×20 m shuttles after each round. Target: under 7 min. No clean V-up? Sit-ups.'),
   timer:{mode:'fortime', label:'For Time', cap:540}};
+
+/* ---- STRENGTH BY WEEK (Marcus, 19.9.2026) ----
+   Mosh pulled 72.5×3 on D week 1, above the old week-4 target, and asked for the
+   app to show warm-up sets and weights on every strength lift. Each lift now
+   carries the block table's prescription per week (block-cffb-03.md, "מסלול
+   המשקלים"); the warm-up ladder is computed from that number (warmupSets).
+   Bench has no fixed number: it stays adaptive off the week-1 calibration.
+   No straps: Mosh has none and D week 1 was pain-free without them (19.9). */
+WORKOUTS.A.lifts[0].weeks = {2:{plan:30, scheme:'5×5'}, 3:{plan:30, sets:3, scheme:'3×5 · חג'}, 4:{plan:32.5, scheme:'5×5'}};
+WORKOUTS.B.lifts[0].weeks = {2:{plan:30, scheme:'5×5'}, 3:{plan:30, scheme:'5×5'}, 4:{plan:32.5, scheme:'5×5'}};
+WORKOUTS.C.lifts[0].weeks = {2:{scheme:'5×5'}, 3:{scheme:'5×5'}, 4:{scheme:'5×5'}};
+WORKOUTS.D.lifts[0].floor = true;
+WORKOUTS.D.lifts[0].weeks = {
+  2:{plan:67.5, scheme:'5×3 קבועים', warm:[[40,5],[50,3],[60,2]]},
+  3:{plan:70, sets:3, scheme:'3×3 · חג', warm:[[40,5],[50,3],[60,2]]},
+  4:{plan:77.5, sets:1, scheme:'מבחן · 1×3', warm:[[40,5],[50,3],[60,2],[67.5,2],[72.5,1]]},
+};
+WORKOUTS.D.strWeeks = {
+  2:{tag:'STR', t:15, title:B('כוח','strength'), d:B('Deadlift 5×3 ב-67.5, כל הסטים אותו משקל. קודם החימום שכתוב למטה, לא נספר. מנוחה 2 דק׳. בלי straps: אחיזה כפולה עליונה, והאחיזה נשמטת לפני הגב? הסט נגמר שם. סט 5 במאמץ 7 ומטה = בשבוע 4 עולים.','Deadlift 5×3 at 67.5, every set the same. Warm-up below first, not counted. Rest 2 min. No straps: double-overhand, and if the grip goes before the back, the set ends there. Set 5 at RPE 7 or less = we go up in week 4.')},
+  3:{tag:'STR', t:12, title:B('כוח · מצב חג','strength · holiday mode'), d:B('Deadlift 3×3 ב-70. שמירה, לא יותר. חימום למטה, מנוחה 2 דק׳, אחיזה כפולה עליונה.','Deadlift 3×3 at 70. Hold, nothing more. Warm-up below, rest 2 min, double-overhand grip.')},
+  4:{tag:'STR', t:15, title:B('כוח · מבחן','strength · test'), d:B('טיפוס לסט כבד אחד של 3. החימום למטה כולל 67.5×2 ו-72.5×1. ה-72.5 זז מהר? 77.5×3. זז איטי? 75×3. גב מתעגל או אחיזה נשמטת = עוצרים, המספר האחרון הנקי הוא התוצאה.','Climb to one heavy set of 3. The warm-up below includes 67.5×2 and 72.5×1. 72.5 moved fast? 77.5×3. Slow? 75×3. Back rounds or grip slips = stop, the last clean number is the result.')},
+};
 
 /* CFFB-03 days (Mosh, 12.9): Sun A legs · Mon B overhead · Wed C bench · Fri D hinge · Sat X bonus.
    Every main lift gets its own day. Wed (C) is the flex valve: it drops first and the week still counts.
@@ -530,6 +554,7 @@ function suggestFor(def, beforeDate){
   const hist = DB.get('liftlog',[])
     .filter(x=>x.lift===def.name && x.date<beforeDate && recTopWeight(x))
     .sort((a,b)=>a.date<b.date?1:-1);
+  if(def.plan!=null) return {w:roundLoad(def.plan,def.equip), why:'plan'};
   if(!hist.length) return {w:roundLoad(def.start,def.equip), why:'first'};
   const last=hist[0], top=recTopWeight(last);
   if(def.sticky || def.inc==null) return {w:top, why:'stick', prev:top};
@@ -759,10 +784,13 @@ function planFor(d){
   /* CFFB-03: a SPECIAL day is usually a moved training day (Yom Kippur, Sukkot),
      so it must still pick up the right week's metcon instead of week 1's. */
   const w = SPECIAL[k] || WORKOUTS[BYDOW[d.getDay()]];
-  if(!w || !w.wodWeeks) return w;
-  const ov = w.wodWeeks[blockWeek(d)];
-  if(!ov) return w;
-  return Object.assign({}, w, {stages: w.stages.map(s=>s.tag==='WOD'?ov:s)});
+  if(!w || (!w.wodWeeks && !w.strWeeks && !(w.lifts||[]).some(l=>l.weeks))) return w;
+  const wk = blockWeek(d);
+  const ov = (w.wodWeeks||{})[wk], so = (w.strWeeks||{})[wk];
+  /* 19.9: lifts carry the block's week-by-week prescription (weight, sets, scheme)
+     so the target on the card is the plan, not "last top set + increment". */
+  const lifts = (w.lifts||[]).map(l=>l.weeks && l.weeks[wk] ? Object.assign({}, l, l.weeks[wk]) : l);
+  return Object.assign({}, w, {lifts, stages: w.stages.map(s=>s.tag==='WOD'&&ov?ov:(s.tag==='STR'&&so?so:s))});
 }
 /* ---- PLAN GUARD (16.8) ----
    Bug we are never repeating: a 30/30 metcon was entered as rounds:18 (counting
@@ -1363,8 +1391,29 @@ function equipListEl(p, dKey){
   return w;
 }
 
+/* ---- warm-up ladder (Mosh, 19.9: "for every strength lift write the warm-up sets and weights") ----
+   Explicit def.warm wins. Otherwise: empty bar ×8 (not for pulls from the floor),
+   then ~60% ×5, ~75% ×3, ~90% ×2 of today's working weight, rounded to 2.5,
+   skipping anything at or below the bar or at/above the working weight. */
+function warmupSets(def, W){
+  if(def.warm) return def.warm.map(([w,r])=>({w,r}));
+  if(def.equip!=='bar' || !W) return [];
+  const out = def.floor ? [] : [{w:20, r:8}];
+  [[0.6,5],[0.75,3],[0.9,2]].forEach(([f,r])=>{
+    const w = roundLoad(W*f,'bar');
+    const lastW = out.length ? out[out.length-1].w : 0;
+    if(w>20 && w<W && w>lastW) out.push({w, r});
+  });
+  return out;
+}
+function warmLine(def, W){
+  const ws = warmupSets(def, W); if(!ws.length) return '';
+  return `<div class="sugg warm"><span class="sg-l">${t('warmUp')}</span><span class="sg-why lt">${ws.map(x=>x.w+'×'+x.r).join('  ·  ')}</span></div>`;
+}
+
 /* ---- suggested-load chalk line ---- */
 function suggWhy(sg){
+  if(sg.why==='plan')  return t('whyPlan');
   if(sg.why==='first') return t('whyFirst');
   if(sg.why==='up')    return tx(T.whyUp).replace('{w}', sg.prev);
   if(sg.why==='stick') return t('whyStick');
@@ -1381,6 +1430,7 @@ function liftBlock(p, def, dKey){
   const wrap = el('div','liftblock');
   wrap.innerHTML = `
     <div class="lb-head"><b class="lt">${def.name}</b> <span class="plate"><span class="lt">${def.scheme}</span></span></div>
+    ${warmLine(def, sg.w)}
     ${suggLine(def, sg)}
     <div class="lb-quick"><span class="q-lbl">${t('allSets')}</span><span class="qq"><input class="slin q-w" type="number" inputmode="decimal" placeholder="${t('kg')}" value="${rec.weight??''}"><span class="x">×</span><input class="slin q-r" type="number" inputmode="numeric" placeholder="${t('reps')}" value="${rec.reps??''}"></span></div>
     <button class="detbtn"></button>
