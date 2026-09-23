@@ -343,6 +343,16 @@ WORKOUTS.D.lifts[0].weeks = {
   3:{plan:70, sets:3, scheme:'3×3 · חג', warm:[[40,5],[50,3],[60,2]]},
   4:{plan:77.5, sets:1, scheme:'מבחן · 1×3', warm:[[40,5],[50,3],[60,2],[67.5,2],[72.5,1]]},
 };
+/* 23.9 (Marcus): Strict Press moves to the same rule as the deadlift — the weight is
+   fixed, the reps bend. Mosh hit 27.5×5 ×4 then 30×5 on the top set, so 30 is the
+   working weight from week 2 on. Dropping the weight mid-session teaches the body
+   nothing; dropping a rep keeps the stimulus. Floor is 3 reps. */
+WORKOUTS.B.lifts[0].warm = [[20,8],[25,5]];
+WORKOUTS.B.strWeeks = {
+  2:{tag:'STR', t:15, title:B('כוח','strength'), d:B('Strict Press 5 סטים ב-30, מנוחה 90 שנ׳. החימום למטה (20×8, 25×5) לא נספר. הכלל: המשקל קדוש, החזרות גמישות. קשה? 4 חזרות. עוד קשה? 3. הרצפה היא 3 — נפלת מתחת, מסיימים את התרגיל, לא יורדים ל-27.5 באמצע. יעד היום: 22 חזרות ומעלה ב-30 (= 660 ק״ג, מעל ה-700 של 23.9 באיכות). ליבה אסופה, צלעות סגורות, בלי קשת. ואז Strict Pull-up 3×3, עצירה מלאה למטה, בלי קיפינג.','Strict Press 5 sets at 30, rest 90s. Warm-up below (20×8, 25×5) is not counted. The rule: weight is fixed, reps bend. Hard? 4 reps. Harder? 3. The floor is 3 — below that the exercise ends, you do not drop to 27.5 mid-session. Target today: 22+ reps at 30. Braced core, ribs down, no arch. Then Strict Pull-up 3×3, full stop at the bottom, no kipping.')},
+  3:{tag:'STR', t:12, title:B('כוח · מצב חג','strength · holiday mode'), d:B('Strict Press 3 סטים ב-30. שמירה, לא יותר. אותו כלל: רצפה 3 חזרות, המשקל לא יורד.','Strict Press 3 sets at 30. Hold, nothing more. Same rule: floor of 3 reps, the weight does not drop.')},
+  4:{tag:'STR', t:15, title:B('כוח · מבחן','strength · test'), d:B('Strict Press 5 סטים ב-32.5. אותו כלל, רצפה 3 חזרות. סך החזרות הנקיות הוא תוצאת המבחן.','Strict Press 5 sets at 32.5. Same rule, floor of 3 reps. Total clean reps is the test result.')},
+};
 WORKOUTS.D.strWeeks = {
   2:{tag:'STR', t:15, title:B('כוח','strength'), d:B('Deadlift 5×3 ב-67.5, כל הסטים אותו משקל. קודם החימום שכתוב למטה, לא נספר. מנוחה 2 דק׳. בלי straps: אחיזה כפולה עליונה, והאחיזה נשמטת לפני הגב? הסט נגמר שם. סט 5 במאמץ 7 ומטה = בשבוע 4 עולים.','Deadlift 5×3 at 67.5, every set the same. Warm-up below first, not counted. Rest 2 min. No straps: double-overhand, and if the grip goes before the back, the set ends there. Set 5 at RPE 7 or less = we go up in week 4.')},
   3:{tag:'STR', t:12, title:B('כוח · מצב חג','strength · holiday mode'), d:B('Deadlift 3×3 ב-70. שמירה, לא יותר. חימום למטה, מנוחה 2 דק׳, אחיזה כפולה עליונה.','Deadlift 3×3 at 70. Hold, nothing more. Warm-up below, rest 2 min, double-overhand grip.')},
