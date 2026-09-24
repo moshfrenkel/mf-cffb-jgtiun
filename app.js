@@ -743,11 +743,46 @@ function dayDigest(dKey){
   if(foodNote) L.push('הערת אוכל: ' + foodNote);
 
   const ck = DB.get('checkins',[]).find(x=>x.date===dKey);
-  if(ck && ck.weight) L.push('משקל: ' + ck.weight + ' ק״ג');
+  if(ck){
+    const cb=[];
+    if(ck.sleep) cb.push('שינה '+ck.sleep+' ש׳');
+    if(ck.mood) cb.push('מצב רוח '+ck.mood+'/10');
+    if(ck.pain!==undefined && ck.pain!=='') cb.push('כאב '+ck.pain+'/3');
+    if(ck.weight) cb.push('משקל '+ck.weight+' ק״ג');
+    if(cb.length) L.push('צ׳ק-אין: ' + cb.join(' · '));
+  }
 
   L.push('--');
   L.push('נשלח מהאפליקציה בסוף האימון. מרקוס: פידבק והתאמות לאימון הבא.');
   return L.join('\n');
+}
+
+/* ---- CHECK-IN CARD (24.9) ----
+   Mosh asked: sleep / mood / pain belong on the same page as the day's workout,
+   so they get filled in 20 seconds at 06:00. One card, used on the workout
+   screen and on progress. Saves on every keystroke, keyed to the day shown. */
+function checkinCard(dKey){
+  const ck = DB.get('checkin_'+dKey, {});
+  const f = el('div','clip'); f.setAttribute('data-tab', t('checkinH'));
+  const fields = [
+    ['sleep',t('fSleep')],
+    ['mood',t('fMood')],
+    ['pain',t('fPain')],
+    ['weight',t('fWeight')],
+  ];
+  const store = ()=>{ ck.date=dKey; DB.set('checkin_'+dKey, ck);
+    const all=DB.get('checkins',[]); const i=all.findIndex(x=>x.date===dKey); if(i>=0)all[i]=ck; else all.unshift(ck); DB.set('checkins',all); };
+  fields.forEach(([id,label])=>{
+    const w=el('label','field'); w.innerHTML=`<span>${label}</span><input type="number" inputmode="decimal" value="${ck[id]??''}">`;
+    w.querySelector('input').oninput=(e)=>{ ck[id]=e.target.value; store(); };
+    f.appendChild(w);
+  });
+  const save=el('button','bigbtn',t('saveCheckin'));
+  save.onclick=()=>{ store();
+    save.textContent=t('saved'); setTimeout(()=>save.textContent=t('saveCheckin'),1500);
+    if(document.getElementById('wchartcard')){ renderHistory(); renderWeightChart(); } };
+  f.appendChild(save);
+  return f;
 }
 
 /* one button, used in two places: the finish dossier and the progress board */
@@ -1179,7 +1214,7 @@ function viewToday(){
   const ec = el('div','board');
   ec.innerHTML = `<div class="board-h">${t('evening')}</div>${squig(CH)}<div class="mini">${t('eveningTxt')}</div>
     <div class="go" data-ci>${t('checkinCta')} · ${t('checkinGo')}</div>`;
-  ec.querySelector('[data-ci]').onclick=()=>{ activeTab='progress'; render(); };
+  ec.querySelector('[data-ci]').onclick=()=>{ selectedDate=new Date(); activeTab='workout'; render(); };
   app.appendChild(ec);
 
   /* the update escape hatch used to live only on the progress screen, which is
@@ -1309,6 +1344,7 @@ function viewWorkout(){
   const dd = `<span class="lt">${d.getDate()}.${d.getMonth()+1}</span>`;
   const kick = `<span class="lt">WOD · ${p.code}</span> · ${dowName(d)} ${dd}${isToday?` · <b>${t('today')}</b>`:''}`;
   app.appendChild(hero(kick, `${tx(p.name)}`, tx(p.focus), p.train?p.code:'R'));
+  app.appendChild(checkinCard(dKey)); // שינה/מצב רוח/כאב באותו עמוד של האימון (בקשת מוש 24.9)
 
   if(!p.train){
     app.classList.add('mono');
@@ -1966,25 +2002,7 @@ function viewProgress(){
   app.appendChild(scribbleRow(0));
 
   // ---- daily check-in (dossier) ----
-  const ck = DB.get('checkin_'+todayKey(), {});
-  const f = el('div','clip'); f.setAttribute('data-tab', t('checkinH'));
-  const fields = [
-    ['weight',t('fWeight'),'number'],
-    ['sleep',t('fSleep'),'number'],
-    ['mood',t('fMood'),'number'],
-    ['pain',t('fPain'),'number'],
-  ];
-  fields.forEach(([id,label,type])=>{
-    const w=el('label','field'); w.innerHTML=`<span>${label}</span><input type="${type}" inputmode="decimal" value="${ck[id]??''}">`;
-    w.querySelector('input').oninput=(e)=>{ ck[id]=e.target.value; };
-    f.appendChild(w);
-  });
-  const save=el('button','bigbtn',t('saveCheckin'));
-  save.onclick=()=>{ ck.date=todayKey(); DB.set('checkin_'+todayKey(), ck);
-    const all=DB.get('checkins',[]); const i=all.findIndex(x=>x.date===ck.date); if(i>=0)all[i]=ck; else all.unshift(ck); DB.set('checkins',all);
-    save.textContent=t('saved'); setTimeout(()=>save.textContent=t('saveCheckin'),1500); renderHistory(); renderWeightChart(); };
-  f.appendChild(save);
-  app.appendChild(f);
+  app.appendChild(checkinCard(todayKey()));
 
   const wc=el('div','board'); wc.id='wchartcard'; app.appendChild(wc); renderWeightChart();
 
