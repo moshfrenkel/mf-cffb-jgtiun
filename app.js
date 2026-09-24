@@ -334,7 +334,9 @@ WORKOUTS.D.wodWeeks[2] = {tag:'WOD', t:9, title:B('מטקון · For Time 15-12-
    המשקלים"); the warm-up ladder is computed from that number (warmupSets).
    Bench has no fixed number: it stays adaptive off the week-1 calibration.
    No straps: Mosh has none and D week 1 was pain-free without them (19.9). */
-WORKOUTS.A.lifts[0].weeks = {2:{plan:30, scheme:'5×5'}, 3:{plan:30, sets:3, scheme:'3×5 · חג'}, 4:{plan:32.5, scheme:'5×5'}};
+/* 24.9 (Marcus): A week 2 = 30×5 ×5 with 2+ reps in the tank on the last set.
+   Week 3 goes to 32.5, week 4 to 35. Same rule as B/D: weight fixed, reps bend, floor 3. */
+WORKOUTS.A.lifts[0].weeks = {2:{plan:30, scheme:'5×5'}, 3:{plan:32.5, sets:3, scheme:'3×5 · חג'}, 4:{plan:35, scheme:'5×5'}};
 WORKOUTS.B.lifts[0].weeks = {2:{plan:30, scheme:'5×5'}, 3:{plan:30, scheme:'5×5'}, 4:{plan:32.5, scheme:'5×5'}};
 WORKOUTS.C.lifts[0].weeks = {2:{scheme:'5×5'}, 3:{scheme:'5×5'}, 4:{scheme:'5×5'}};
 WORKOUTS.D.lifts[0].floor = true;
