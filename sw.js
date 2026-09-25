@@ -10,7 +10,7 @@
  * lands on the next launch, with the cache as the offline fallback. Everything
  * else stays cache-first. Bump BUILD on every deploy that changes the plan.
  */
-const BUILD = 'v25-2026-09-25';
+const BUILD = 'v26-2026-09-25';
 const CACHE = 'moshfit-' + BUILD;
 const ASSETS = ['./','./index.html','./app.js','./sync.js','./manifest.webmanifest','./icon.svg'];
 const SHELL = ['/', '/index.html', '/app.js', '/sync.js'];

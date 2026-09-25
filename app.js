@@ -382,6 +382,20 @@ WORKOUTS.D.strWeeks = {
   WORKOUTS[k].strWeeks = WORKOUTS[k].strWeeks || {};
   [2,3,4].forEach(wk=>{ WORKOUTS[k].strWeeks[wk] = strCard(k, wk, STR_CUES[k].rest, STR_CUES[k].cue); });
 });
+/* 25.9: the SET card's chalk line carried week-1 numbers (Front Squat 20, Strict Press 35,
+   Deadlift 60 with straps). It is now built from the same week plan as the STR card. */
+const SET_GEAR = {
+  A:{he:'מוט+צלחות, קטלבל 12, חבל, מזרן.', en:'Bar + plates, 12 kg KB, rope, mat.'},
+  B:{he:'מוט+צלחות, דמבלים 7 ק״ג, גומייה, מזרן, מתח.', en:'Bar + plates, 7 kg DBs, band, mat, pull-up bar.'},
+  C:{he:'מוט, ספסל, צלחות בקפיצות של 2.5, דמבלס, גומייה, מזרן. עמודי ביטחון בגובה החזה.', en:'Bar, bench, plates in 2.5 kg steps, DBs, band, mat. Safety pins at chest height.'},
+  D:{he:'מוט+צלחות (בלי straps), קטלבל, דמבל לחתירה, מזרן.', en:'Bar + plates (no straps), KB, a DB for the rows, mat.'},
+};
+['A','B','C','D'].forEach(k=>{
+  const L = WORKOUTS[k].lifts[0]; WORKOUTS[k].setWeeks = {};
+  [2,3,4].forEach(wk=>{ const p = L.weeks[wk];
+    WORKOUTS[k].setWeeks[wk] = {tag:'SET', t:4, title:B('הכנה','setup'),
+      d:B(`${SET_GEAR[k].he} לכתוב על הלוח: ${L.name} ${p.plan}.`, `${SET_GEAR[k].en} Chalk it: ${L.name} ${p.plan}.`)}; });
+});
 
 /* CFFB-03 days (Mosh, 12.9): Sun A legs · Mon B overhead · Wed C bench · Fri D hinge · Sat X bonus.
    Every main lift gets its own day. Wed (C) is the flex valve: it drops first and the week still counts.
@@ -866,7 +880,8 @@ function planFor(d){
   /* 19.9: lifts carry the block's week-by-week prescription (weight, sets, scheme)
      so the target on the card is the plan, not "last top set + increment". */
   const lifts = (w.lifts||[]).map(l=>l.weeks && l.weeks[wk] ? Object.assign({}, l, l.weeks[wk]) : l);
-  return Object.assign({}, w, {lifts, stages: w.stages.map(s=>s.tag==='WOD'&&ov?ov:(s.tag==='STR'&&so?so:s))});
+  const se = (w.setWeeks||{})[wk];
+  return Object.assign({}, w, {lifts, stages: w.stages.map(s=>s.tag==='WOD'&&ov?ov:(s.tag==='STR'&&so?so:(s.tag==='SET'&&se?se:s)))});
 }
 /* ---- PLAN GUARD (16.8) ----
    Bug we are never repeating: a 30/30 metcon was entered as rounds:18 (counting
