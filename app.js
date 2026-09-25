@@ -277,17 +277,10 @@ SPECIAL['2026-09-21'] = WORKOUTS.REST; // Yom Kippur
 SPECIAL['2026-09-22'] = WORKOUTS.B;    // day B moved off Yom Kippur
 SPECIAL['2026-09-23'] = WORKOUTS.REST; // Wed cleared so two press days do not stack
 SPECIAL['2026-09-24'] = WORKOUTS.C;    // day C moved to Thursday
-SPECIAL['2026-09-28'] = WORKOUTS.REST; // Sukkot chol hamoed — holiday mode, 2 days only
-SPECIAL['2026-09-30'] = WORKOUTS.D;    // the second mandatory day of holiday week
-SPECIAL['2026-10-02'] = WORKOUTS.X;    // Hoshana Rabbah — bonus only, no debt
-SPECIAL['2026-10-03'] = WORKOUTS.REST; // Shmini Atzeret / Simchat Torah
-
-/* HOLIDAY MODE: week 3 keeps only the two big lifts and cuts the metcon short.
-   A week that is planned to be small is a week that gets closed. */
-WORKOUTS.A.wodWeeks[3] = {tag:'WOD', t:4, title:B('מטקון · Intervals 20/20 ×6 · מצב חג','Metcon · Intervals 20/20 ×6 · holiday mode'), d:B('סירוגין Air Squat / חבל. קצר בכוונה: השבוע הזה נמדד בהופעה, לא בעומס.','Alternate Air Squat / rope. Deliberately short — this week is measured by showing up, not by load.'),
-  timer:{mode:'interval', label:'Intervals 20/20', rounds:6, phases:[{label:B('עבודה','WORK'),sec:20,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:['Air Squat','Jump Rope']}};
-WORKOUTS.D.wodWeeks[3] = {tag:'WOD', t:6, title:B('מטקון · For Time 12-9-6 · מצב חג','Metcon · For Time 12-9-6 · holiday mode'), d:B('Goblet Squat 12 ק״ג + Sit-up. בלי חבל, בלי גג גבוה. להיכנס ולצאת.','12 kg Goblet Squats + Sit-ups. No rope, no long cap. In and out.'),
-  timer:{mode:'fortime', label:'For Time', cap:360}};
+SPECIAL['2026-09-26'] = WORKOUTS.D;    // week 2 D on Saturday (block-cffb-03.md, 23.9)
+/* 25.9 (Mosh): "no holiday mode, next week is a regular week". The Sukkot moves
+   (28.9 rest, 30.9 D, 2.10 X, 3.10 rest) and the short holiday metcons are gone:
+   week 3 runs A B C D + X on the normal weekdays with the normal week-3 metcons. */
 
 /* ---- METCON POOL v2 (Mosh feedback, 12.9.2026) ----
    He read the plan and said the metcons repeat the same movements. Correct.
@@ -301,8 +294,6 @@ const setWod = (w, st) => { const i = w.stages.findIndex(x => x.tag === 'WOD'); 
 /* day A · legs · intervals. Week 1 is the measurement and stays as it is. */
 WORKOUTS.A.wodWeeks[2] = {tag:'WOD', t:9, title:B('מטקון · Intervals 40/20 ×9','Metcon · Intervals 40/20 ×9'), d:B('שלישייה מתחלפת: שאטל 20 מ׳ הלוך-חזור → Reverse Lunge עם דמבל אחד בחזה → חבל. עבודה 40, מנוחה 20. הריאה היא המשקל היחיד שעולה השבוע, הרגל עובדת חד-צדדית.','Rotate three: 20 m shuttle → single-DB front-rack Reverse Lunge → rope. 40s on, 20s off. The lunge is the only thing that gets heavier this week, and the leg works one side at a time.'),
   timer:{mode:'interval', label:'Intervals 40/20', rounds:9, phases:[{label:B('עבודה','WORK'),sec:40,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:[B('שאטל 20 מ׳','Shuttle 20m'),B('Reverse Lunge דמבל','DB Reverse Lunge'),B('חבל','Jump Rope')]}};
-WORKOUTS.A.wodWeeks[3] = {tag:'WOD', t:4, title:B('מטקון · Intervals 20/20 ×6 · מצב חג','Metcon · Intervals 20/20 ×6 · holiday mode'), d:B('סירוגין Split Squat (משקל גוף, מתחלפים כל סבב) / Step-up למדרגה נמוכה. קצר בכוונה: השבוע הזה נמדד בהופעה, לא בעומס.','Alternate bodyweight Split Squat (switch legs each round) / low Step-up. Deliberately short — this week is measured by showing up, not by load.'),
-  timer:{mode:'interval', label:'Intervals 20/20', rounds:6, phases:[{label:B('עבודה','WORK'),sec:20,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:[B('Split Squat','Split Squat'),B('Step-up','Step-up')]}};
 WORKOUTS.A.wodWeeks[4] = {tag:'WOD', t:6, title:B('מטקון · Intervals 30/30 ×6 · דילוד','Metcon · Intervals 30/30 ×6 · deload'), d:B('סירוגין Bear Crawl 10 מ׳ הלוך-חזור / Air Squat נינוח. שבוע מבחן, שומרים את הרגליים לשישי.','Alternate 10 m Bear Crawl out and back / easy Air Squat. Test week — the legs are being saved for Friday.'),
   timer:{mode:'interval', label:'Intervals 30/30', rounds:6, phases:[{label:B('עבודה','WORK'),sec:30,work:1},{label:B('מנוחה','REST'),sec:30,work:0}], cycle:[B('Bear Crawl','Bear Crawl'),B('Air Squat','Air Squat')]}};
 
@@ -336,20 +327,46 @@ WORKOUTS.D.wodWeeks[2] = {tag:'WOD', t:9, title:B('מטקון · For Time 15-12-
    No straps: Mosh has none and D week 1 was pain-free without them (19.9). */
 /* 24.9 (Marcus): A week 2 = 30×5 ×5 with 2+ reps in the tank on the last set.
    Week 3 goes to 32.5, week 4 to 35. Same rule as B/D: weight fixed, reps bend, floor 3. */
-WORKOUTS.A.lifts[0].weeks = {2:{plan:30, scheme:'5×5'}, 3:{plan:32.5, sets:3, scheme:'3×5 · חג'}, 4:{plan:35, scheme:'5×5'}};
-WORKOUTS.B.lifts[0].weeks = {2:{plan:30, scheme:'5×5'}, 3:{plan:30, scheme:'5×5'}, 4:{plan:32.5, scheme:'5×5'}};
-WORKOUTS.C.lifts[0].weeks = {2:{scheme:'5×5'}, 3:{scheme:'5×5'}, 4:{scheme:'5×5'}};
+/* 25.9 (Mosh): the format we agreed on, for every lift in every week from 2 on:
+   3 warm-up sets written as weight × reps, then 5 working sets at the one real
+   target weight. No "set 1 empty bar, sets 2-5 somewhere between X and Y".
+   Numbers follow what was actually lifted: A 30×5×5 (24.9), B 30 (23.9),
+   C 45×5×5 (24.9), D 72.5×3 (19.9). Week 3 is a regular week (no holiday mode). */
+WORKOUTS.A.lifts[0].weeks = {
+  2:{plan:30,   sets:5, scheme:'5×5', warm:[[20,8],[25,5],[27.5,2]]},
+  3:{plan:32.5, sets:5, scheme:'5×5', warm:[[20,8],[25,5],[30,2]]},
+  4:{plan:35,   sets:5, scheme:'5×5', warm:[[20,8],[27.5,5],[32.5,2]]}};
+WORKOUTS.B.lifts[0].weeks = {
+  2:{plan:30,   sets:5, scheme:'5×5', warm:[[20,8],[25,5],[27.5,2]]},
+  3:{plan:30,   sets:5, scheme:'5×5', warm:[[20,8],[25,5],[27.5,2]]},
+  4:{plan:32.5, sets:5, scheme:'5×5', warm:[[20,8],[25,5],[30,2]]}};
+WORKOUTS.C.lifts[0].weeks = {
+  2:{plan:45,   sets:5, scheme:'5×5', warm:[[20,10],[32.5,5],[40,2]]},
+  3:{plan:45,   sets:5, scheme:'5×5', warm:[[20,10],[32.5,5],[40,2]]},
+  4:{plan:47.5, sets:5, scheme:'5×5', warm:[[20,10],[35,5],[42.5,2]]}};
 WORKOUTS.D.lifts[0].floor = true;
 WORKOUTS.D.lifts[0].weeks = {
-  2:{plan:67.5, scheme:'5×3 קבועים', warm:[[40,5],[50,3],[60,2]]},
-  3:{plan:70, sets:3, scheme:'3×3 · חג', warm:[[40,5],[50,3],[60,2]]},
-  4:{plan:77.5, sets:1, scheme:'מבחן · 1×3', warm:[[40,5],[50,3],[60,2],[67.5,2],[72.5,1]]},
+  2:{plan:67.5, sets:5, scheme:'5×3', warm:[[40,5],[50,3],[60,2]]},
+  3:{plan:70,   sets:5, scheme:'5×3', warm:[[40,5],[50,3],[60,2]]},
+  4:{plan:72.5, sets:5, scheme:'5×3', warm:[[40,5],[55,3],[65,2]]}};
+/* the STR card text is built from the same numbers, so the card and the chalk line can never disagree */
+function strCard(name, wk, rest, cue){
+  const L = WORKOUTS[name].lifts[0], p = L.weeks[wk], reps = L.reps;
+  const warm = p.warm.map(([w,r])=>w+'×'+r).join(', ');
+  return {tag:'STR', t:15, title:B('כוח','strength'),
+    d:B(`${L.name}. חימום, 3 סטים שלא נספרים: ${warm}. אחר כך 5 סטים של ${reps} ב-${p.plan} ק״ג, כל הסטים אותו משקל, מנוחה ${rest.he}. הכלל: המשקל קבוע, החזרות גמישות, רצפה 3. ${cue.he}`,
+        `${L.name}. Warm-up, 3 sets not counted: ${warm}. Then 5 sets of ${reps} at ${p.plan} kg, every set the same weight, rest ${rest.en}. The rule: weight fixed, reps bend, floor 3. ${cue.en}`)};
+}
+const STR_CUES = {
+  A:{rest:{he:'90 שנ׳',en:'90s'}, cue:{he:'עומק עד איפה שהברך שקטה, מרפקים גבוהים, גב זקוף.',en:'Depth where the knee stays quiet, elbows high, back upright.'}},
+  B:{rest:{he:'90 שנ׳',en:'90s'}, cue:{he:'ליבה אסופה, צלעות סגורות, בלי קשת. ואז Strict Pull-up 3×3, עצירה מלאה למטה, בלי קיפינג.',en:'Braced core, ribs down, no arch. Then Strict Pull-up 3×3, full stop at the bottom, no kipping.'}},
+  C:{rest:{he:'2 דק׳',en:'2 min'}, cue:{he:'עמודי ביטחון בגובה החזה. שכמות אסופות, מוט לקו הפטמה, רגליים נעוצות.',en:'Safety pins at chest height. Scapulae packed, bar to nipple line, feet planted.'}},
+  D:{rest:{he:'2 דק׳',en:'2 min'}, cue:{he:'בלי straps, אחיזה כפולה עליונה. האחיזה נשמטת או הגב מתעגל? הסט נגמר שם.',en:'No straps, double-overhand. Grip slips or back rounds? The set ends there.'}},
 };
 /* 23.9 (Marcus): Strict Press moves to the same rule as the deadlift — the weight is
    fixed, the reps bend. Mosh hit 27.5×5 ×4 then 30×5 on the top set, so 30 is the
    working weight from week 2 on. Dropping the weight mid-session teaches the body
    nothing; dropping a rep keeps the stimulus. Floor is 3 reps. */
-WORKOUTS.B.lifts[0].warm = [[20,8],[25,5]];
 WORKOUTS.B.strWeeks = {
   2:{tag:'STR', t:15, title:B('כוח','strength'), d:B('Strict Press 5 סטים ב-30, מנוחה 90 שנ׳. החימום למטה (20×8, 25×5) לא נספר. הכלל: המשקל קדוש, החזרות גמישות. קשה? 4 חזרות. עוד קשה? 3. הרצפה היא 3 — נפלת מתחת, מסיימים את התרגיל, לא יורדים ל-27.5 באמצע. יעד היום: 22 חזרות ומעלה ב-30 (= 660 ק״ג, מעל ה-700 של 23.9 באיכות). ליבה אסופה, צלעות סגורות, בלי קשת. ואז Strict Pull-up 3×3, עצירה מלאה למטה, בלי קיפינג.','Strict Press 5 sets at 30, rest 90s. Warm-up below (20×8, 25×5) is not counted. The rule: weight is fixed, reps bend. Hard? 4 reps. Harder? 3. The floor is 3 — below that the exercise ends, you do not drop to 27.5 mid-session. Target today: 22+ reps at 30. Braced core, ribs down, no arch. Then Strict Pull-up 3×3, full stop at the bottom, no kipping.')},
   3:{tag:'STR', t:12, title:B('כוח · מצב חג','strength · holiday mode'), d:B('Strict Press 3 סטים ב-30. שמירה, לא יותר. אותו כלל: רצפה 3 חזרות, המשקל לא יורד.','Strict Press 3 sets at 30. Hold, nothing more. Same rule: floor of 3 reps, the weight does not drop.')},
@@ -360,6 +377,11 @@ WORKOUTS.D.strWeeks = {
   3:{tag:'STR', t:12, title:B('כוח · מצב חג','strength · holiday mode'), d:B('Deadlift 3×3 ב-70. שמירה, לא יותר. חימום למטה, מנוחה 2 דק׳, אחיזה כפולה עליונה.','Deadlift 3×3 at 70. Hold, nothing more. Warm-up below, rest 2 min, double-overhand grip.')},
   4:{tag:'STR', t:15, title:B('כוח · מבחן','strength · test'), d:B('טיפוס לסט כבד אחד של 3. החימום למטה כולל 67.5×2 ו-72.5×1. ה-72.5 זז מהר? 77.5×3. זז איטי? 75×3. גב מתעגל או אחיזה נשמטת = עוצרים, המספר האחרון הנקי הוא התוצאה.','Climb to one heavy set of 3. The warm-up below includes 67.5×2 and 72.5×1. 72.5 moved fast? 77.5×3. Slow? 75×3. Back rounds or grip slips = stop, the last clean number is the result.')},
 };
+/* 25.9: the hand-written cards above are history. Every STR card from week 2 on is built by strCard. */
+['A','B','C','D'].forEach(k=>{
+  WORKOUTS[k].strWeeks = WORKOUTS[k].strWeeks || {};
+  [2,3,4].forEach(wk=>{ WORKOUTS[k].strWeeks[wk] = strCard(k, wk, STR_CUES[k].rest, STR_CUES[k].cue); });
+});
 
 /* CFFB-03 days (Mosh, 12.9): Sun A legs · Mon B overhead · Wed C bench · Fri D hinge · Sat X bonus.
    Every main lift gets its own day. Wed (C) is the flex valve: it drops first and the week still counts.
@@ -825,7 +847,14 @@ function sendMarcusBtn(dKey){
 }
 
 /* CFFB-02: fixed per-day protocol, fresh metcon content every week (Mosh, 13.8) */
-function blockWeek(d){ const ms=d-BLOCK_START; if(ms<0) return 1; return Math.min(4, Math.floor(ms/(7*86400000))+1); }
+/* 25.9: counted in calendar days. BLOCK_START is Sunday 12:00, so a Sunday 06:00
+   workout used to land in the previous week and show last week's weight. */
+function blockWeek(d){
+  const s = new Date(BLOCK_START.getFullYear(), BLOCK_START.getMonth(), BLOCK_START.getDate());
+  const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  const days = Math.round((x - s) / 86400000); if(days<0) return 1;
+  return Math.min(4, Math.floor(days/7)+1);
+}
 function planFor(d){
   const k = todayKey(d);
   /* CFFB-03: a SPECIAL day is usually a moved training day (Yom Kippur, Sukkot),
