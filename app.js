@@ -452,6 +452,86 @@ const C4_ACC = {
 WORKOUTS.A.wodWeeks[1] = {tag:'WOD', t:8, title:B('מטקון · 40/20 ×8','Metcon · 40/20 ×8'), d:B('סירוגין: שאטל 20 מ׳ הלוך-חזור / KB Swing 14 ק״ג. עבודה 40, מנוחה 20. בונוס: אין זמן? מדלגים, האימון נספר.','Alternate: 20 m shuttle / 14 kg KB Swing. 40s on, 20s off. Bonus: no time? Skip it, the session still counts.'),
   timer:{mode:'interval', label:'40/20 ×8', rounds:8, phases:[{label:B('עבודה','WORK'),sec:40,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:['Shuttle 20m','KB Swing']}};
 
+/* ---- CFFB-04 METCONS · weeks 2-8 (Marcus, 10.10.2026) ----
+   Until today weeks 2-8 showed CFFB-03's pool. Rules (block-cffb-04.md, Mosh 10.10):
+   fixed protocol per day (A intervals · B AMRAP · C EMOM · D For Time), new content
+   every week, shuttles keep coming back, metcon is a bonus after strength + accessory
+   (target 2 a week), week 4 light, week 8 test. Every day is 36 min before the WOD,
+   so a WOD card is 9 min max (the 45 rule). Gear: DB up to 17.5, KB 14, rope, box, band.
+   Elbow fence: push-ups only on DB handles or fists, no pulling in the metcon (the
+   pull-ups already live on B), rows neutral only.
+   Week 4 B = the AMRAP 8 test that fell on 9.10 (cffb-04-brief.md). Week 8: A re-runs
+   week 1, B re-runs week 4. C and D in week 8 stay light (bench / deadlift test days).
+   This also fixes A week 3 (CFFB-03's 30/30 ×10 card made the day 46 min). */
+const BONUS = B(' בונוס אחרי הכוח והעזר, יעד 2 בשבוע. אין זמן? מדלגים, האימון נספר.',' Bonus after strength + accessory, target 2 a week. No time? Skip it, the session still counts.');
+const ivl = (on, off) => [{label:B('עבודה','WORK'),sec:on,work:1},{label:B('מנוחה','REST'),sec:off,work:0}];
+const EMOM_MIN = [{label:B('דקה','MINUTE'),sec:60,work:1}];
+const wod = (t, he, en, dhe, den, timer) => ({tag:'WOD', t, title:B('מטקון · '+he, 'Metcon · '+en), d:B(dhe+BONUS.he, den+BONUS.en), timer});
+Object.assign(WORKOUTS.A.wodWeeks, {
+  2: wod(9,'40/20 ×9','40/20 ×9','שלישייה מתחלפת: שאטל 20 מ׳ הלוך-חזור → Goblet Squat קטלבל 14 → חבל. עבודה 40, מנוחה 20.','Rotate three: 20 m shuttle → 14 kg KB Goblet Squat → rope. 40s on, 20s off.',
+    {mode:'interval', label:'40/20 ×9', rounds:9, phases:ivl(40,20), cycle:[B('שאטל 20 מ׳','Shuttle 20m'),B('Goblet Squat 14','Goblet Squat 14'),B('חבל','Jump Rope')]}),
+  3: wod(8,'45/15 ×8','45/15 ×8','סירוגין: שאטל 20 מ׳ הלוך-חזור / Box Step-up עם דמבל 12.5 בחזה, מחליפים רגל בכל צעד. עבודה 45, מנוחה 15.','Alternate: 20 m shuttle / Box Step-up holding a 12.5 DB at the chest, switch legs every rep. 45s on, 15s off.',
+    {mode:'interval', label:'45/15 ×8', rounds:8, phases:ivl(45,15), cycle:[B('שאטל 20 מ׳','Shuttle 20m'),B('Step-up דמבל','DB Step-up')]}),
+  4: wod(6,'30/30 ×6 · שבוע קל','30/30 ×6 · light week','סירוגין: שאטל נינוח / Air Squat. להזיע, לא להתרסק. שבוע קל.','Alternate: easy shuttle / Air Squat. Sweat, do not crash. Light week.',
+    {mode:'interval', label:'30/30 ×6', rounds:6, phases:ivl(30,30), cycle:[B('שאטל קל','Easy shuttle'),B('Air Squat','Air Squat')]}),
+  5: wod(9,'20/10 ×18','20/10 ×18','טבטה כפולה בשלישייה: שאטל 20 מ׳ → KB Swing 14 → Reverse Lunge בלי משקל לסירוגין. עבודה 20, מנוחה 10, 6 סבבים של שלישייה.','Double tabata in threes: 20 m shuttle → 14 kg KB Swing → bodyweight alternating Reverse Lunge. 20s on, 10s off, 6 rounds of three.',
+    {mode:'interval', label:'20/10 ×18', rounds:18, phases:ivl(20,10), cycle:[B('שאטל 20 מ׳','Shuttle 20m'),B('KB Swing 14','KB Swing 14'),B('Reverse Lunge','Reverse Lunge')]}),
+  6: wod(9,'40/20 ×9','40/20 ×9','שלישייה: שאטל 10 מ׳ עם נגיעה ברצפה בכל קצה → Goblet Squat קטלבל 14 עם עצירה של שנייה למטה → Skater (קפיצה לצד, נחיתה על רגל אחת).','Rotate three: 10 m shuttle touching the floor at each end → 14 kg KB Goblet Squat, 1s pause at the bottom → Skaters (lateral bound, land on one leg).',
+    {mode:'interval', label:'40/20 ×9', rounds:9, phases:ivl(40,20), cycle:[B('שאטל נגיעה','Touch shuttle'),B('Goblet Squat עצירה','Paused Goblet Squat'),B('Skater','Skaters')]}),
+  7: wod(9,'40/20 ×9','40/20 ×9','שלישייה: KB Swing 14 → שאטל 20 מ׳ → Lunge לסירוגין עם דמבל 12.5 בחזה. השבוע הכי צפוף בבלוק.','Rotate three: 14 kg KB Swing → 20 m shuttle → alternating Lunge with a 12.5 DB at the chest. The densest week of the block.',
+    {mode:'interval', label:'40/20 ×9', rounds:9, phases:ivl(40,20), cycle:[B('KB Swing 14','KB Swing 14'),B('שאטל 20 מ׳','Shuttle 20m'),B('Lunge דמבל','DB Lunge')]}),
+  8: wod(8,'40/20 ×8 · מבחן','40/20 ×8 · test','בדיוק כמו שבוע 1, בכוונה: סירוגין שאטל 20 מ׳ / KB Swing 14, עבודה 40, מנוחה 20. לרשום סה״כ שאטלים וסווינגים ולהשוות לשבוע 1. אחרי לילה שבור = בלי מבחן, עושים קל.','Same as week 1 on purpose: alternate 20 m shuttle / 14 kg KB Swing, 40s on, 20s off. Log total shuttles and swings, compare to week 1. Broken night = no test, go easy.',
+    {mode:'interval', label:'40/20 ×8', rounds:8, phases:ivl(40,20), cycle:['Shuttle 20m','KB Swing']}),
+});
+Object.assign(WORKOUTS.B.wodWeeks, {
+  2: wod(9,'AMRAP 9','AMRAP 9','8 DB Push Press 10 ק״ג (אין 10? 7) · 10 Sit-up · שאטל 20 מ׳ הלוך-חזור. קצב אחיד, בלי ספרינט בסבב הראשון.','8 DB Push Press at 10 kg (no 10s? 7) · 10 Sit-ups · one 20 m shuttle out and back. Even pace, no first-round sprint.',
+    {mode:'amrap', label:'AMRAP 9', sec:540}),
+  3: wod(9,'AMRAP 9','AMRAP 9','10 KB Swing 14 · 6 Push-up על ידיות דמבל או אגרופים · 20 קפיצות חבל.','10 KB Swings 14 kg · 6 Push-ups on DB handles or fists · 20 rope skips.',
+    {mode:'amrap', label:'AMRAP 9', sec:540}),
+  4: wod(9,'AMRAP 8 · המבחן שנפל','AMRAP 8 · the missed test','המבחן של CFFB-03 שלא רץ ב-9.10: 25 קפיצות חבל (או 2 שאטלים של 20 מ׳) + 10 DB Push Press 7 ק״ג. קל במשקל, זה מה שמותר בשבוע קל. להשוות לתוצאה הראשונה על הלוח.','The CFFB-03 test that did not run on 9.10: 25 rope skips (or 2×20 m shuttles) + 10 DB Push Press at 7 kg. Light load, fits the light week. Compare to the first score on the board.',
+    {mode:'amrap', label:'AMRAP 8', sec:480}),
+  5: wod(9,'AMRAP 9','AMRAP 9','5 Burpee step-out (בלי קפיצה, ידיים על ידיות או אגרופים) · 8 DB Push Press 10 ק״ג · 2 שאטלים של 20 מ׳.','5 step-out Burpees (no jump, hands on DB handles or fists) · 8 DB Push Press at 10 kg · 2×20 m shuttles.',
+    {mode:'amrap', label:'AMRAP 9', sec:540}),
+  6: wod(9,'AMRAP 9','AMRAP 9','10 Goblet Squat קטלבל 14 · 8 DB Push Press 10 ק״ג · 12 Hollow Rock.','10 Goblet Squats 14 kg KB · 8 DB Push Press at 10 kg · 12 Hollow Rocks.',
+    {mode:'amrap', label:'AMRAP 9', sec:540}),
+  7: wod(9,'AMRAP 9','AMRAP 9','12 KB Swing 14 · 8 Push-up על ידיות או אגרופים · שאטל 20 מ׳ · 10 V-up (אין V-up נקי? Sit-up).','12 KB Swings 14 kg · 8 Push-ups on handles or fists · one 20 m shuttle · 10 V-ups (no clean V-up? Sit-ups).',
+    {mode:'amrap', label:'AMRAP 9', sec:540}),
+  8: wod(9,'AMRAP 8 · מבחן','AMRAP 8 · test','אותו מבחן של שבוע 4: 25 קפיצות חבל (או 2 שאטלים) + 10 DB Push Press 7 ק״ג. יעד: לעבור את שבוע 4. מבחן הפולאפים כבר נעשה בתחילת האימון, המטקון אחרון. לילה שבור = בלי מבחן.','Same test as week 4: 25 rope skips (or 2 shuttles) + 10 DB Push Press at 7 kg. Target: beat week 4. The pull-up test already ran at the start, the metcon is last. Broken night = no test.',
+    {mode:'amrap', label:'AMRAP 8', sec:480}),
+});
+Object.assign(WORKOUTS.C.wodWeeks, {
+  2: wod(9,'EMOM 9','EMOM 9','דקה 1: 12 KB Swing 14 · דקה 2: 2 שאטלים של 20 מ׳ · דקה 3: 30 שנ׳ Hollow Hold. שלושה סבבים.','Min 1: 12 KB Swings 14 kg · min 2: 2×20 m shuttles · min 3: 30s Hollow Hold. Three rounds.',
+    {mode:'interval', label:'EMOM 9', rounds:9, phases:EMOM_MIN, cycle:[B('12 KB Swing','12 KB Swings'),B('2 שאטלים','2 shuttles'),B('30 שנ׳ Hollow','30s Hollow')]}),
+  3: wod(9,'EMOM 9','EMOM 9','דקה 1: 10 Goblet Squat קטלבל 14 · דקה 2: 20 קפיצות חבל + 4 Burpee step-out על ידיות · דקה 3: 30 שנ׳ Side Plank, 15 לכל צד. שלושה סבבים.','Min 1: 10 Goblet Squats 14 kg · min 2: 20 rope skips + 4 step-out Burpees on handles · min 3: 30s Side Plank, 15 per side. Three rounds.',
+    {mode:'interval', label:'EMOM 9', rounds:9, phases:EMOM_MIN, cycle:[B('10 Goblet Squat','10 Goblet Squats'),B('חבל + ברפי','Rope + Burpees'),B('30 שנ׳ Side Plank','30s Side Plank')]}),
+  4: wod(6,'EMOM 6 · שבוע קל','EMOM 6 · light week','דקה 1: 10 Air Squat · דקה 2: 30 שנ׳ חבל נינוח. שלושה סבבים, הרבה אוויר בכל דקה.','Min 1: 10 Air Squats · min 2: 30s easy rope. Three rounds, plenty of air in every minute.',
+    {mode:'interval', label:'EMOM 6', rounds:6, phases:EMOM_MIN, cycle:[B('10 Air Squat','10 Air Squats'),B('30 שנ׳ חבל','30s rope')]}),
+  5: wod(9,'EMOM 9','EMOM 9','דקה 1: 8 Romanian Deadlift דמבלים 12.5, אחיזה ניטרלית · דקה 2: שאטל 20 מ׳ + 10 Mountain Climber לצד · דקה 3: 30 שנ׳ Plank על אמות. שלושה סבבים.','Min 1: 8 DB Romanian Deadlifts 12.5s, neutral grip · min 2: 20 m shuttle + 10 Mountain Climbers per side · min 3: 30s forearm Plank. Three rounds.',
+    {mode:'interval', label:'EMOM 9', rounds:9, phases:EMOM_MIN, cycle:[B('8 RDL דמבלים','8 DB RDL'),B('שאטל + Climbers','Shuttle + Climbers'),B('30 שנ׳ Plank','30s Plank')]}),
+  6: wod(9,'EMOM 9','EMOM 9','דקה 1: 12 KB Swing 14 · דקה 2: 8 Box Step-up לרגל · דקה 3: 30 שנ׳ Dead Bug איטי. שלושה סבבים.','Min 1: 12 KB Swings 14 kg · min 2: 8 Box Step-ups per leg · min 3: 30s slow Dead Bug. Three rounds.',
+    {mode:'interval', label:'EMOM 9', rounds:9, phases:EMOM_MIN, cycle:[B('12 KB Swing','12 KB Swings'),B('8 Step-up לרגל','8 Step-ups/leg'),B('30 שנ׳ Dead Bug','30s Dead Bug')]}),
+  7: wod(9,'EMOM 9','EMOM 9','דקה 1: Suitcase Carry קטלבל 14, 20 מ׳ הלוך-חזור, יד מתחלפת בכל סבב · דקה 2: 10 Goblet Squat קטלבל 14 · דקה 3: 2 שאטלים של 20 מ׳. שלושה סבבים.','Min 1: 14 kg KB Suitcase Carry, 20 m out and back, switch hands each round · min 2: 10 Goblet Squats 14 kg · min 3: 2×20 m shuttles. Three rounds.',
+    {mode:'interval', label:'EMOM 9', rounds:9, phases:EMOM_MIN, cycle:[B('Suitcase Carry','Suitcase Carry'),B('10 Goblet Squat','10 Goblet Squats'),B('2 שאטלים','2 shuttles')]}),
+  8: wod(6,'EMOM 6 · קל','EMOM 6 · easy','שבוע מבחן, הבנץ׳ הוא המספר של היום. דקה 1: 12 Band Pull-apart · דקה 2: 20 קפיצות חבל. שלושה סבבים.','Test week, the bench is today\'s number. Min 1: 12 Band Pull-aparts · min 2: 20 rope skips. Three rounds.',
+    {mode:'interval', label:'EMOM 6', rounds:6, phases:EMOM_MIN, cycle:[B('12 Pull-apart','12 Pull-aparts'),B('20 קפיצות חבל','20 rope skips')]}),
+});
+Object.assign(WORKOUTS.D.wodWeeks, {
+  2: wod(9,'For Time · 3 סבבים','For Time · 3 rounds','3 סבבים: 2 שאטלים של 20 מ׳ · 12 KB Swing 14 · 10 V-up (אין V-up נקי? Sit-up). יעד: מתחת ל-7 דק׳, תקרה 9.','3 rounds: 2×20 m shuttles · 12 KB Swings 14 kg · 10 V-ups (no clean V-up? Sit-ups). Target: under 7 min, cap 9.',
+    {mode:'fortime', label:'For Time', cap:540}),
+  3: wod(9,'For Time 21-15-9','For Time 21-15-9','Air Squat + Hollow Rock, ובסוף כל סבב 2 שאטלים של 20 מ׳. יעד: מתחת ל-8 דק׳.','Air Squats + Hollow Rocks, 2×20 m shuttles after each round. Target: under 8 min.',
+    {mode:'fortime', label:'For Time', cap:540}),
+  4: wod(6,'For Time · שבוע קל','For Time · light week','2 סבבים נינוחים: שאטל 20 מ׳ · 10 Air Squat · 8 Dead Bug לצד. בלי שעון בראש, תקרה 6.','2 easy rounds: 20 m shuttle · 10 Air Squats · 8 Dead Bugs per side. No racing the clock, cap 6.',
+    {mode:'fortime', label:'For Time', cap:360}),
+  5: wod(9,'For Time 15-12-9','For Time 15-12-9','Goblet Squat קטלבל 14 + Push-up על ידיות או אגרופים, ובסוף כל סבב 2 שאטלים של 20 מ׳. יעד: מתחת ל-8 דק׳.','14 kg KB Goblet Squats + Push-ups on handles or fists, 2×20 m shuttles after each round. Target: under 8 min.',
+    {mode:'fortime', label:'For Time', cap:540}),
+  6: wod(9,'For Time 10-8-6-4-2','For Time 10-8-6-4-2','KB Swing 14 + Burpee step-out על ידיות, ושאטל 20 מ׳ אחרי כל סבב. יעד: מתחת ל-8 דק׳.','14 kg KB Swings + step-out Burpees on handles, one 20 m shuttle after each round. Target: under 8 min.',
+    {mode:'fortime', label:'For Time', cap:540}),
+  7: wod(9,'For Time · 5 סבבים','For Time · 5 rounds','5 סבבים: 2 שאטלים של 20 מ׳ · 10 Air Squat · 10 Sit-up. 400 מ׳ של שאטלים בסך הכל. יעד: מתחת ל-9 דק׳.','5 rounds: 2×20 m shuttles · 10 Air Squats · 10 Sit-ups. 400 m of shuttles in total. Target: under 9 min.',
+    {mode:'fortime', label:'For Time', cap:540}),
+  8: wod(6,'For Time · קל','For Time · easy','שבוע מבחן, הדדליפט הוא המספר של היום. 2 סבבים נינוחים: שאטל 20 מ׳ · 8 Goblet Squat קטלבל 14 · 8 Bird Dog לצד. תקרה 6.','Test week, the deadlift is today\'s number. 2 easy rounds: 20 m shuttle · 8 Goblet Squats 14 kg · 8 Bird Dogs per side. Cap 6.',
+    {mode:'fortime', label:'For Time', cap:360}),
+});
+
 /* CFFB-03 days (Mosh, 12.9): Sun A legs · Mon B overhead · Wed C bench · Fri D hinge · Sat X bonus.
    Every main lift gets its own day. Wed (C) is the flex valve: it drops first and the week still counts.
    Holiday moves (Yom Kippur, Sukkot) live in SPECIAL, keyed by date. */
