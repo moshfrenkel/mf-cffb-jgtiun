@@ -410,6 +410,13 @@ const C4 = {
 };
 const C4_PULLUP = {1:'3×4',2:'3×5',3:'3×5-6',4:'2×3 קל',5:'4×4',6:'4×5',7:'4×5-6',8:'מבחן: סט אחד מקסימום נקי, טרי, לפני הכוח'};
 const r25 = w => Math.round(w/2.5)*2.5;
+/* setup card gear for CFFB-04 (KB 14, accessory DBs 12.5-17.5). SET_GEAR above is CFFB-03's (KB 12, DB 7). */
+const C4_GEAR = {
+  A:{he:'מוט+צלחות, דמבל ללאנג׳ (12.5 ומעלה), קטלבל 14, גומייה, חבל, מזרן, מסלול שאטל 20 מ׳.', en:'Bar + plates, lunge DB (12.5 and up), 14 kg KB, band, rope, mat, a 20 m shuttle lane.'},
+  B:{he:'מוט+צלחות, מתח, גומייה, דמבלים למטקון (10, אין? 7), קטלבל 14, חבל, מזרן.', en:'Bar + plates, pull-up bar, band, metcon DBs (10s, or 7s), 14 kg KB, rope, mat.'},
+  C:{he:'מוט, ספסל, צלחות בקפיצות של 2.5, עמודי ביטחון בגובה החזה, זוג דמבלים לחתירה (12.5 ומעלה), דמבל קל, גומייה, קטלבל 14, מזרן.', en:'Bar, bench, plates in 2.5 kg steps, safety pins at chest height, a pair of row DBs (12.5 and up), a light DB, band, 14 kg KB, mat.'},
+  D:{he:'מוט+צלחות (בלי straps, אחיזה כפולה עליונה), דמבל לחתירה (12.5 ומעלה), קטלבל 14, מזרן, מסלול שאטל.', en:'Bar + plates (no straps, double overhand), row DB (12.5 and up), 14 kg KB, mat, shuttle lane.'},
+};
 ['A','B','C','D'].forEach(k=>{
   const L = WORKOUTS[k].lifts[0]; L.weeks = {}; WORKOUTS[k].strWeeks = {}; WORKOUTS[k].setWeeks = {};
   for(let wk=1; wk<=8; wk++){
@@ -427,7 +434,7 @@ const r25 = w => Math.round(w/2.5)*2.5;
       d:B(`${L.name}. חימום שלא נספר: ${w}. אחר כך ${sets} סטים של ${L.reps} ב-${plan} ק״ג, מנוחה ${STR_CUES[k].rest.he}. ${extra.he}המשקל קבוע, החזרות גמישות, רצפה 3. במנוחות: תרגיל היציבה מכרטיס העזר. ${STR_CUES[k].cue.he.split(' ואז ')[0]}${pu.he}`,
           `${L.name}. Warm-up, not counted: ${w}. Then ${sets} sets of ${L.reps} at ${plan} kg, rest ${STR_CUES[k].rest.en}. ${extra.en}Weight fixed, reps bend, floor 3. In the rests: the posture drill from the accessory card. ${STR_CUES[k].cue.en.split(' Then ')[0]}${pu.en}`)};
     WORKOUTS[k].setWeeks[wk] = {tag:'SET', t:4, title:B('הכנה','setup'),
-      d:B(`${SET_GEAR[k].he} לכתוב על הלוח: ${L.name} ${plan}.`, `${SET_GEAR[k].en} Chalk it: ${L.name} ${plan}.`)};
+      d:B(`${C4_GEAR[k].he} לכתוב על הלוח: ${L.name} ${plan}.`, `${C4_GEAR[k].en} Chalk it: ${L.name} ${plan}.`)};
   }
 });
 const C4_ACC = {
@@ -531,6 +538,74 @@ Object.assign(WORKOUTS.D.wodWeeks, {
   8: wod(6,'For Time · קל','For Time · easy','שבוע מבחן, הדדליפט הוא המספר של היום. 2 סבבים נינוחים: שאטל 20 מ׳ · 8 Goblet Squat קטלבל 14 · 8 Bird Dog לצד. תקרה 6.','Test week, the deadlift is today\'s number. 2 easy rounds: 20 m shuttle · 8 Goblet Squats 14 kg · 8 Bird Dogs per side. Cap 6.',
     {mode:'fortime', label:'For Time', cap:360}),
 });
+
+/* week 1 B / D / C metcons (Marcus, 10.10 evening). Until now week 1 of these days
+   fell back to the base card, i.e. CFFB-03's AMRAP 8 test, For Time 21-15-9 and EMOM 9. */
+WORKOUTS.B.wodWeeks[1] = wod(9,'AMRAP 9','AMRAP 9','8 Goblet Squat קטלבל 14 · 10 Hollow Rock · שאטל 20 מ׳ הלוך-חזור. קצב אחיד, בלי ספרינט בסבב הראשון.','8 Goblet Squats 14 kg KB · 10 Hollow Rocks · one 20 m shuttle out and back. Even pace, no first-round sprint.',
+  {mode:'amrap', label:'AMRAP 9', sec:540});
+WORKOUTS.D.wodWeeks[1] = wod(9,'For Time · 4 סבבים','For Time · 4 rounds','4 סבבים: 2 שאטלים של 20 מ׳ · 10 Goblet Squat קטלבל 14 · 10 Sit-up. יעד: מתחת ל-8 דק׳, תקרה 9.','4 rounds: 2×20 m shuttles · 10 Goblet Squats 14 kg · 10 Sit-ups. Target: under 8 min, cap 9.',
+  {mode:'fortime', label:'For Time', cap:540});
+WORKOUTS.C.wodWeeks[1] = wod(9,'EMOM 9','EMOM 9','דקה 1: 8 Box Step-up לרגל · דקה 2: 20 קפיצות חבל · דקה 3: 30 שנ׳ Dead Bug איטי. שלושה סבבים.','Min 1: 8 Box Step-ups per leg · min 2: 20 rope skips · min 3: 30s slow Dead Bug. Three rounds.',
+  {mode:'interval', label:'EMOM 9', rounds:9, phases:EMOM_MIN, cycle:[B('8 Step-up לרגל','8 Step-ups/leg'),B('20 קפיצות חבל','20 rope skips'),B('30 שנ׳ Dead Bug','30s Dead Bug')]});
+
+/* ---- CFFB-04 DAY X · Saturday, bonus or make-up (Marcus, 10.10 evening) ----
+   Until today X showed CFFB-03's EMOM 18 every week. Rules (block-cffb-04.md):
+   light, 45-min ceiling, DB up to 17.5, KB 14, elbow fence (push-ups on handles or
+   fists, no pulling in a metcon, neutral grip). The fork, written on the setup card:
+   2 metcons done this week = the 12-min bonus only; fewer = skip the bonus and run
+   the 15-min make-up metcon. A session moved by the broken-night rule lands here
+   first and X steps aside. Week 4 and week 8 Saturdays open with the fasted
+   measurement + photos. Bonus = rear delt + core, the posture ask from 10.10. */
+const X4_SET = {
+  base:'קטלבל 14, גומייה, דמבל קל, חבל, מזרן. המזלג של היום: עשית 2 מטקונים השבוע? רק הבונוס (12 דק׳). פחות? מדלגים על הבונוס ועושים את מטקון ההשלמה (15 דק׳). אימון שזז לפה בגלל לילה שבור? הוא קודם, X יורד. הבוקר נחטף? מדלגים בלי חוב.',
+  en:'14 kg KB, band, a light DB, rope, mat. Today\'s fork: 2 metcons done this week? Bonus only (12 min). Fewer? Skip the bonus and run the make-up metcon (15 min). A session moved here by the broken-night rule? It goes first and X steps aside. Morning got eaten? Skip, no debt.',
+  m:{he:'לפני הכל: מדידה בצום (משקל, מותניים, צוואר) + תמונות, אז האימון. ', en:'Before anything: fasted measurement (weight, waist, neck) + photos, then train. '},
+};
+const X4_BONUS = {
+  1:['3 סבבים נינוחים, בלי שעון: 10 Band Pull-apart · 8 Bird Dog לצד · Suitcase Carry קטלבל 14, 20 מ׳ לכל יד · 30 שנ׳ חבל קל.','3 easy rounds, no clock: 10 Band Pull-aparts · 8 Bird Dogs/side · 14 kg KB Suitcase Carry, 20 m per hand · 30s easy rope.'],
+  2:['3 סבבים נינוחים: 10 Prone Y-Raise · 10 Glute Bridge עם עצירה למעלה · 30 שנ׳ Side Plank לצד · 2 שאטלים בהליכה מהירה.','3 easy rounds: 10 Prone Y-Raises · 10 Glute Bridges, pause at the top · 30s Side Plank/side · 2 brisk-walk shuttles.'],
+  3:['3 סבבים נינוחים: 12 Rear Delt Fly דמבל קל · 8 Dead Bug לצד · 8 Goblet Squat קטלבל 14, 3 שניות ירידה · 30 שנ׳ חבל.','3 easy rounds: 12 light-DB Rear Delt Flys · 8 Dead Bugs/side · 8 Goblet Squats 14 kg, 3s down · 30s rope.'],
+  4:['שבוע קל. 2 סבבים איטיים: 15 Band Pull-apart · 8 Bird Dog לצד · 20 שנ׳ Hollow Hold · ואז 5 דק׳ מוביליטי ירכיים ובית חזה.','Light week. 2 slow rounds: 15 Band Pull-aparts · 8 Bird Dogs/side · 20s Hollow Hold · then 5 min hip and T-spine mobility.'],
+  5:['3 סבבים נינוחים: 15 Face Pull בגומייה · 10 Single-Leg Glute Bridge לצד · Front-rack Carry קטלבל 14, 40 מ׳ · 10 Hollow Rock.','3 easy rounds: 15 band Face Pulls · 10 Single-Leg Glute Bridges/side · 14 kg KB front-rack carry, 40 m · 10 Hollow Rocks.'],
+  6:['3 סבבים נינוחים: 10 Prone Y-Raise · 8 Pallof Press לצד · 8 Reverse Lunge בלי משקל לרגל · 30 שנ׳ חבל.','3 easy rounds: 10 Prone Y-Raises · 8 Pallof Presses/side · 8 bodyweight Reverse Lunges/leg · 30s rope.'],
+  7:['3 סבבים נינוחים: 12 Rear Delt Fly דמבל קל · 30 שנ׳ Side Plank לצד · Suitcase Carry קטלבל 14, 20 מ׳ לכל יד · 10 Air Squat עם עצירה למטה.','3 easy rounds: 12 light-DB Rear Delt Flys · 30s Side Plank/side · 14 kg KB Suitcase Carry, 20 m per hand · 10 Air Squats, pause at the bottom.'],
+  8:['שבוע מבחן, סוף בלוק. 2 סבבים איטיים: 15 Band Pull-apart · 8 Dead Bug לצד · 10 Glute Bridge · ואז 5 דק׳ מוביליטי. בלי שום מבחן היום.','Test week, block ends. 2 slow rounds: 15 Band Pull-aparts · 8 Dead Bugs/side · 10 Glute Bridges · then 5 min mobility. No test of any kind today.'],
+};
+/* like wod() but without the "bonus after strength" tail: on X the metcon IS the make-up */
+const xwod = (t, he, en, dhe, den, timer) => ({tag:'WOD', t, title:B('מטקון '+he, 'Metcon '+en), d:B(dhe, den), timer});
+const X4_WOD = {
+  1: xwod(15,'השלמה · EMOM 15','make-up · EMOM 15','רק אם נפלו מטקונים השבוע. דקה 1: 10 Goblet Squat קטלבל 14 · דקה 2: 2 שאטלים של 20 מ׳ · דקה 3: 30 שנ׳ Side Plank, 15 לכל צד. חמישה סבבים.','Only if metcons fell this week. Min 1: 10 Goblet Squats 14 kg · min 2: 2×20 m shuttles · min 3: 30s Side Plank, 15 per side. Five rounds.',
+    {mode:'interval', label:'EMOM 15', rounds:15, phases:EMOM_MIN, cycle:[B('10 Goblet Squat','10 Goblet Squats'),B('2 שאטלים','2 shuttles'),B('30 שנ׳ Side Plank','30s Side Plank')]}),
+  2: xwod(15,'השלמה · AMRAP 15','make-up · AMRAP 15','רק אם נפלו מטקונים השבוע. 10 KB Swing 14 · 8 Reverse Lunge לסירוגין בלי משקל · 2 שאטלים של 20 מ׳ · 8 Sit-up. קצב שאפשר להחזיק 15 דקות.','Only if metcons fell this week. 10 KB Swings 14 kg · 8 bodyweight alternating Reverse Lunges · 2×20 m shuttles · 8 Sit-ups. A pace you can hold for 15 minutes.',
+    {mode:'amrap', label:'AMRAP 15', sec:900}),
+  3: xwod(15,'השלמה · 40/20 ×15','make-up · 40/20 ×15','רק אם נפלו מטקונים השבוע. חמישייה מתחלפת, 3 סבבים: שאטל 20 מ׳ → Goblet Squat קטלבל 14 → Mountain Climber → Air Squat → חבל. עבודה 40, מנוחה 20.','Only if metcons fell this week. Rotate five, 3 rounds: 20 m shuttle → 14 kg Goblet Squat → Mountain Climbers → Air Squats → rope. 40s on, 20s off.',
+    {mode:'interval', label:'40/20 ×15', rounds:15, phases:ivl(40,20), cycle:[B('שאטל 20 מ׳','Shuttle 20m'),B('Goblet Squat 14','Goblet Squat 14'),B('Mountain Climber','Mountain Climbers'),B('Air Squat','Air Squat'),B('חבל','Jump Rope')]}),
+  4: xwod(15,'השלמה · AMRAP 15 · קל','make-up · AMRAP 15 · easy','שבוע קל, ורק אם נפלו מטקונים. קצב שיחה, לא מתחרים בשעון: 10 Air Squat · 8 Bird Dog לצד · 2 שאטלים בהליכה מהירה.','Light week, and only if metcons fell. Talking pace, no racing the clock: 10 Air Squats · 8 Bird Dogs/side · 2 brisk-walk shuttles.',
+    {mode:'amrap', label:'AMRAP 15', sec:900}),
+  5: xwod(15,'השלמה · For Time · 3 סבבים','make-up · For Time · 3 rounds','רק אם נפלו מטקונים השבוע. 3 סבבים: 5 שאטלים של 20 מ׳ · 15 KB Swing 14 · 12 Goblet Squat קטלבל 14 · 10 Sit-up. יעד: מתחת ל-13 דק׳, תקרה 15.','Only if metcons fell this week. 3 rounds: 5×20 m shuttles · 15 KB Swings 14 kg · 12 Goblet Squats 14 kg · 10 Sit-ups. Target: under 13 min, cap 15.',
+    {mode:'fortime', label:'For Time', cap:900}),
+  6: xwod(15,'השלמה · EMOM 15','make-up · EMOM 15','רק אם נפלו מטקונים השבוע. דקה 1: 2 שאטלים של 20 מ׳ · דקה 2: 10 KB Swing 14 + 5 Push-up על ידיות או אגרופים · דקה 3: 30 שנ׳ Hollow Rock. חמישה סבבים.','Only if metcons fell this week. Min 1: 2×20 m shuttles · min 2: 10 KB Swings 14 kg + 5 Push-ups on handles or fists · min 3: 30s Hollow Rock. Five rounds.',
+    {mode:'interval', label:'EMOM 15', rounds:15, phases:EMOM_MIN, cycle:[B('2 שאטלים','2 shuttles'),B('Swing + Push-up','Swing + Push-up'),B('30 שנ׳ Hollow Rock','30s Hollow Rock')]}),
+  7: xwod(15,'השלמה · AMRAP 15','make-up · AMRAP 15','רק אם נפלו מטקונים השבוע. 5 Burpee step-out על ידיות · 10 Goblet Squat קטלבל 14 · 2 שאטלים של 20 מ׳ · 10 Sit-up.','Only if metcons fell this week. 5 step-out Burpees on handles · 10 Goblet Squats 14 kg · 2×20 m shuttles · 10 Sit-ups.',
+    {mode:'amrap', label:'AMRAP 15', sec:900}),
+  8: xwod(15,'השלמה · 30/30 ×15 · קל','make-up · 30/30 ×15 · easy','סוף בלוק, ורק אם נפלו מטקונים. קל, לא מבחן: שאטל בהליכה מהירה → Air Squat → Bird Dog. עבודה 30, מנוחה 30.','Block ends, and only if metcons fell. Easy, not a test: brisk-walk shuttle → Air Squat → Bird Dog. 30s on, 30s off.',
+    {mode:'interval', label:'30/30 ×15', rounds:15, phases:ivl(30,30), cycle:[B('שאטל בהליכה','Walk shuttle'),B('Air Squat','Air Squat'),B('Bird Dog','Bird Dog')]}),
+};
+(()=>{
+  const X = WORKOUTS.X;
+  X.focus = B('בונוס או השלמה · קל, עד 30 דק׳','Bonus or make-up · light, up to 30 min');
+  X.wodLoads = [{name:'KB Swing',start:14,equip:'kb',sticky:true}];
+  X.equip = [{t:'kb',lift:'KB Swing'},{t:'band'},{t:'db',note:B('דמבל קל ל-Y ו-Rear Delt','light DB for Y-raises and rear delts')},{t:'rope'},{t:'mat'}];
+  X.setWeeks = {}; X.accWeeks = {}; X.wodWeeks = {};
+  for(let wk=1; wk<=8; wk++){
+    const m = (wk===4 || wk===8) ? X4_SET.m : {he:'', en:''};
+    X.setWeeks[wk] = {tag:'SET', t:3, title:B('הכנה','setup'), d:B(m.he + X4_SET.base, m.en + X4_SET.en)};
+    X.accWeeks[wk] = {tag:'ACC', t:12, title:B('בונוס · כתף אחורית + ליבה','bonus · rear delt + core'), d:B(X4_BONUS[wk][0] + ' רק אם עשית 2 מטקונים השבוע.', X4_BONUS[wk][1] + ' Only if you did 2 metcons this week.')};
+    X.wodWeeks[wk] = X4_WOD[wk];
+  }
+  const st = X.stages, pick = tag => st.find(s=>s.tag===tag);
+  X.stages = [X.setWeeks[1], pick('WARM'), X.accWeeks[1], X.wodWeeks[1], pick('DOWN')];
+})();
 
 /* CFFB-03 days (Mosh, 12.9): Sun A legs · Mon B overhead · Wed C bench · Fri D hinge · Sat X bonus.
    Every main lift gets its own day. Wed (C) is the flex valve: it drops first and the week still counts.
@@ -1022,8 +1097,8 @@ function planFor(d){
   /* 19.9: lifts carry the block's week-by-week prescription (weight, sets, scheme)
      so the target on the card is the plan, not "last top set + increment". */
   const lifts = (w.lifts||[]).map(l=>l.weeks && l.weeks[wk] ? Object.assign({}, l, l.weeks[wk]) : l);
-  const se = (w.setWeeks||{})[wk];
-  return Object.assign({}, w, {lifts, stages: w.stages.map(s=>s.tag==='WOD'&&ov?ov:(s.tag==='STR'&&so?so:(s.tag==='SET'&&se?se:s)))});
+  const se = (w.setWeeks||{})[wk], ae = (w.accWeeks||{})[wk];   /* accWeeks: CFFB-04 day X bonus card per week */
+  return Object.assign({}, w, {lifts, stages: w.stages.map(s=>s.tag==='WOD'&&ov?ov:(s.tag==='STR'&&so?so:(s.tag==='SET'&&se?se:(s.tag==='ACC'&&ae?ae:s))))});
 }
 /* ---- PLAN GUARD (16.8) ----
    Bug we are never repeating: a 30/30 metcon was entered as rounds:18 (counting
