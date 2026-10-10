@@ -57,7 +57,7 @@ const T = {
   musicPh:{he:'הדבק קישור פלייליסט/אלבום מספוטיפיי',en:'Paste a Spotify playlist/album link'},
   musicSet:{he:'החלף',en:'Set'},
   musicMini:{he:'הנגן דורש אינטרנט. אפשר להדביק כל קישור ספוטיפיי והוא יישמר.',en:'Player needs internet. Paste any Spotify link and it sticks.'},
-  calKick:{he:'לוח הבלוק · 13.9–10.10',en:'BLOCK BOARD · SEP 13–OCT 10'},
+  calKick:{he:'לוח הבלוק · 11.10–5.12',en:'BLOCK BOARD · OCT 11–DEC 5'},
   calH1a:{he:'הבלוק',en:'THE BLOCK'}, calH1b:{he:'קדימה',en:'AHEAD'},
   calFocus:{he:'4 שבועות · הקש על יום לפתוח אותו',en:'4 weeks · tap a day to open it'},
   nextKick:{he:'הבלוק הבא',en:'NEXT BLOCK'},
@@ -397,10 +397,68 @@ const SET_GEAR = {
       d:B(`${SET_GEAR[k].he} לכתוב על הלוח: ${L.name} ${p.plan}.`, `${SET_GEAR[k].en} Chalk it: ${L.name} ${p.plan}.`)}; });
 });
 
+/* ---- CFFB-04 (Marcus, 10.10.2026) · 8 weeks, 11.10–5.12 ----
+   Source: data/training/block-cffb-04.md. Weeks 1-3 build straight off CFFB-03's
+   numbers, week 4 is light (3 sets) + check-in, weeks 5-7 build again, week 8 tests.
+   Accessories: double progression (top of the range on every set = next time up),
+   floor = the real starting DB (12.5), cap = the heaviest DB in the box (17.5). */
+const C4 = {
+  A:{1:35,  2:37.5, 3:40,   4:35,   5:40,   6:42.5, 7:45,   8:47.5},
+  B:{1:30,  2:30,   3:32.5, 4:30,   5:32.5, 6:32.5, 7:35,   8:35},
+  C:{1:47.5,2:47.5, 3:50,   4:45,   5:50,   6:50,   7:52.5, 8:52.5},
+  D:{1:70,  2:72.5, 3:75,   4:67.5, 5:75,   6:77.5, 7:80,   8:82.5},
+};
+const C4_PULLUP = {1:'3×4',2:'3×5',3:'3×5-6',4:'2×3 קל',5:'4×4',6:'4×5',7:'4×5-6',8:'מבחן: סט אחד מקסימום נקי, טרי, לפני הכוח'};
+const r25 = w => Math.round(w/2.5)*2.5;
+['A','B','C','D'].forEach(k=>{
+  const L = WORKOUTS[k].lifts[0]; L.weeks = {}; WORKOUTS[k].strWeeks = {}; WORKOUTS[k].setWeeks = {};
+  for(let wk=1; wk<=8; wk++){
+    const plan = C4[k][wk], sets = wk===4 ? 3 : 5;
+    const warm = k==='D' ? [[40,5],[50,3],[r25(plan*0.85),2]] : [[20,8],[Math.max(22.5,r25(plan*0.7)),5],[r25(plan*0.85),2]];
+    L.weeks[wk] = {plan, sets, scheme:sets+'×'+L.reps, warm};
+    const w = warm.map(([a,b])=>a+'×'+b).join(', ');
+    const tag = wk===4 ? B(' · שבוע קל',' · light week') : wk===8 ? B(' · מבחן',' · test') : B('','');
+    const extra = wk===4 ? B('3 סטים בלבד, נשאר כוח בקנה. ',' Only 3 sets, leave plenty in the tank. ')
+                : wk===8 ? B('סט אחרון: כמה חזרות נקיות שיש (לא כישלון). זה המספר שסוגר את הבלוק. ',' Last set: as many clean reps as there are (not to failure). This number closes the block. ')
+                : (k==='D' && wk===1) ? B('שני סטים ראשונים ב-70; זזים מהר? שלושה אחרונים ב-72.5. ',' First two sets at 70; moving fast? last three at 72.5. ') : B('','');
+    const pu = k==='B' ? B(` ואז Strict Pull-up ${C4_PULLUP[wk]}, עצירה מלאה למטה, בלי קיפינג. אות מהמרפק = הפולאפים יוצאים.`,
+                           ` Then Strict Pull-up ${C4_PULLUP[wk]}, dead stop at the bottom, no kipping. Elbow signal = pull-ups out.`) : B('','');
+    WORKOUTS[k].strWeeks[wk] = {tag:'STR', t:15, title:B('כוח'+tag.he,'strength'+tag.en),
+      d:B(`${L.name}. חימום שלא נספר: ${w}. אחר כך ${sets} סטים של ${L.reps} ב-${plan} ק״ג, מנוחה ${STR_CUES[k].rest.he}. ${extra.he}המשקל קבוע, החזרות גמישות, רצפה 3. במנוחות: תרגיל היציבה מכרטיס העזר. ${STR_CUES[k].cue.he.split(' ואז ')[0]}${pu.he}`,
+          `${L.name}. Warm-up, not counted: ${w}. Then ${sets} sets of ${L.reps} at ${plan} kg, rest ${STR_CUES[k].rest.en}. ${extra.en}Weight fixed, reps bend, floor 3. In the rests: the posture drill from the accessory card. ${STR_CUES[k].cue.en.split(' Then ')[0]}${pu.en}`)};
+    WORKOUTS[k].setWeeks[wk] = {tag:'SET', t:4, title:B('הכנה','setup'),
+      d:B(`${SET_GEAR[k].he} לכתוב על הלוח: ${L.name} ${plan}.`, `${SET_GEAR[k].en} Chalk it: ${L.name} ${plan}.`)};
+  }
+});
+const C4_ACC = {
+  A:{loads:[{name:'Reverse Lunge',scheme:'2×8-10 לרגל',sets:2,reps:10,start:12.5,inc:2.5,equip:'db',floorW:12.5,max:17.5}],
+     he:'במנוחות הסקוואט: Dead Bug 2×8 לצד + Band Pull-apart 2×15. אחרי: Reverse Lunge דמבל אחד בחזה 2×8-10 לרגל, מתחילים ימין. 10 בכל הסטים = עולים 2.5. ב-17.5 (הכי כבד בבוקס) עולים בטמפו: 3 שניות ירידה.',
+     en:'In the squat rests: Dead Bug 2×8/side + Band Pull-apart 2×15. After: front-rack single-DB Reverse Lunge 2×8-10/leg, right first. 10 on every set = +2.5. At 17.5 (heaviest DB) progress with tempo: 3s down.'},
+  B:{loads:[],
+     he:'במנוחות הפרס: Prone Y-Raise 2×10 קל. אחרי: Face Pull בגומייה 3×15 · eccentric wrist extension 2×15 (רהאב מרפק).',
+     en:'In the press rests: light Prone Y-Raise 2×10. After: band Face Pull 3×15 · eccentric wrist extension 2×15 (elbow rehab).'},
+  D:{loads:[{name:'Single-Arm DB Row',scheme:'2×10-12 לצד',sets:2,reps:12,start:12.5,inc:2.5,equip:'db',floorW:12.5,max:17.5}],
+     he:'במנוחות הדדליפט: Side Plank 2×25 שנ׳ לצד. אחרי: Single-Arm DB Row אחיזה ניטרלית 2×10-12 לצד, מתחילים ימין · Bird Dog 2×8 לצד. 12 בכל הסטים = עולים 2.5. ב-17.5: עצירה של שנייה למעלה.',
+     en:'In the deadlift rests: Side Plank 2×25s/side. After: neutral-grip Single-Arm DB Row 2×10-12/side, right first · Bird Dog 2×8/side. 12 on every set = +2.5. At 17.5: 1s pause at the top.'},
+  C:{loads:[{name:'Bent-over Row',scheme:'3×10-12 ניטרלי',sets:3,reps:12,start:12.5,inc:2.5,equip:'db',each:true,floorW:12.5,max:17.5}],
+     he:'במנוחות הבנץ׳: Bent-over Row דמבלים אחיזה ניטרלית 3×10-12. אחרי: Rear Delt Fly דמבל קל 2×12 · Pallof Press 2×10 לצד · eccentric wrist extension 2×15. 12 בכל הסטים = עולים 2.5. ב-17.5: 3 שניות ירידה.',
+     en:'In the bench rests: neutral-grip DB Bent-over Row 3×10-12. After: light Rear Delt Fly 2×12 · Pallof Press 2×10/side · eccentric wrist extension 2×15. 12 on every set = +2.5. At 17.5: 3s lowering.'},
+};
+['A','B','C','D'].forEach(k=>{
+  WORKOUTS[k].accLoads = C4_ACC[k].loads;
+  WORKOUTS[k].stages = WORKOUTS[k].stages.map(s=>s.tag==='ACC' ? {tag:'ACC', t:7, title:B('עזר + יציבה','accessory + posture'), d:B(C4_ACC[k].he, C4_ACC[k].en)} : s);
+});
+/* week 1 A metcon as briefed (cffb-04-brief.md): 40/20 ×8, shuttles / 14 kg KB swing */
+WORKOUTS.A.wodWeeks[1] = {tag:'WOD', t:8, title:B('מטקון · 40/20 ×8','Metcon · 40/20 ×8'), d:B('סירוגין: שאטל 20 מ׳ הלוך-חזור / KB Swing 14 ק״ג. עבודה 40, מנוחה 20. בונוס: אין זמן? מדלגים, האימון נספר.','Alternate: 20 m shuttle / 14 kg KB Swing. 40s on, 20s off. Bonus: no time? Skip it, the session still counts.'),
+  timer:{mode:'interval', label:'40/20 ×8', rounds:8, phases:[{label:B('עבודה','WORK'),sec:40,work:1},{label:B('מנוחה','REST'),sec:20,work:0}], cycle:['Shuttle 20m','KB Swing']}};
+
 /* CFFB-03 days (Mosh, 12.9): Sun A legs · Mon B overhead · Wed C bench · Fri D hinge · Sat X bonus.
    Every main lift gets its own day. Wed (C) is the flex valve: it drops first and the week still counts.
    Holiday moves (Yom Kippur, Sukkot) live in SPECIAL, keyed by date. */
-const BYDOW = {0:'A',1:'B',2:'REST',3:'C',4:'REST',5:'D',6:'X'};
+/* CFFB-04 (Mosh, 10.10): Sun A · Mon B · Wed D · Fri C · Sat X. D moved off Friday
+   because both missed D's were Fridays (sleep debt piles up by the weekend); C (bench)
+   is now the valve. Tuesday evening course + short night = D slides to Thursday. */
+const BYDOW = {0:'A',1:'B',2:'REST',3:'D',4:'REST',5:'C',6:'X'};
 
 /* CFFB-03 (Marcus, 12.9): 67.8 kg, 25.2% BF, waist 91. Target is waist 79 by
    30.1.2027, which is 0.35 kg of fat a week, which is a ~400 kcal daily deficit
@@ -606,8 +664,12 @@ function suggestFor(def, beforeDate){
   if(!hist.length) return {w:roundLoad(def.start,def.equip), why:'first'};
   const last=hist[0], top=recTopWeight(last);
   if(def.sticky || def.inc==null) return {w:top, why:'stick', prev:top};
-  if(recHitTarget(last, def)) return {w:roundLoad(top+def.inc,def.equip), why:'up', prev:top};
-  return {w:top, why:'same', prev:top};
+  /* CFFB-04 (10.10): accessory loads never drop below the real starting dumbbell
+     (the "11" on the row was 10 logged + inc 1) and never pass the heaviest DB in
+     the box (17.5). At the cap the weight stays and the card says: tempo/pause. */
+  const fit = w => Math.min(def.max||Infinity, Math.max(def.floorW||0, w));
+  if(recHitTarget(last, def)) return {w:fit(roundLoad(top+def.inc,def.equip)), why:'up', prev:top};
+  return {w:fit(top), why:'same', prev:top};
 }
 function findDef(p, name){
   return [].concat(p.lifts||[], p.accLoads||[], p.wodLoads||[]).find(d=>d.name===name) || null;
@@ -867,7 +929,7 @@ function blockWeek(d){
   const s = new Date(BLOCK_START.getFullYear(), BLOCK_START.getMonth(), BLOCK_START.getDate());
   const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const days = Math.round((x - s) / 86400000); if(days<0) return 1;
-  return Math.min(4, Math.floor(days/7)+1);
+  return Math.min(8, Math.floor(days/7)+1);   /* CFFB-04 is 8 weeks */
 }
 function planFor(d){
   const k = todayKey(d);
@@ -1104,13 +1166,13 @@ const app = document.getElementById('view');
 let activeTab = 'today';
 let selectedDate = new Date(); // which day the workout player shows
 let musicOpen = false;         // session-level: keep the player open across tab switches
-const BLOCK_START = new Date('2026-09-13T12:00:00');
-const BLOCK_END   = new Date('2026-10-10T12:00:00');
+const BLOCK_START = new Date('2026-10-11T12:00:00');
+const BLOCK_END   = new Date('2026-12-05T12:00:00');
 /* 12.9.2026: the plan data was already CFFB-03 but every headline still printed
    "CFFB-02" (and the calendar sub-line "CFFB-01"), so a brand new block looked
    like the old one on the phone. One constant now, used wherever a block name
    is shown. Change it here when the block changes, nowhere else. */
-const BLOCK_CODE  = 'CFFB-03';
+const BLOCK_CODE  = 'CFFB-04';
 function daysUntilBlock(from){
   const n = from || new Date();
   const a = new Date(n.getFullYear(), n.getMonth(), n.getDate());
