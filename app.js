@@ -413,7 +413,7 @@ const r25 = w => Math.round(w/2.5)*2.5;
 /* setup card gear for CFFB-04 (KB 14, accessory DBs 12.5-17.5). SET_GEAR above is CFFB-03's (KB 12, DB 7). */
 const C4_GEAR = {
   A:{he:'מוט+צלחות, דמבל ללאנג׳ (12.5 ומעלה), קטלבל 14, גומייה, חבל, מזרן, מסלול שאטל 20 מ׳.', en:'Bar + plates, lunge DB (12.5 and up), 14 kg KB, band, rope, mat, a 20 m shuttle lane.'},
-  B:{he:'מוט+צלחות, מתח, גומייה, דמבלים למטקון (10, אין? 7), קטלבל 14, חבל, מזרן.', en:'Bar + plates, pull-up bar, band, metcon DBs (10s, or 7s), 14 kg KB, rope, mat.'},
+  B:{he:'מוט+צלחות, מתח, גומייה, דמבלים למטקון (10, בשבועות המבחן 4 ו-8: 8), קטלבל 14, חבל, מזרן.', en:'Bar + plates, pull-up bar, band, metcon DBs (10s, test weeks 4 and 8: 8s), 14 kg KB, rope, mat.'},
   C:{he:'מוט, ספסל, צלחות בקפיצות של 2.5, עמודי ביטחון בגובה החזה, זוג דמבלים לחתירה (12.5 ומעלה), דמבל קל, גומייה, קטלבל 14, מזרן.', en:'Bar, bench, plates in 2.5 kg steps, safety pins at chest height, a pair of row DBs (12.5 and up), a light DB, band, 14 kg KB, mat.'},
   D:{he:'מוט+צלחות (בלי straps, אחיזה כפולה עליונה), דמבל לחתירה (12.5 ומעלה), קטלבל 14, מזרן, מסלול שאטל.', en:'Bar + plates (no straps, double overhand), row DB (12.5 and up), 14 kg KB, mat, shuttle lane.'},
 };
@@ -491,11 +491,11 @@ Object.assign(WORKOUTS.A.wodWeeks, {
     {mode:'interval', label:'40/20 ×8', rounds:8, phases:ivl(40,20), cycle:['Shuttle 20m','KB Swing']}),
 });
 Object.assign(WORKOUTS.B.wodWeeks, {
-  2: wod(9,'AMRAP 9','AMRAP 9','8 DB Push Press 10 ק״ג (אין 10? 7) · 10 Sit-up · שאטל 20 מ׳ הלוך-חזור. קצב אחיד, בלי ספרינט בסבב הראשון.','8 DB Push Press at 10 kg (no 10s? 7) · 10 Sit-ups · one 20 m shuttle out and back. Even pace, no first-round sprint.',
+  2: wod(9,'AMRAP 9','AMRAP 9','8 DB Push Press 10 ק״ג · 10 Sit-up · שאטל 20 מ׳ הלוך-חזור. קצב אחיד, בלי ספרינט בסבב הראשון.','8 DB Push Press at 10 kg · 10 Sit-ups · one 20 m shuttle out and back. Even pace, no first-round sprint.',
     {mode:'amrap', label:'AMRAP 9', sec:540}),
   3: wod(9,'AMRAP 9','AMRAP 9','10 KB Swing 14 · 6 Push-up על ידיות דמבל או אגרופים · 20 קפיצות חבל.','10 KB Swings 14 kg · 6 Push-ups on DB handles or fists · 20 rope skips.',
     {mode:'amrap', label:'AMRAP 9', sec:540}),
-  4: wod(9,'AMRAP 8 · המבחן שנפל','AMRAP 8 · the missed test','המבחן של CFFB-03 שלא רץ ב-9.10: 25 קפיצות חבל (או 2 שאטלים של 20 מ׳) + 10 DB Push Press 7 ק״ג. קל במשקל, זה מה שמותר בשבוע קל. להשוות לתוצאה הראשונה על הלוח.','The CFFB-03 test that did not run on 9.10: 25 rope skips (or 2×20 m shuttles) + 10 DB Push Press at 7 kg. Light load, fits the light week. Compare to the first score on the board.',
+  4: wod(9,'AMRAP 8 · המבחן שנפל','AMRAP 8 · the missed test','המבחן של CFFB-03 שלא רץ ב-9.10: 25 קפיצות חבל (או 2 שאטלים של 20 מ׳) + 10 DB Push Press 8 ק״ג. אין 7 בבוקס, 8 הוא הכי קרוב לבייסליין: להשוות לתוצאה הראשונה על הלוח ולרשום ״8 במקום 7״. קל במשקל, זה מה שמותר בשבוע קל.','The CFFB-03 test that did not run on 9.10: 25 rope skips (or 2×20 m shuttles) + 10 DB Push Press at 8 kg. No 7s in the box, 8 is closest to the baseline: compare to the first score on the board and note "8 instead of 7". Light load, fits the light week.',
     {mode:'amrap', label:'AMRAP 8', sec:480}),
   5: wod(9,'AMRAP 9','AMRAP 9','5 Burpee step-out (בלי קפיצה, ידיים על ידיות או אגרופים) · 8 DB Push Press 10 ק״ג · 2 שאטלים של 20 מ׳.','5 step-out Burpees (no jump, hands on DB handles or fists) · 8 DB Push Press at 10 kg · 2×20 m shuttles.',
     {mode:'amrap', label:'AMRAP 9', sec:540}),
@@ -503,7 +503,7 @@ Object.assign(WORKOUTS.B.wodWeeks, {
     {mode:'amrap', label:'AMRAP 9', sec:540}),
   7: wod(9,'AMRAP 9','AMRAP 9','12 KB Swing 14 · 8 Push-up על ידיות או אגרופים · שאטל 20 מ׳ · 10 V-up (אין V-up נקי? Sit-up).','12 KB Swings 14 kg · 8 Push-ups on handles or fists · one 20 m shuttle · 10 V-ups (no clean V-up? Sit-ups).',
     {mode:'amrap', label:'AMRAP 9', sec:540}),
-  8: wod(9,'AMRAP 8 · מבחן','AMRAP 8 · test','אותו מבחן של שבוע 4: 25 קפיצות חבל (או 2 שאטלים) + 10 DB Push Press 7 ק״ג. יעד: לעבור את שבוע 4. מבחן הפולאפים כבר נעשה בתחילת האימון, המטקון אחרון. לילה שבור = בלי מבחן.','Same test as week 4: 25 rope skips (or 2 shuttles) + 10 DB Push Press at 7 kg. Target: beat week 4. The pull-up test already ran at the start, the metcon is last. Broken night = no test.',
+  8: wod(9,'AMRAP 8 · מבחן','AMRAP 8 · test','אותו מבחן של שבוע 4: 25 קפיצות חבל (או 2 שאטלים) + 10 DB Push Press 8 ק״ג, אותו משקל כמו שבוע 4. יעד: לעבור את שבוע 4. מבחן הפולאפים כבר נעשה בתחילת האימון, המטקון אחרון. לילה שבור = בלי מבחן.','Same test as week 4: 25 rope skips (or 2 shuttles) + 10 DB Push Press at 8 kg, same load as week 4. Target: beat week 4. The pull-up test already ran at the start, the metcon is last. Broken night = no test.',
     {mode:'amrap', label:'AMRAP 8', sec:480}),
 });
 Object.assign(WORKOUTS.C.wodWeeks, {
