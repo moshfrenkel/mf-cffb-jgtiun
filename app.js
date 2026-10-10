@@ -732,6 +732,23 @@ const DB = {
   set(k, v){ localStorage.setItem('mf_'+k, JSON.stringify(v)); if(window.MFSync) window.MFSync.push(k, v); },
 };
 
+/* 10.10 (ADAM, Mosh): in CFFB-02 the B card was labelled "Strict Press" while Mosh
+   benched (training log 25.8: Bench 40x5 "logged as Strict Press by mistake"), so the
+   PR exchange showed Strict Press 40x5. No strict press was done before CFFB-03
+   (first one 14.9), so any "Strict Press" row before 13.9 is really a bench row.
+   Runs every boot (cheap, idempotent) so a restore from an old backup is fixed too. */
+function fixMislabelledPress(){
+  const log = DB.get('liftlog',[]); let changed=false;
+  const out = log.filter(x=>{
+    if(x.lift!=='Strict Press' || !(x.date<'2026-09-13')) return true;
+    changed=true;
+    if(log.some(y=>y.date===x.date && y.lift==='Bench Press')) return false; // bench already logged that day
+    x.lift='Bench Press'; return true;
+  });
+  if(changed) DB.set('liftlog', out);
+}
+try{ fixMislabelledPress(); }catch(e){ console.warn('[press-fix] failed', e); }
+
 /* ---------------- BACKUP / RESTORE (portable, URL-agnostic) ----------------
    Everything is in localStorage under the mf_ prefix. This dumps/loads all of
    it as one text blob so data survives a device switch or a move to a new URL. */
