@@ -404,12 +404,19 @@ const SET_GEAR = {
    floor = the real starting DB (12.5), cap = the heaviest DB in the box (17.5). */
 const C4 = {
   A:{1:35,  2:37.5, 3:40,   4:35,   5:40,   6:42.5, 7:45,   8:47.5},
-  B:{1:30,  2:30,   3:32.5, 4:30,   5:32.5, 6:32.5, 7:35,   8:35},
+  B:{1:30,  2:30,   3:30,   4:30,   5:32.5, 6:32.5, 7:35,   8:35},   /* week 3 stays 30: week 2 closed 24, not 25 (19.10) */
   C:{1:47.5,2:47.5, 3:50,   4:45,   5:50,   6:50,   7:52.5, 8:52.5},
   D:{1:70,  2:72.5, 3:75,   4:67.5, 5:75,   6:77.5, 7:80,   8:82.5},
 };
 const C4_PULLUP = {1:'3×4',2:'3×5',3:'3×5-6',4:'2×3 קל',5:'4×4',6:'4×5',7:'4×5-6',8:'מבחן: סט אחד מקסימום נקי, טרי, לפני הכוח'};
 const r25 = w => Math.round(w/2.5)*2.5;
+/* week 3 (1.11-7.11 after the swap) stop rules from block-cffb-04.md, 22-28.10 */
+const C4_W3 = {
+  A:{he:'14 יום בלי סקוואט: סט 1 ב-RPE 8.5 ומעלה = שאר הסטים ב-37.5. ', en:'14 days without squats: set 1 at RPE 8.5+ = the rest at 37.5. '},
+  B:{he:'מטרה 25. מנוחה של 3 דק׳ עם טיימר לפני סט 5. שוב 24? בסט 5 אחרי החזרה הרביעית 15 שנ׳ בעמידה ואז החמישית. ', en:'Target 25. 3 min rest on a timer before set 5. 24 again? In set 5, after rep 4 stand 15s, then rep 5. '},
+  C:{he:'סט 1 ב-3 חזרות או פחות = שאר הסטים ב-47.5. ', en:'Set 1 at 3 reps or fewer = the rest at 47.5. '},
+  D:{he:'שעון: סט כל 2:30. סט 3 ב-RPE 8.5 ומעלה = 3:00 לאחרונים. סט 1 ב-8.5+, ירכיים ראשונות או אחיזה מחליקה = עצירה ב-72.5. ', en:'Clock: a set every 2:30. Set 3 at RPE 8.5+ = 3:00 for the rest. Set 1 at 8.5+, hips first or grip slipping = stay at 72.5. '},
+};
 /* setup card gear for CFFB-04 (KB 14, accessory DBs 12.5-17.5). SET_GEAR above is CFFB-03's (KB 12, DB 7). */
 const C4_GEAR = {
   A:{he:'מוט+צלחות, דמבל ללאנג׳ (12.5 ומעלה), קטלבל 14, גומייה, חבל, מזרן, מסלול שאטל 20 מ׳.', en:'Bar + plates, lunge DB (12.5 and up), 14 kg KB, band, rope, mat, a 20 m shuttle lane.'},
@@ -427,7 +434,8 @@ const C4_GEAR = {
     const tag = wk===4 ? B(' · שבוע קל',' · light week') : wk===8 ? B(' · מבחן',' · test') : B('','');
     const extra = wk===4 ? B('3 סטים בלבד, נשאר כוח בקנה. ',' Only 3 sets, leave plenty in the tank. ')
                 : wk===8 ? B('סט אחרון: כמה חזרות נקיות שיש (לא כישלון). זה המספר שסוגר את הבלוק. ',' Last set: as many clean reps as there are (not to failure). This number closes the block. ')
-                : (k==='D' && wk===1) ? B('שני סטים ראשונים ב-70; זזים מהר? שלושה אחרונים ב-72.5. ',' First two sets at 70; moving fast? last three at 72.5. ') : B('','');
+                : (k==='D' && wk===1) ? B('שני סטים ראשונים ב-70; זזים מהר? שלושה אחרונים ב-72.5. ',' First two sets at 70; moving fast? last three at 72.5. ')
+                : wk===3 ? C4_W3[k] : B('','');
     const pu = k==='B' ? B(` ואז Strict Pull-up ${C4_PULLUP[wk]}, עצירה מלאה למטה, בלי קיפינג. אות מהמרפק = הפולאפים יוצאים.`,
                            ` Then Strict Pull-up ${C4_PULLUP[wk]}, dead stop at the bottom, no kipping. Elbow signal = pull-ups out.`) : B('','');
     WORKOUTS[k].strWeeks[wk] = {tag:'STR', t:15, title:B('כוח'+tag.he,'strength'+tag.en),
@@ -598,7 +606,8 @@ const X4_WOD = {
   X.equip = [{t:'kb',lift:'KB Swing'},{t:'band'},{t:'db',note:B('דמבל קל ל-Y ו-Rear Delt','light DB for Y-raises and rear delts')},{t:'rope'},{t:'mat'}];
   X.setWeeks = {}; X.accWeeks = {}; X.wodWeeks = {};
   for(let wk=1; wk<=8; wk++){
-    const m = (wk===4 || wk===8) ? X4_SET.m : {he:'', en:''};
+    /* 24.10: weeks 3/4 swapped, so plan week 3 now lands on Saturday 7.11 = measurement day */
+    const m = (wk===3 || wk===8) ? X4_SET.m : {he:'', en:''};
     X.setWeeks[wk] = {tag:'SET', t:3, title:B('הכנה','setup'), d:B(m.he + X4_SET.base, m.en + X4_SET.en)};
     X.accWeeks[wk] = {tag:'ACC', t:12, title:B('בונוס · כתף אחורית + ליבה','bonus · rear delt + core'), d:B(X4_BONUS[wk][0] + ' רק אם עשית 2 מטקונים השבוע.', X4_BONUS[wk][1] + ' Only if you did 2 metcons this week.')};
     X.wodWeeks[wk] = X4_WOD[wk];
@@ -1101,7 +1110,10 @@ function blockWeek(d){
   const s = new Date(BLOCK_START.getFullYear(), BLOCK_START.getMonth(), BLOCK_START.getDate());
   const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const days = Math.round((x - s) / 86400000); if(days<0) return 1;
-  return Math.min(8, Math.floor(days/7)+1);   /* CFFB-04 is 8 weeks */
+  const wk = Math.min(8, Math.floor(days/7)+1);   /* CFFB-04 is 8 weeks */
+  /* 24.10 (Mosh, Eilat 27-30.10): weeks 3 and 4 swapped. The light week runs
+     25.10-31.10, build week 3 runs 1.11-7.11, end date stays 5.12. */
+  return ({3:4, 4:3})[wk] || wk;
 }
 function planFor(d){
   const k = todayKey(d);
