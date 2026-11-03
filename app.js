@@ -1802,10 +1802,20 @@ function liftBlock(p, def, dKey){
     setsBox.innerHTML = '';
     const cur = (liftGet(dKey, def.name)||{}).sets || [];
     const n = Math.max(def.sets||3, cur.length);
-    for(let k=0;k<n;k++) addSetRow(k, cur[k] || ((qw.value||qr.value) ? {w:qw.value, r:qr.value} : {}));
+    /* 3.11 (Marcus, Mosh): rows not typed yet are filled from the "all sets" line, but
+       used to be filled on screen only. Storage kept the typed rows, so the card showed
+       5×(30×5) and the log sent 3 sets (same story as D 22.10: shown 5, sent 4).
+       Rule: what is on the screen is what is stored. A filled-in row is saved at once. */
+    let filled = false;
+    for(let k=0;k<n;k++){
+      if(cur[k]) addSetRow(k, cur[k]);
+      else if(qw.value||qr.value){ addSetRow(k, {w:qw.value, r:qr.value}); filled = true; }
+      else addSetRow(k, {});
+    }
     const add = el('button','detbtn addset', t('addSet'));
     add.onclick = ()=>addSetRow(setsBox.querySelectorAll('.setrow').length, {});
     setsBox.appendChild(add);
+    if(filled) save();
   };
   const paintDet = ()=>{
     det.textContent = open ? t('hideDetail') : t('detailSets');
