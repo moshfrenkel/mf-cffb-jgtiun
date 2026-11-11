@@ -46,15 +46,23 @@ const today=new Date(); today.setHours(0,0,0,0);
 const wk=Math.min(3,Math.max(1,Math.floor((today-START)/864e5/7)+1));
 const dow=today.getDay(), D=DAYS[dow], app=document.getElementById('app');
 function beep(f,d){try{AC=window.AC||new AudioContext();window.AC=AC;const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(.35,AC.currentTime);g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);o.start();o.stop(AC.currentTime+d+.05)}catch(e){}}
+/* קריינות: קודם קובץ קול מוקלט (audio/0820/<id>.mp3, לקול של מרקוס), ואם אין, הקול העברי של הטלפון */
+let HEV;
+function tts(t){ if(!('speechSynthesis' in window))return; if(HEV===undefined){const vs=speechSynthesis.getVoices();HEV=vs.find(v=>/^he/i.test(v.lang))||null;}
+ try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);if(HEV)u.voice=HEV;u.lang='he-IL';u.rate=1.05;speechSynthesis.speak(u);}catch(e){} }
+if('speechSynthesis' in window) speechSynthesis.onvoiceschanged=()=>{HEV=undefined};
+function say(t,id){ if(!id){tts(t);return;} const a=new Audio('audio/0820/'+id+'.mp3'); a.onerror=()=>tts(t); a.play().catch(()=>tts(t)); }
+let WL=null; async function wake(on){ try{ if(on&&'wakeLock' in navigator&&!WL){WL=await navigator.wakeLock.request('screen');WL.onrelease=()=>{WL=null};} if(!on&&WL){WL.release();WL=null;} }catch(e){} }
+const localKey=d=>`${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
 if(!D){ app.innerHTML=`<div class="dname">שבת</div><div class="rest">אין אימון היום. מחר, כשהדלת נסגרת, מנוע.</div>`; }
 else {
  const lines=D.l(wk);
  const segs=[...WARM.map(([n,s])=>({t:'חימום',n,s}))];
  if(D.emom){ for(let m=0;m<10;m++) segs.push({t:`עבודה · דקה ${m+1}/10`,n:lines[m%lines.length],s:60}); }
- else if(dow===3){ for(let r=0;r<5;r++) segs.push({t:`עבודה · סבב ${r+1}/5`,n:lines.join(' ← '),s:120}); }
+ else if(dow===3){ const rope=wk>1?45:40; for(let r=0;r<5;r++){ segs.push({t:`עבודה · סבב ${r+1}/5`,n:lines[0],s:rope}); segs.push({t:`עבודה · סבב ${r+1}/5`,n:lines[1]+', ואז פלאטר קיקס עד הצפצוף',s:120-rope}); } }
  else segs.push({t:'עבודה · 10 דקות רצוף',n:lines.join(' ← '),s:600});
  COOL.forEach(([n,s])=>segs.push({t:'שחרור',n,s}));
- const key='ch0820-'+today.toISOString().slice(0,10);
+ const key='ch0820-'+localKey(today);
  const done=localStorage.getItem(key);
  app.innerHTML=`<div class="dname">${D.n}</div><div class="fmt">${D.f}</div>
   <ul>${lines.map(x=>`<li>${x}</li>`).join('')}</ul>
@@ -63,16 +71,33 @@ else {
   <button id="go">${done?'בוצע היום. עוד פעם?':'התחל'}</button>
   ${D.test?`<button class="sec" id="score">רשום סבבים</button>`:''}
   <div class="note">אות קטן מהמרפק בסווינג או בחתירה: מחליפים לגשר ירכיים רגל אחת, באותו רגע.<br>${D.test?'מבחן קודם: '+(localStorage.getItem('ch0820-score')||'עוד אין'):''}</div>`;
- let i=-1,left=0,iv=null;
+ /* שעון לפי זמן אמת (לא נסחף כשהמסך נכבה), קריינות בכל מעבר */
+ let i=-1,left=0,iv=null,segEnd=0,spoke={};
  const total=()=>segs.slice(i).reduce((a,s,k)=>a+(k?s.s:left),0);
  const fmt=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
- function next(){ i++; if(i>=segs.length){clearInterval(iv);iv=null;beep(660,.6);localStorage.setItem(key,'1');
-   document.getElementById('phase').textContent='נגמר';document.getElementById('now').textContent='15 דקות. מקלחת וקפה, יש לך עד 09:00.';document.getElementById('clock').textContent='0:00';document.getElementById('go').textContent='בוצע';return;}
-   left=segs[i].s; beep(segs[i].t.startsWith('עבודה')?990:770,.25); draw(); }
+ const isWork=s=>s.t.startsWith('עבודה');
+ function cue(){ const s=segs[i], p=segs[i-1];
+   if(i===0) return say(`בוא נתחיל. שלוש דקות חימום. ${s.n}`,'start');
+   if(isWork(s)&&(!p||!isWork(p))) return say(`עשר דקות עבודה. ${D.n}. ${s.n}`,'work');
+   if(!isWork(s)&&p&&isWork(p)) return say(`סיימת את העבודה. שתי דקות שחרור. ${s.n}`,'cool');
+   say(s.n); }
+ function finish(){ clearInterval(iv);iv=null;wake(false);beep(660,.6);localStorage.setItem(key,'1');
+   say(D.test?'חמש עשרה דקות. רשום את הסבבים, ולמקלחת.':'חמש עשרה דקות. זהו. מקלחת וקפה, יש לך עד תשע.','done');
+   document.getElementById('phase').textContent='נגמר';document.getElementById('now').textContent='15 דקות. מקלחת וקפה, יש לך עד 09:00.';document.getElementById('clock').textContent='0:00';document.getElementById('go').textContent='בוצע'; }
+ function next(){ i++; if(i>=segs.length) return finish(); left=segs[i].s; segEnd=Date.now()+left*1000; spoke={};
+   beep(isWork(segs[i])?990:770,.25); cue(); draw(); }
  function draw(){ document.getElementById('phase').textContent=segs[i].t; document.getElementById('now').textContent=segs[i].n; document.getElementById('clock').textContent=fmt(total()); }
- document.getElementById('go').onclick=()=>{ if(iv){clearInterval(iv);iv=null;document.getElementById('go').textContent='המשך';return;}
-   if(i<0||i>=segs.length){i=-1;next();} document.getElementById('go').textContent='עצור רגע';
-   iv=setInterval(()=>{left--; if(left<=3&&left>0)beep(520,.1); if(left<=0)next(); else draw();},1000); };
+ function tick(){ while(iv&&Date.now()>=segEnd){ next(); if(!iv) return; }
+   left=Math.ceil((segEnd-Date.now())/1000);
+   if(left<=3&&left>0&&!spoke[left]){spoke[left]=1;beep(520,.1);}
+   if(segs[i].s===600){ if(left===300&&!spoke.h){spoke.h=1;say('חצי. חמש דקות נשארו.','half');} if(left===60&&!spoke.m){spoke.m=1;say('דקה אחרונה. תן הכל.','last');} }
+   draw(); }
+ document.getElementById('go').onclick=()=>{ if(iv){clearInterval(iv);iv=null;wake(false);document.getElementById('go').textContent='המשך';return;}
+   try{AC=window.AC||new (window.AudioContext||window.webkitAudioContext)();window.AC=AC;if(AC.state==='suspended')AC.resume();}catch(e){}
+   wake(true); document.getElementById('go').textContent='עצור רגע';
+   if(i<0||i>=segs.length){i=-1;iv=1;next();} else segEnd=Date.now()+left*1000;
+   iv=setInterval(tick,250); };
+ document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='visible'&&iv){wake(true);tick();} });
  const sc=document.getElementById('score'); if(sc) sc.onclick=()=>{const v=prompt('כמה סבבים (ועוד כמה חזרות)?'); if(v){localStorage.setItem('ch0820-score',today.toLocaleDateString('he-IL')+': '+v); location.reload();}};
 }
 </script>
