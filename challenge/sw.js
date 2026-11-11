@@ -1,6 +1,6 @@
 /* challenge-30 service worker — cache-first shell so the app opens offline */
-const CACHE = 'ch30-v6';
-const SHELL = ['./', './index.html', './state.js', './manifest.webmanifest'];
+const CACHE = 'ch30-v7';
+const SHELL = ['./', './index.html', './0820.html', './state.js', './manifest.webmanifest'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).then(() => self.skipWaiting()));
@@ -10,6 +10,14 @@ self.addEventListener('activate', e => {
 });
 self.addEventListener('fetch', e => {
   if (e.request.method !== 'GET') return;
+  /* pages: network first, so a new version reaches the phone on the next open; cache only offline */
+  if (e.request.mode === 'navigate') {
+    e.respondWith(fetch(e.request).then(res => {
+      if (res.ok) { const cp = res.clone(); caches.open(CACHE).then(c => c.put(e.request, cp)); }
+      return res;
+    }).catch(() => caches.match(e.request).then(hit => hit || caches.match('./index.html'))));
+    return;
+  }
   e.respondWith(
     caches.match(e.request).then(hit => hit || fetch(e.request).then(res => {
       if (res.ok && e.request.url.startsWith(self.location.origin)) {
