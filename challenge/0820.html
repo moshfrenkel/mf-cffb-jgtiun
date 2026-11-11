@@ -1,0 +1,80 @@
+<!doctype html>
+<html dir="rtl" lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>08:20</title>
+<link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#f6f1e7;--ink:#1d1b18;--tq:#1f8f88;--or:#e08a45;--mute:#7a7266}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--paper);color:var(--ink);font-family:Heebo,sans-serif;min-height:100vh;padding:22px 20px 40px}
+h1{font-family:'Secular One';font-size:64px;line-height:.9;color:var(--tq);transform:rotate(-2deg);margin:6px 0 4px}
+.sub{color:var(--mute);font-size:15px;margin-bottom:22px}
+.dname{font-family:'Secular One';font-size:30px;margin-bottom:4px}
+.fmt{color:var(--or);font-weight:700;font-size:18px;margin-bottom:12px}
+ul{list-style:none;margin-bottom:18px}
+li{font-size:19px;padding:9px 0;border-bottom:1px dashed #1d1b1822}
+.phase{font-size:16px;color:var(--mute);margin-top:18px}
+#clock{font-family:'Secular One';font-size:96px;line-height:1;margin:6px 0;color:var(--ink)}
+#now{font-size:22px;font-weight:700;min-height:30px;color:var(--tq)}
+button{font-family:'Secular One';font-size:24px;border:0;background:var(--tq);color:#fff;padding:16px 26px;border-radius:6px;margin-top:18px;width:100%}
+button.sec{background:transparent;color:var(--ink);border:2px solid var(--ink);font-size:18px;padding:10px}
+.wk{font-size:14px;color:var(--mute);margin-top:6px}
+.rest{font-size:22px;line-height:1.5}
+.note{font-size:14px;color:var(--mute);margin-top:16px;line-height:1.5}
+</style>
+</head>
+<body>
+<h1>08:20</h1>
+<div class="sub">הדלת נסגרה. נעליים נשארות. לפינה.</div>
+<div id="app"></div>
+<script>
+/* קופסת 08:20 · מרקוס · 3 שבועות מ-12.11.2026 · יום בשבוע קובע את האימון */
+const START=new Date(2026,10,12);
+const DAYS={
+ 0:{n:'מנוע',f:'EMOM 10 · דקה אי-זוגית / דקה זוגית',l:w=>[`${15+2*(w>1)} סווינג ${w>2?'יד אחת, קטלבל 8 (מחליפים יד כל דקה)':'קטלבל 12'}`,`${8+(w>1)} ברפי`],emom:true},
+ 1:{n:'רגליים',f:'AMRAP 10 · כמה שיותר סבבים',l:w=>[`${10+2*(w>1)} גובלט סקוואט, קטלבל 12`,w>2?'10 לאנג׳ קפיצה (5 לרגל)':`${10+2*(w>1)} לאנג׳ אחורי עם 2 דמבלס`,'30 קפיצות חבל']},
+ 2:{n:'עליון',f:'EMOM 10 · תחנה אחת בכל דקה, בסבב',l:w=>[`${10+2*(w>1)} שכיבות סמיכה${w>2?' טמפו, 3 שניות ירידה':''}`,`${10+2*(w>1)} חתירת דמבל לכל יד`,`${8+2*(w>1)} פוש-פרס 2 דמבלס`],emom:true},
+ 3:{n:'צבאי',f:'5 סבבים של 2 דקות',l:w=>[`${w>1?45:40} שנ׳ חבל`,'10 ברפי-בודיבילדר (8 ספירות)','מה שנשאר מהשתי דקות: פלאטר קיקס']},
+ 4:{n:'שרשרת אחורית',f:'AMRAP 10 · כמה שיותר סבבים',l:w=>[`${12+2*(w>1)} סווינג ${w>2?'יד אחת, קטלבל 8 (חצי לכל יד)':'קטלבל 12'}`,`${8+2*(w>1)} דדליפט רגל אחת עם דמבל, לכל רגל`,'20 שנ׳ פלאנק צד לכל צד']},
+ 5:{n:'המבחן',f:'AMRAP 10 · רושמים סבבים, אותו מבחן כל שבוע',l:()=>['5 ת׳ראסטר 2 דמבלס','10 שכיבות סמיכה','15 סקוואט אוויר'],test:true}
+};
+const WARM=[['חבל קל',30],['חתול-פרה',30],['חבל',30],['10 סקוואט אוויר + 5 אינצ׳וורם',60],['חבל מהיר',30]];
+const COOL=[['כדור טניס, כף רגל ימין',30],['כדור טניס, כף רגל שמאל',30],['כדור טניס, ישבן ימין',30],['כדור טניס, ישבן שמאל',30]];
+const today=new Date(); today.setHours(0,0,0,0);
+const wk=Math.min(3,Math.max(1,Math.floor((today-START)/864e5/7)+1));
+const dow=today.getDay(), D=DAYS[dow], app=document.getElementById('app');
+function beep(f,d){try{AC=window.AC||new AudioContext();window.AC=AC;const o=AC.createOscillator(),g=AC.createGain();o.frequency.value=f;o.connect(g);g.connect(AC.destination);g.gain.setValueAtTime(.35,AC.currentTime);g.gain.exponentialRampToValueAtTime(.0001,AC.currentTime+d);o.start();o.stop(AC.currentTime+d+.05)}catch(e){}}
+if(!D){ app.innerHTML=`<div class="dname">שבת</div><div class="rest">אין אימון היום. מחר, כשהדלת נסגרת, מנוע.</div>`; }
+else {
+ const lines=D.l(wk);
+ const segs=[...WARM.map(([n,s])=>({t:'חימום',n,s}))];
+ if(D.emom){ for(let m=0;m<10;m++) segs.push({t:`עבודה · דקה ${m+1}/10`,n:lines[m%lines.length],s:60}); }
+ else if(dow===3){ for(let r=0;r<5;r++) segs.push({t:`עבודה · סבב ${r+1}/5`,n:lines.join(' ← '),s:120}); }
+ else segs.push({t:'עבודה · 10 דקות רצוף',n:lines.join(' ← '),s:600});
+ COOL.forEach(([n,s])=>segs.push({t:'שחרור',n,s}));
+ const key='ch0820-'+today.toISOString().slice(0,10);
+ const done=localStorage.getItem(key);
+ app.innerHTML=`<div class="dname">${D.n}</div><div class="fmt">${D.f}</div>
+  <ul>${lines.map(x=>`<li>${x}</li>`).join('')}</ul>
+  <div class="wk">שבוע ${wk} מתוך 3 · 3 דק׳ חימום, 10 עבודה, 2 שחרור</div>
+  <div class="phase" id="phase"></div><div id="clock">15:00</div><div id="now"></div>
+  <button id="go">${done?'בוצע היום. עוד פעם?':'התחל'}</button>
+  ${D.test?`<button class="sec" id="score">רשום סבבים</button>`:''}
+  <div class="note">אות קטן מהמרפק בסווינג או בחתירה: מחליפים לגשר ירכיים רגל אחת, באותו רגע.<br>${D.test?'מבחן קודם: '+(localStorage.getItem('ch0820-score')||'עוד אין'):''}</div>`;
+ let i=-1,left=0,iv=null;
+ const total=()=>segs.slice(i).reduce((a,s,k)=>a+(k?s.s:left),0);
+ const fmt=s=>`${Math.floor(s/60)}:${String(s%60).padStart(2,'0')}`;
+ function next(){ i++; if(i>=segs.length){clearInterval(iv);iv=null;beep(660,.6);localStorage.setItem(key,'1');
+   document.getElementById('phase').textContent='נגמר';document.getElementById('now').textContent='15 דקות. מקלחת וקפה, יש לך עד 09:00.';document.getElementById('clock').textContent='0:00';document.getElementById('go').textContent='בוצע';return;}
+   left=segs[i].s; beep(segs[i].t.startsWith('עבודה')?990:770,.25); draw(); }
+ function draw(){ document.getElementById('phase').textContent=segs[i].t; document.getElementById('now').textContent=segs[i].n; document.getElementById('clock').textContent=fmt(total()); }
+ document.getElementById('go').onclick=()=>{ if(iv){clearInterval(iv);iv=null;document.getElementById('go').textContent='המשך';return;}
+   if(i<0||i>=segs.length){i=-1;next();} document.getElementById('go').textContent='עצור רגע';
+   iv=setInterval(()=>{left--; if(left<=3&&left>0)beep(520,.1); if(left<=0)next(); else draw();},1000); };
+ const sc=document.getElementById('score'); if(sc) sc.onclick=()=>{const v=prompt('כמה סבבים (ועוד כמה חזרות)?'); if(v){localStorage.setItem('ch0820-score',today.toLocaleDateString('he-IL')+': '+v); location.reload();}};
+}
+</script>
+</body>
+</html>
