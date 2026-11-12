@@ -1,5 +1,7 @@
 /* challenge-30 service worker — cache-first shell so the app opens offline */
-const CACHE = 'ch30-v7';
+/* the 08:20 narration clips (audio/0820/*.mp3) are not in SHELL on purpose: they are fetched when a session
+   needs them and kept by the runtime cache below, so the first load stays small */
+const CACHE = 'ch30-v9';
 const SHELL = ['./', './index.html', './0820.html', './state.js', './manifest.webmanifest'];
 
 self.addEventListener('install', e => {
