@@ -248,6 +248,11 @@ input{font-family:inherit}
 @media(min-width:520px){ .collide .n30{font-size:170px} }
 
 /* ===== 08:20 box — only what the new program needs on top of the challenge-30 sheet ===== */
+.notebox{margin-top:18px}
+.notebox label{font-size:14px; color:var(--dim); display:block; margin-bottom:8px}
+.notebox textarea{width:100%; box-sizing:border-box; background:transparent; color:inherit; font:inherit; font-size:16px;
+  border:2px dashed var(--tq); border-radius:6px; padding:10px; resize:vertical; line-height:1.5}
+.notebox .backhome{margin-top:10px}
 .collide .n30.clock{font-size:92px; top:-14px; left:4px; -webkit-text-stroke-color:var(--or); direction:ltr}
 .collide .word.w0820{top:30px}
 #nav button[data-v=home]{color:var(--or)}
@@ -294,7 +299,7 @@ input{font-family:inherit}
    source of truth: data/training/box-0820.md
    6 days Sun-Fri, Saturday rest, 6 weeks 12.11-23.12.2026 = 36 sessions.
    weeks 1-3 are the verified base (DAYS). weeks 4-6 are written session by session (PH2).
-   every session: 180s rope warmup + 600s work + 120s tennis-ball release = 15:00. */
+   every session: 180s rope warmup + 30s setup + 600s work + 60s recovery + 120s cooldown = 16:30 (since 22.11; was 15:00). */
 const START_ISO='2026-11-12', END_ISO='2026-12-23', NW=6;
 const pad2=n=>String(n).padStart(2,'0');
 const isoOf=d=>`${d.getFullYear()}-${pad2(d.getMonth()+1)}-${pad2(d.getDate())}`;   /* local date, never UTC */
@@ -358,8 +363,20 @@ const MOVES={
  hollow:{n:'הולו הולד',cue:'גב תחתון מודבק, רגליים וכתפיים באוויר',f:'hollow',v:'הולו הולד'},
  hrpushup:{n:'שכיבות שחרור ידיים',cue:'חזה לרצפה, ידיים מתרוממות, ודוחפים',f:'pushup',v:'שכיבות שחרור ידיים'},
  hplank:{n:'פלאנק זרועות ישרות',cue:'כתפיים מעל כפות הידיים, גוף קו אחד',f:'plank',v:'פלאנק זרועות ישרות'},
- rest:{n:'מנוחה',cue:'לנשום דרך האף, לנער ידיים',f:'rest'}
+ rest:{n:'מנוחה',cue:'לנשום דרך האף, לנער ידיים',f:'rest'},
+ /* cooldown rotation, 22.11 */
+ rollham:{n:'גליל, ירך אחורית',cue:'יושבים, הגליל מתחת לירך, מגלגלים לאט מהברך לישבן',f:'crab'},
+ rollglute:{n:'גליל, ישבן',cue:'יושבים על הגליל, קרסול על הברך השנייה, נוטים לצד',f:'crab'},
+ rollquad:{n:'גליל, ירך קדמית',cue:'על המרפקים, הגליל מתחת לירך, מגלגלים לאט',f:'plank'},
+ rollcalf:{n:'גליל, שוק',cue:'יושבים, הגליל מתחת לשוק, רגל שנייה מעליה להוסיף משקל',f:'crab'},
+ rollback:{n:'גליל לאורך הגב',cue:'שוכבים על הגליל לאורך עמוד השדרה, ידיים פתוחות, נושמים',f:'back'},
+ child:{n:'תנוחת ילד',cue:'ישבן לעקבים, ידיים ארוכות קדימה, מצח למזרן',f:'flow'},
+ thread:{n:'השחלת יד',cue:'בעמידת שש, יד אחת מחליקה מתחת לגוף, כתף למזרן',f:'bear'},
+ hamstr:{n:'מתיחת ירך אחורית בשכיבה',cue:'שוכבים על הגב, רגל ישרה למעלה, ידיים מאחורי הברך',f:'back'},
+ fig4:{n:'ארבע הפוך',cue:'שוכבים, קרסול על הברך השנייה, מושכים את הירך לחזה',f:'back'},
+ hipflex:{n:'כופף ירך בכריעה',cue:'ברך אחורית על המזרן, אגן קדימה, ישבן מכווץ',f:'lunge'}
 };
+const SETUP_S=30, RECOVER_S=60;   /* 22.11, Mosh: 30s to set up before the work, a minute to come down before the cooldown */
 
 /* the six days. strings and rep formulas are the ones Marcus verified in check-v2 */
 const DAYS={
@@ -389,6 +406,35 @@ const WARM=[[{m:'rope',t:'חבל קל'},30],[{m:'catcow',t:'חתול-פרה'},30
             [{m:'sqinch',t:'10 סקוואט אוויר + 5 אינצ׳וורם'},60],[{m:'rope',t:'חבל מהיר'},30]];
 const COOL=[[{m:'ballfoot',t:'כדור טניס, כף רגל ימין'},30],[{m:'ballfoot',t:'כדור טניס, כף רגל שמאל'},30],
             [{m:'ballglute',t:'כדור טניס, ישבן ימין'},30],[{m:'ballglute',t:'כדור טניס, ישבן שמאל'},30]];
+/* 22.11 (Mosh, after his first session): the cooldown rotates between tennis ball, foam roller and mat stretches,
+   matched to the area the day worked. Still 2 minutes, 4 x 30s. COOL above stays the tennis-ball day. */
+const COOL_ROLL_LEGS=[[{m:'rollham',t:'גליל, ירך אחורית ימין'},30],[{m:'rollham',t:'גליל, ירך אחורית שמאל'},30],
+            [{m:'rollglute',t:'גליל, ישבן ימין'},30],[{m:'rollglute',t:'גליל, ישבן שמאל'},30]];
+const COOL_ROLL_FRONT=[[{m:'rollquad',t:'גליל, ירך קדמית ימין'},30],[{m:'rollquad',t:'גליל, ירך קדמית שמאל'},30],
+            [{m:'rollcalf',t:'גליל, שוק ימין'},30],[{m:'rollcalf',t:'גליל, שוק שמאל'},30]];
+const COOL_MAT_UPPER=[[{m:'child',t:'מזרן, תנוחת ילד עם ידיים ארוכות'},30],[{m:'thread',t:'מזרן, השחלת יד ימין מתחת לגוף'},30],
+            [{m:'thread',t:'מזרן, השחלת יד שמאל מתחת לגוף'},30],[{m:'rollback',t:'גליל לאורך הגב, ידיים פתוחות לצדדים'},30]];
+const COOL_MAT_BACK=[[{m:'hamstr',t:'מזרן, ירך אחורית ימין, רגל למעלה'},30],[{m:'hamstr',t:'מזרן, ירך אחורית שמאל, רגל למעלה'},30],
+            [{m:'fig4',t:'מזרן, ארבע הפוך ימין'},30],[{m:'fig4',t:'מזרן, ארבע הפוך שמאל'},30]];
+const COOL_MAT_FULL=[[{m:'hipflex',t:'מזרן, כופף ירך בכריעה, ימין'},30],[{m:'hipflex',t:'מזרן, כופף ירך בכריעה, שמאל'},30],
+            [{m:'child',t:'מזרן, תנוחת ילד'},30],[{m:'rollback',t:'גליל לאורך הגב, ידיים פתוחות לצדדים'},30]];
+/* sun engine: roller back of legs · mon legs: roller front · tue upper: mat · wed rope day: tennis ball (feet)
+   thu posterior chain: mat hamstrings + hips · fri test: mat full body */
+const COOLS={0:COOL_ROLL_LEGS,1:COOL_ROLL_FRONT,2:COOL_MAT_UPPER,3:COOL,4:COOL_MAT_BACK,5:COOL_MAT_FULL};
+const COOLTOOL={0:'גליל',1:'גליל',2:'מזרן וגליל',3:'כדור טניס',4:'מזרן',5:'מזרן וגליל'};
+const coolFor=dow=>COOLS[dow]||COOL;
+const ALLCOOL=[COOL,COOL_ROLL_LEGS,COOL_ROLL_FRONT,COOL_MAT_UPPER,COOL_MAT_BACK,COOL_MAT_FULL];
+/* the equipment Mosh lays out in the 30s setup before the work: read from the day's own lines */
+function gearFor(plan){
+  const txt=(plan.items||[]).map(x=>x.t).join(' '), g=[];
+  if(/קטלבל 12|קטלבל `?12/.test(txt)||(/סווינג|גובלט/.test(txt)&&!/קטלבל 8/.test(txt))) g.push('קטלבל 12');
+  if(/קטלבל 8/.test(txt)) g.push('קטלבל 8');
+  if(/דמבל/.test(txt)) g.push('שני דמבלס');
+  if(/חבל/.test(txt)) g.push('חבל');
+  g.push(...(COOLTOOL[plan.dow]||'כדור טניס').split(' ו'));
+  return g;
+}
+const gearLine=plan=>{ const g=gearFor(plan); return 'מניחים בפינה: '+(g.length>1?g.slice(0,-1).join(', ')+' ו'+g[g.length-1]:g[0]); };
 
 /* ---------- weeks 4-6: every session written on its own, no repeat of an earlier one ----------
    PH2[week][weekday]. Friday is not here on purpose: the test stays the same test, that is what makes it a measure.
@@ -489,6 +535,7 @@ function daySegments(dow,wk){
   const plan=dayPlan(dow,wk); if(!plan) return [];
   const segs=[], L=plan.items;
   WARM.forEach(([it,s],i)=>segs.push({kind:'warm',tag:`חימום ${i+1}/${WARM.length}`,secs:s,items:[it],title:it.t}));
+  segs.push({kind:'setup',tag:'סטאפ',secs:SETUP_S,rest:true,items:[{m:'rest',t:gearLine(plan)}],title:'סטאפ לעבודה'});
   if(plan.segs){ plan.segs(L).forEach(s=>segs.push(s)); }
   else if(plan.kind==='emom'){
     for(let m=0;m<10;m++){ const it=L[m%L.length]; segs.push({kind:'work',tag:`דקה ${m+1}/10`,secs:60,items:[it],title:it.t}); }
@@ -501,7 +548,9 @@ function daySegments(dow,wk){
   } else {
     segs.push({kind:'work',tag:'10 דקות רצוף',secs:600,items:L,title:'כמה שיותר סבבים',amrap:true});
   }
-  COOL.forEach(([it,s],i)=>segs.push({kind:'cool',tag:`שחרור ${i+1}/${COOL.length}`,secs:s,items:[it],title:it.t}));
+  segs.push({kind:'recover',tag:'התאוששות',secs:RECOVER_S,rest:true,items:[{m:'rest',t:'הולכים לאט בחדר, נושמים דרך האף עד שהדופק יורד'}],title:'דקה התאוששות'});
+  const CL=coolFor(dow);
+  CL.forEach(([it,s],i)=>segs.push({kind:'cool',tag:`הרפיה ${i+1}/${CL.length}`,secs:s,items:[it],title:it.t}));
   return segs;
 }
 const totalSecs=segs=>segs.reduce((a,s)=>a+s.secs,0);
@@ -875,7 +924,7 @@ function home(){
   app.innerHTML=`
   <header class="lid"><i class="frame"></i>
     <div class="collide"><span class="n30 clock">08:20</span><span class="word w0820">קופסת</span></div>
-    <p class="sub">הדלת נסגרה. נעליים נשארות. לפינה. · 15 דקות</p>
+    <p class="sub">הדלת נסגרה. נעליים נשארות. לפינה. · 16 וחצי דקות</p>
     <span class="edition">${before?'נפתחת בחמישי 12.11':after?'ששת השבועות הושלמו':`שבוע ${wk} מתוך ${NW}`} · 12.11 עד 23.12</span>
   </header>
 
@@ -896,7 +945,7 @@ function home(){
   <aside class="rules">
     <h2>חוקי הקופסה</h2>
     <div class="rl"><i>א.</i><span>הדלת נסגרה, נעליים נשארות, הולכים לפינה ולוחצים "התחל". בלי להתיישב.</span></div>
-    <div class="rl"><i>ב.</i><span>3 דקות חימום בחבל, 10 דקות עבודה, 2 דקות שחרור עם כדור טניס. 15 בדיוק.</span></div>
+    <div class="rl"><i>ב.</i><span>3 דקות חימום בחבל, חצי דקה סטאפ, 10 דקות עבודה, דקה התאוששות, 2 דקות הרפיה. 16:30 בדיוק.</span></div>
     <div class="rl"><i>ג.</i><span>אות קטן מהמרפק בסווינג או בחתירה? עוברים לגשר ירכיים על רגל אחת, באותו רגע.</span></div>
     <div class="rl"><i>ד.</i><span>את כדור הטניס לא סוחטים ביד. הוא רק לרגליים ולישבן.</span></div>
     <div class="rl"><i>ה.</i><span>שישי הוא המבחן. אותו מבחן כל שבוע, ורושמים סבבים.</span></div>
@@ -948,11 +997,13 @@ function peekDay(iso){
     <div class="sechead">חימום · 3 דקות, זהה כל יום</div>
     ${WARM.map(([it,s])=>exline(it,OR,s+' שנ׳')).join('')}
     <div class="sechead">${workHead}</div>
+    <div class="sechead">סטאפ · 30 שנ׳</div>
+    ${exline({m:'rest',t:gearLine(plan)},OR,'30 שנ׳')}
     ${plan.items.map(it=>exline(it,TQ)).join('')}
-    <div class="sechead">שחרור · 2 דקות עם כדור טניס</div>
-    ${COOL.map(([it,s])=>exline(it,OR,s+' שנ׳')).join('')}
+    <div class="sechead">התאוששות · דקה, ואז הרפיה 2 דקות עם ${COOLTOOL[dow]||'כדור טניס'}</div>
+    ${coolFor(dow).map(([it,s])=>exline(it,OR,s+' שנ׳')).join('')}
     ${plan.items.some(it=>MOVES[it.m].grip)?`<p class="scorenote">מרפק מאותת? גשר ירכיים על רגל אחת במקום הסווינג או החתירה. המינון בשבוע ${wk}: ${BRIDGE[wk]}.</p>`:''}
-    <p class="peeknote">שבוע ${wk}: ${WEEKNOTE[wk]}. מה שרואים כאן זה בדיוק מה שינוגן ב${DOWN[dow]} ${heDate(iso)}, 15:00 על השעון.</p>
+    <p class="peeknote">שבוע ${wk}: ${WEEKNOTE[wk]}. מה שרואים כאן זה בדיוק מה שינוגן ב${DOWN[dow]} ${heDate(iso)}, ${fmtClock(totalSecs(daySegments(dow,wk)))} על השעון.</p>
     ${iso===t&&!rec?`<button class="startbtn" style="margin-top:14px" onclick="closePeek();startDay()"><span>התחל</span>${startArrow}</button>`:''}
     <button class="backhome" onclick="closePeek()">סגור הצצה</button>
   </div></div>`;
@@ -1051,7 +1102,7 @@ function lib(){
     return `<div class="libgroup"><h3>${DOWN[dw]} · ${DAYS[dw].name} <small>${DAYS[dw].short}</small></h3>
       ${Object.keys(first).map(k=>line(k,first[k])).join('')}</div>`;
   }).join('');
-  const warm=uniq(WARM.map(x=>x[0].m)), cool=uniq(COOL.map(x=>x[0].m));
+  const warm=uniq(WARM.map(x=>x[0].m)), cool=uniq([].concat(...ALLCOOL).map(x=>x[0].m));
   warm.concat(cool,['slbridge']).forEach(k=>count.add(k));
   const dtypes=[0,1,2,3,4,5].map(dw=>{ const p=dayPlan(dw,curWeek);
     return `<div class="dtypeline"><i>${'אבגדהו'[dw]}.</i><b>${p.name}</b><span>${p.sub}</span><span class="secs">${p.short}</span></div>`; }).join('');
@@ -1060,20 +1111,20 @@ function lib(){
   <header class="lid"><i class="frame"></i>
     <div class="collide"><span class="n30">${count.size}</span><span class="word" style="font-size:44px">הספרייה</span></div>
     <p class="sub">כל מה שבקופסת 08:20 · אתה בשבוע ${curWeek} מתוך ${NW}</p>
-    <span class="edition">חבל, קטלבל 12 ו-8, שני דמבלס, כדור טניס</span>
+    <span class="edition">חבל, קטלבל 12 ו-8, שני דמבלס, כדור טניס, גליל, מזרן</span>
   </header>
 
   <section class="slip"><i class="rip"></i>
     <div class="today-head"><div class="dtype"><b>מבנה השבוע הזה</b><span>שישה ימים, ראשון עד שישי. שבת מנוחה</span></div></div>
     <hr class="dashline">
     ${dtypes}
-    <p class="peeknote">כל אימון: 3 דקות חימום בחבל, 10 דקות עבודה, 2 דקות שחרור עם כדור טניס. ${notes} לחיצה על יום בסולם מראה בדיוק מה מחכה בו.</p>
+    <p class="peeknote">כל אימון: 3 דקות חימום בחבל, חצי דקה סטאפ, 10 דקות עבודה, דקה התאוששות, 2 דקות הרפיה (כדור טניס, גליל או מזרן, מתחלף לפי היום). ${notes} לחיצה על יום בסולם מראה בדיוק מה מחכה בו.</p>
   </section>
 
   <section style="margin:6px 12px 0; padding:0 8px">
     <div class="libgroup"><h3>חימום <small>3 דקות, זהה כל יום</small></h3>${warm.map(k=>line(k,1,OR)).join('')}</div>
     ${dayGroups}
-    <div class="libgroup"><h3>שחרור <small>2 דקות, כדור טניס</small></h3>${cool.map(k=>line(k,1,OR)).join('')}</div>
+    <div class="libgroup"><h3>הרפיה <small>2 דקות, כדור טניס, גליל או מזרן לפי היום</small></h3>${cool.map(k=>line(k,1,OR)).join('')}</div>
     <div class="libgroup"><h3>חוק המרפק <small>במקום סווינג וחתירה</small></h3>${line('slbridge',1,OR)}
       ${Object.keys(BRIDGE).map(w=>`<div class="statrow"><span>שבוע ${w}</span><b class="${+w===curWeek?'orv':''}">${BRIDGE[w]}</b></div>`).join('')}
       <p class="peeknote">המינון שמרקוס קבע לגשר. אותו זמן עבודה כמו הסווינג או החתירה שהוא מחליף. באימוני זמן: כל האינטרוול, מחליפים רגל באמצע.</p></div>
@@ -1112,7 +1163,9 @@ function cue(){
   const lines=its.map(lineId), first=!T.heard[line]; T.heard[line]=1;
   if(T.i===0) return speak(['start',...lines],`בוא נתחיל. שלוש דקות חימום. ${line}`);
   if(s.kind==='work'&&p.kind!=='work') return speak([T.plan.intro,...lines],`עשר דקות עבודה. ${T.plan.name}. ${line}`);
-  if(s.kind==='cool'&&p.kind!=='cool') return speak(['cool',...lines],`סיימת את העבודה. שתי דקות שחרור. ${line}`);
+  if(s.kind==='setup') return speak([],`חצי דקה סטאפ. ${line}`);
+  if(s.kind==='recover') return speak([],`סיימת את העבודה. דקה התאוששות. ${line}`);
+  if(s.kind==='cool'&&p.kind!=='cool') return speak(lines.every(id=>CLIPSET.has(id))?['cool',...lines]:[],`שתי דקות הרפיה. ${line}`);
   if(s.rest&&s.secs<=20) return speak(['rest'],'מנוחה');
   if(s.quiet) return speak(['go'],'קדימה');
   if(s.second) return speak(['blockb',...lines],`בלוק שני. ${line}`);
@@ -1164,7 +1217,7 @@ function paint(){
   const items=segItems(s);
   const grip=s.items.some(it=>MOVES[it.m].grip);
   const nx1=nxt&&disp(nxt.items[0],T.swap,T.wk);
-  const acc=s.kind==='cool'?OR:TQ;
+  const acc=(s.kind==='cool'||s.kind==='setup'||s.kind==='recover')?OR:TQ;
   const tot=totalSecs(T.segs), tl=totalLeft();
   let body;
   if(items.length===1){
@@ -1236,13 +1289,19 @@ function finish(){
     <div class="bigstamp" id="bigstamp">${stampSvg('הוחתם')}</div>
     <div class="sumline"><span>אימון</span><b>${T.plan.name}${no?' · '+no+' מתוך '+N:''}</b></div>
     <div class="sumline"><span>שבוע</span><b>${T.wk} מתוך ${NW}</b></div>
-    <div class="sumline"><span>זמן</span><b>15:00 דק׳</b></div>
+    <div class="sumline"><span>זמן</span><b>${fmtClock(totalSecs(T.segs))} דק׳</b></div>
     ${swapped?`<div class="sumline"><span>מרפק</span><b>הוחלף לגשר רגל אחת</b></div>`:''}
     ${am?`<div class="extra"><span style="min-width:104px">${test?'תוצאת המבחן':unit+' היום'}</span>
       <input class="wide" inputmode="numeric" id="rnd" placeholder="${unit}" value="${T.rounds||''}" oninput="sigCheck()">
       <span>ועוד</span>
       <input class="wide" inputmode="numeric" id="rps" placeholder="חזרות"></div>
       ${test?`<p class="scorenote">שישי הוא המדד. בלי מספר סבבים אין חותמת.</p>`:''}`:''}
+    <div class="notebox">
+      <label for="mnote">איך היה? מה עשית בפועל? מרקוס קורא ומתאים את הבאים</label>
+      <textarea id="mnote" rows="4" placeholder="למשל: 15 סווינג במקום 17, הברפי זרמו, נשארו לי 20 שניות בכל דקה"></textarea>
+      <button class="backhome" type="button" id="sendm" onclick="copyForMarcus()">העתק למרקוס</button>
+      <p class="scorenote" id="sendmnote">מעתיק את האימון וההערה. מדביקים בתיבת הזריקות בקונסולה, ומרקוס עונה עם התאמות.</p>
+    </div>
     <div class="signrow">
       <label>הסולם סופר רק את מי שחותם. חתום כאן:</label>
       <input id="sig" autocomplete="off" placeholder="השם שלך" oninput="sigCheck()">
@@ -1264,6 +1323,7 @@ function stampDay(){
   if(rnd&&rnd.value.trim()!==''&&!isNaN(parseFloat(rnd.value))){ rec.rounds=parseFloat(rnd.value); rec.reps=rps&&parseInt(rps.value)||0;
     if(T.plan.unit!=='סבבים') rec.unit=T.plan.unit; }
   if(T.plan.test&&rec.rounds==null) return;
+  const nt=document.getElementById('mnote'); if(nt&&nt.value.trim()) rec.note=nt.value.trim();
   S.days[T.date]=rec;
   if(!S.start)S.start=T.date;
   DB.save(S);
@@ -1272,6 +1332,28 @@ function stampDay(){
   document.getElementById('cnote').textContent=`נרשמת בסולם, ${sig}. רצף: ${streak()} ימים. מקלחת וקפה, יש לך עד 09:00.`;
   beep(660,.3,.35);
   if(sessionNo(T.date)!==N){ hush(); getBuf(T.dow===5?'stampfri':'stamp').then(()=>blip(T.dow===5?'stampfri':'stamp')); }
+}
+/* 22.11: the session as text for Marcus. Same channel as the main app's "send to Marcus": clipboard, then the console inbox */
+function marcusText(){
+  const nt=document.getElementById('mnote'), rnd=document.getElementById('rnd'), rps=document.getElementById('rps');
+  const note=nt&&nt.value.trim(), its=T.plan.items.map(it=>disp(it,T.swap||T.swapUsed,T.wk).t).join(' | ');
+  const score=rnd&&rnd.value.trim()?`${rnd.value.trim()}${rps&&rps.value.trim()?'+'+rps.value.trim():''} ${T.plan.unit}`:'';
+  return [`MFLOG 0820 ${T.date} · ${DOWN[T.dow]} · ${T.plan.name} · שבוע ${T.wk}`,
+    `תוכנית: ${T.plan.short} · ${its}`,
+    score?`תוצאה: ${score}`:'',
+    `מרפק: ${(T.swap||T.swapUsed)?'הוחלף לגשר רגל אחת':'לא הוחלף'}`,
+    `זמן: ${fmtClock(totalSecs(T.segs))}`,
+    `הערה: ${note||'אין'}`].filter(Boolean).join(String.fromCharCode(10));
+}
+async function copyForMarcus(){
+  const txt=marcusText(), b=document.getElementById('sendm'), n=document.getElementById('sendmnote');
+  let ok=false; try{ await navigator.clipboard.writeText(txt); ok=true; }catch(e){}
+  if(!ok){ const ta=document.createElement('textarea'); ta.value=txt; document.body.appendChild(ta); ta.select();
+    try{ ok=document.execCommand('copy'); }catch(e){} ta.remove(); }
+  if(S.days[T.date]){ const nt=document.getElementById('mnote'); if(nt&&nt.value.trim()){ S.days[T.date].note=nt.value.trim(); DB.save(S); } }
+  b.textContent=ok?'הועתק. עכשיו להדביק בקונסולה':'לא הצלחתי להעתיק, סמן את הטקסט ידנית';
+  if(!ok&&n) n.textContent=txt;
+  setTimeout(()=>{ b.textContent='העתק למרקוס'; },4000);
 }
 function closeDone(){ D.classList.remove('on'); D.innerHTML=''; home(); }
 
