@@ -314,7 +314,7 @@ const sessionNo=iso=>SESSIONS.indexOf(iso)+1;
 const N=SESSIONS.length;
 const heDate=iso=>{const p=iso.split('-');return `${+p[2]}.${+p[1]}`};
 const DOWN=['ראשון','שני','שלישי','רביעי','חמישי','שישי','שבת'];
-const WEEKNOTE={1:'כמו בטבלה. הסט הראשון הוא הכיול',2:'פלוס 2 חזרות כמעט בכל תחנה, וברביעי 45 שנ׳ חבל',3:'סווינג יד אחת עם קטלבל 8, לאנג׳ קפיצה, שכיבות טמפו',
+const WEEKNOTE={1:'כמו בטבלה. הסט הראשון הוא הכיול',2:'פלוס 2 חזרות כמעט בכל תחנה, וברביעי 45 שנ׳ חבל',3:'סווינג יד אחת עם קטלבל 8, לאנג׳ קפיצה, ובשלישי הכל לאט יותר: שכיבות טמפו, חתירה עם עצירה, פוש-פרס עם ירידה איטית',
   4:'פורמטים חדשים על אותם משקלים: סולם, אינטרוולים, טמפו, טבטה',
   5:'צפיפות: יותר עבודה באותן 10 דקות, פחות מנוחה',
   6:'שבוע שיא: אינטרוולים ארוכים, קומבינציות, והמבחן האחרון'};
@@ -374,7 +374,27 @@ const MOVES={
  thread:{n:'השחלת יד',cue:'בעמידת שש, יד אחת מחליקה מתחת לגוף, כתף למזרן',f:'bear'},
  hamstr:{n:'מתיחת ירך אחורית בשכיבה',cue:'שוכבים על הגב, רגל ישרה למעלה, ידיים מאחורי הברך',f:'back'},
  fig4:{n:'ארבע הפוך',cue:'שוכבים, קרסול על הברך השנייה, מושכים את הירך לחזה',f:'back'},
- hipflex:{n:'כופף ירך בכריעה',cue:'ברך אחורית על המזרן, אגן קדימה, ישבן מכווץ',f:'lunge'}
+ hipflex:{n:'כופף ירך בכריעה',cue:'ברך אחורית על המזרן, אגן קדימה, ישבן מכווץ',f:'lunge'},
+ /* warm-up rotation, 24.11 */
+ wgs:{n:'המתיחה הגדולה בעולם',cue:'לאנג׳ ארוך, מרפק יורד לרצפה, ואז יד לתקרה',f:'lunge',v:'המתיחה הגדולה בעולם'},
+ slowbr:{n:'גשר ירכיים איטי',cue:'חוליה חוליה למעלה, שנייה עצירה, ולאט למטה',f:'bridge',v:'גשר ירכיים איטי'},
+ inch:{n:'אינצ׳וורם',cue:'ידיים הולכות רחוק, ברכיים כמעט ישרות',f:'pike',v:'אינצ׳וורם'},
+ cossack:{n:'סקוואט קוזאק',cue:'רגל אחת ישרה, הישבן יורד לצד השני',f:'lunge',v:'סקוואט קוזאק'},
+ lungetw:{n:'לאנג׳ עם סיבוב',cue:'יורדים ללאנג׳, מסובבים את החזה לרגל הקדמית',f:'lunge',v:'לאנג׳ עם סיבוב'},
+ deepsq:{n:'ישיבת סקוואט',cue:'יושבים עמוק, מרפקים דוחפים ברכיים החוצה, נושמים',f:'squat',v:'ישיבת סקוואט נשימות'},
+ skips:{n:'סקיפים נמוכים',cue:'קל על הבהונות, ברכיים עולות קצת',f:'jump',v:'סקיפים נמוכים'},
+ armcirc:{n:'סיבובי כתפיים וידיים',cue:'מתחילים קטן, גדלים לאט, ואז לכיוון השני',f:'flow',v:'סיבובי כתפיים וידיים'},
+ dogcobra:{n:'כלב מביט מטה לקוברה',cue:'אגן למעלה, ואז החזה עובר קדימה בין הידיים',f:'pike',v:'כלב מביט מטה ← קוברה'},
+ bearcr:{n:'זחילת דוב',cue:'ברכיים מרחפות, גב שטוח, צעדים קטנים',f:'bear',v:'זחילת דוב'},
+ ytsup:{n:'סופרמן Y-T',cue:'על הבטן, ידיים ב-Y ואז ב-T, אגודלים לתקרה',f:'back',v:'סופרמן Y-T'},
+ jjlite:{n:'ג׳אמפינג ג׳קס קלים',cue:'קל ורך, הידיים עולות עד הכתפיים',f:'jump',v:'ג׳אמפינג ג׳קס קלים'},
+ climbs:{n:'מטפסי הרים',cue:'קצב רגוע, כתפיים מעל כפות הידיים',f:'climber',v:'מטפסי הרים'},
+ deadbug:{n:'דד באג',cue:'גב תחתון מודבק, יד ורגל נגדיות יורדות לאט',f:'back',v:'דד באג'},
+ burpee0:{n:'ברפי בלי קפיצה',cue:'לאט, חזה לרצפה, ועומדים בלי לקפוץ',f:'burpee',v:'ברפי בלי קפיצה'},
+ goodm:{n:'גוד מורנינג',cue:'ידיים על החזה, ישבן אחורה, גב ארוך',f:'hinge',v:'גוד מורנינג'},
+ kite:{n:'עפיפון רגל אחת',cue:'נוטים קדימה על רגל אחת, ידיים לצדדים, אגן ישר',f:'balance',v:'עפיפון רגל אחת'},
+ n9090:{n:'מעברי 90/90',cue:'יושבים, הברכיים עוברות מצד לצד, גב זקוף',f:'flow',v:'מעברי 90/90'},
+ ptpush:{n:'פוש-פרס עם ירידה איטית',cue:'דוחפים מהרגליים למעלה, ומורידים בשלוש שניות',f:'press'}
 };
 const SETUP_S=30, RECOVER_S=60;   /* 22.11, Mosh: 30s to set up before the work, a minute to come down before the cooldown */
 
@@ -388,7 +408,12 @@ const DAYS={
               w>2?{m:'jlunge',t:'10 לאנג׳ קפיצה (5 לרגל)'}:{m:'lunge',t:`${10+2*(w>1)} לאנג׳ אחורי עם 2 דמבלס`},
               {m:'rope',t:'30 קפיצות חבל'}]},
  2:{name:'עליון',kind:'emom',short:'EMOM 10',sub:'תחנה אחת בכל דקה, בסבב',
-    items:w=>[{m:w>2?'tpushup':'pushup',t:`${10+2*(w>1)} שכיבות סמיכה${w>2?' טמפו, 3 שניות ירידה':''}`},
+    /* 24.11: week 2 felt easy (12/12/12 with 30-40s rest in each minute). week 3 = slower, not more:
+       tempo pushups drop to 10 (12 x 4-5s would not fit the minute), row gets a 1s pause, press a 3s lowering */
+    items:w=>w>2?[{m:'tpushup',t:'10 שכיבות סמיכה טמפו, 3 שניות ירידה'},
+              {m:'prow',t:'12 חתירת דמבל לכל יד, שנייה עצירה למעלה'},
+              {m:'ptpush',t:'12 פוש-פרס 2 דמבלס, 3 שניות ירידה'}]
+            :[{m:'pushup',t:`${10+2*(w>1)} שכיבות סמיכה`},
               {m:'row',t:`${10+2*(w>1)} חתירת דמבל לכל יד`},
               {m:'press',t:`${8+2*(w>1)} פוש-פרס 2 דמבלס`}]},
  3:{name:'צבאי',kind:'rounds',short:'5 סבבים',sub:'5 סבבים של 2 דקות',
@@ -404,6 +429,22 @@ const DAYS={
 };
 const WARM=[[{m:'rope',t:'חבל קל'},30],[{m:'catcow',t:'חתול-פרה'},30],[{m:'rope',t:'חבל'},30],
             [{m:'sqinch',t:'10 סקוואט אוויר + 5 אינצ׳וורם'},60],[{m:'rope',t:'חבל מהיר'},30]];
+/* 24.11 (Mosh: "אפשר לגוון קצת בחימומים"): the warm-up rotates by day and prepares what the day works.
+   Still 3 minutes, rope at the start and the end. Friday keeps the original warm-up on purpose:
+   the test is only comparable week to week if everything before it is the same. */
+const WARM_ENGINE=[[{m:'rope',t:'חבל קל'},30],[{m:'wgs',t:'המתיחה הגדולה בעולם, לסירוגין'},60],
+            [{m:'slowbr',t:'8 גשר ירכיים איטי'},30],[{m:'inch',t:'4 אינצ׳וורם'},30],[{m:'rope',t:'חבל מהיר'},30]];
+const WARM_LEGS=[[{m:'rope',t:'חבל קל'},30],[{m:'cossack',t:'סקוואט קוזאק לסירוגין'},30],[{m:'lungetw',t:'לאנג׳ עם סיבוב לסירוגין'},30],
+            [{m:'deepsq',t:'ישיבת סקוואט, 5 נשימות עמוקות'},30],[{m:'skips',t:'סקיפים נמוכים'},30],[{m:'rope',t:'חבל מהיר'},30]];
+const WARM_UPPER=[[{m:'rope',t:'חבל קל'},30],[{m:'armcirc',t:'סיבובי כתפיים וידיים, לשני הכיוונים'},30],[{m:'dogcobra',t:'כלב מביט מטה לקוברה, לאט'},30],
+            [{m:'bearcr',t:'זחילת דוב, קדימה ואחורה'},30],[{m:'ytsup',t:'סופרמן Y-T, לאט'},30],[{m:'rope',t:'חבל מהיר'},30]];
+const WARM_MIL=[[{m:'jjlite',t:'ג׳אמפינג ג׳קס קלים'},30],[{m:'rope',t:'חבל קל'},30],[{m:'climbs',t:'מטפסי הרים, קצב רגוע'},30],
+            [{m:'deadbug',t:'דד באג, לאט'},30],[{m:'burpee0',t:'4 ברפי בלי קפיצה, לאט'},30],[{m:'rope',t:'חבל מהיר'},30]];
+const WARM_BACK=[[{m:'rope',t:'חבל קל'},30],[{m:'catcow',t:'חתול-פרה'},30],[{m:'goodm',t:'10 גוד מורנינג'},30],
+            [{m:'kite',t:'עפיפון רגל אחת, 15 שנ׳ לכל רגל'},30],[{m:'n9090',t:'מעברי 90/90'},30],[{m:'rope',t:'חבל מהיר'},30]];
+const WARMS={0:WARM_ENGINE,1:WARM_LEGS,2:WARM_UPPER,3:WARM_MIL,4:WARM_BACK,5:WARM};
+const warmFor=dow=>WARMS[dow]||WARM;
+const ALLWARM=[WARM_ENGINE,WARM_LEGS,WARM_UPPER,WARM_MIL,WARM_BACK,WARM];
 const COOL=[[{m:'ballfoot',t:'כדור טניס, כף רגל ימין'},30],[{m:'ballfoot',t:'כדור טניס, כף רגל שמאל'},30],
             [{m:'ballglute',t:'כדור טניס, ישבן ימין'},30],[{m:'ballglute',t:'כדור טניס, ישבן שמאל'},30]];
 /* 22.11 (Mosh, after his first session): the cooldown rotates between tennis ball, foam roller and mat stretches,
@@ -534,7 +575,8 @@ function disp(it,swap,wk){
 function daySegments(dow,wk){
   const plan=dayPlan(dow,wk); if(!plan) return [];
   const segs=[], L=plan.items;
-  WARM.forEach(([it,s],i)=>segs.push({kind:'warm',tag:`חימום ${i+1}/${WARM.length}`,secs:s,items:[it],title:it.t}));
+  const WU=warmFor(dow);
+  WU.forEach(([it,s],i)=>segs.push({kind:'warm',tag:`חימום ${i+1}/${WU.length}`,secs:s,items:[it],title:it.t}));
   segs.push({kind:'setup',tag:'סטאפ',secs:SETUP_S,rest:true,items:[{m:'rest',t:gearLine(plan)}],title:'סטאפ לעבודה'});
   if(plan.segs){ plan.segs(L).forEach(s=>segs.push(s)); }
   else if(plan.kind==='emom'){
@@ -994,8 +1036,8 @@ function peekDay(iso){
     </div>
     <span class="peekstatus">${status}</span>
     <hr class="dashline">
-    <div class="sechead">חימום · 3 דקות, זהה כל יום</div>
-    ${WARM.map(([it,s])=>exline(it,OR,s+' שנ׳')).join('')}
+    <div class="sechead">חימום · 3 דקות, ${dow===5?'אותו חימום כל שישי, כדי שהמבחן יישאר הוגן':'מתחלף לפי היום'}</div>
+    ${warmFor(dow).map(([it,s])=>exline(it,OR,s+' שנ׳')).join('')}
     <div class="sechead">${workHead}</div>
     <div class="sechead">סטאפ · 30 שנ׳</div>
     ${exline({m:'rest',t:gearLine(plan)},OR,'30 שנ׳')}
@@ -1102,7 +1144,7 @@ function lib(){
     return `<div class="libgroup"><h3>${DOWN[dw]} · ${DAYS[dw].name} <small>${DAYS[dw].short}</small></h3>
       ${Object.keys(first).map(k=>line(k,first[k])).join('')}</div>`;
   }).join('');
-  const warm=uniq(WARM.map(x=>x[0].m)), cool=uniq([].concat(...ALLCOOL).map(x=>x[0].m));
+  const warm=uniq([].concat(...ALLWARM).map(x=>x[0].m)), cool=uniq([].concat(...ALLCOOL).map(x=>x[0].m));
   warm.concat(cool,['slbridge']).forEach(k=>count.add(k));
   const dtypes=[0,1,2,3,4,5].map(dw=>{ const p=dayPlan(dw,curWeek);
     return `<div class="dtypeline"><i>${'אבגדהו'[dw]}.</i><b>${p.name}</b><span>${p.sub}</span><span class="secs">${p.short}</span></div>`; }).join('');
@@ -1118,11 +1160,11 @@ function lib(){
     <div class="today-head"><div class="dtype"><b>מבנה השבוע הזה</b><span>שישה ימים, ראשון עד שישי. שבת מנוחה</span></div></div>
     <hr class="dashline">
     ${dtypes}
-    <p class="peeknote">כל אימון: 3 דקות חימום בחבל, חצי דקה סטאפ, 10 דקות עבודה, דקה התאוששות, 2 דקות הרפיה (כדור טניס, גליל או מזרן, מתחלף לפי היום). ${notes} לחיצה על יום בסולם מראה בדיוק מה מחכה בו.</p>
+    <p class="peeknote">כל אימון: 3 דקות חימום (מתחלף לפי היום, תמיד מתחיל ונגמר בחבל), חצי דקה סטאפ, 10 דקות עבודה, דקה התאוששות, 2 דקות הרפיה (כדור טניס, גליל או מזרן, מתחלף לפי היום). ${notes} לחיצה על יום בסולם מראה בדיוק מה מחכה בו.</p>
   </section>
 
   <section style="margin:6px 12px 0; padding:0 8px">
-    <div class="libgroup"><h3>חימום <small>3 דקות, זהה כל יום</small></h3>${warm.map(k=>line(k,1,OR)).join('')}</div>
+    <div class="libgroup"><h3>חימום <small>3 דקות, מתחלף לפי היום, בשישי תמיד אותו אחד</small></h3>${warm.map(k=>line(k,1,OR)).join('')}</div>
     ${dayGroups}
     <div class="libgroup"><h3>הרפיה <small>2 דקות, כדור טניס, גליל או מזרן לפי היום</small></h3>${cool.map(k=>line(k,1,OR)).join('')}</div>
     <div class="libgroup"><h3>חוק המרפק <small>במקום סווינג וחתירה</small></h3>${line('slbridge',1,OR)}
