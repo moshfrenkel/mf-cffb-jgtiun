@@ -418,7 +418,8 @@ const DAYS={
               {m:'press',t:`${8+2*(w>1)} פוש-פרס 2 דמבלס`}]},
  3:{name:'צבאי',kind:'rounds',short:'5 סבבים',sub:'5 סבבים של 2 דקות',
     items:w=>[{m:'rope',t:`${w>1?45:40} שנ׳ חבל`},
-              {m:'bbb',t:'10 ברפי-בודיבילדר (8 ספירות)'},
+              /* 25.11: week 2 Mosh did 5-6 per round, not 10. week 3 = 6 in every round, with time left for flutter kicks */
+              {m:'bbb',t:`${w>2?6:10} ברפי-בודיבילדר (8 ספירות)`},
               {m:'flutter',t:'מה שנשאר מהשתי דקות: פלאטר קיקס'}]},
  4:{name:'שרשרת אחורית',kind:'amrap',short:'AMRAP 10',sub:'כמה שיותר סבבים',
     items:w=>[{m:w>2?'swing1':'swing',t:`${12+2*(w>1)} סווינג ${w>2?'יד אחת, קטלבל 8 (חצי לכל יד)':'קטלבל 12'}`},
@@ -558,7 +559,106 @@ const PH2={
  }
 };
 
+
+/* ---------- 25.11: Marcus's new home program, 24 sessions by DATE (26.11-23.12) ----------
+   source: data/training/box-0820-home-24.json (Marcus, task 504). home gear only: kettlebell 12/8, two 7.5 dumbbells, rope, mat.
+   a date found here overrides DAYS/PH2. warm-up, setup, recovery and cooldown stay as they are.
+   grip days open with a 20s elbow traffic-light check. ◆ = jump, left knee. */
+MOVES.clean={n:'קלין יד אחת',cue:'הקטלבל עולה צמוד לגוף, נוחת רך על האמה',f:'swing',grip:1};
+MOVES.carry={n:'נשיאה',cue:'גב זקוף, כתפיים למטה, צעדים קצרים',f:'squat',grip:1};
+MOVES.gen={n:'תרגיל',cue:'',f:'squat'};
+MOVES.geng={n:'תרגיל עם משקל',cue:'',f:'swing',grip:1};
+const pickM=(t,g)=>{
+  const R=[[/ברפי-בודיבילדר/,'bbb'],[/ברפי/,'burpee'],[/חבל/,'rope'],[/סווינג יד אחת/,'swing1'],[/סווינג/,'swing'],[/קלין|סנאץ׳/,'clean'],
+   [/נשיאה|נשיאת/,'carry'],[/חתירה|חתירת/,g?'row':'gen'],[/דדליפט רגל אחת/,'sldl'],[/דדליפט/,'geng'],[/גשר רגל אחת|גשר ירכיים/,'slbridge'],
+   [/גוד מורנינג/,'goodm'],[/סופרמן/,'ytsup'],[/גובלט/,'goblet'],[/ת׳ראסטר/,'thruster'],[/קוזאק/,'cossack'],[/לאנג׳ צד/,'sidelunge'],
+   [/ספליט/,'split'],[/סקוואט קפיצה|סקווט ג׳אמפ/,'jsquat'],[/סקוואט אוויר/,'airsq'],[/שכיבות|שכיבה/,'pushup'],[/פוש-פרס|פרס/,'press'],
+   [/פלאטר|מספריים/,'flutter'],[/הולו/,'hollow'],[/פלאנק צד/,'sideplank'],[/פלאנק/,'hplank'],[/מטפסי הרים/,'climbs'],
+   [/ג׳אמפינג ג׳קס/,'jjlite'],[/זחילת דוב/,'bearcr'],[/לאנג׳/,'lunge']];
+  for(const [re,k] of R) if(re.test(t)&&MOVES[k]) return k;
+  return 'gen';
+};
+const NP_ITEMS=(list,g)=>list.map(t=>({m:pickM(t,g),t}));
+const npAmrap=L=>[seg('10 דקות רצוף',600,L,{amrap:true,title:'כמה שיותר סבבים'})];
+const npFree=(title,cl)=>L=>[seg('10 דקות',600,L,{amrap:true,title,cl})];
+const npEmom=order=>L=>{const a=[];for(let m=0;m<10;m++){const it=L[order[m]];a.push(seg(`דקה ${m+1}/10`,60,[it]))}return a};
+const npTwoBlocks=(na,ta,tb)=>L=>[seg('בלוק א׳ · 5 דקות',300,L.slice(0,na),{amrap:true,title:ta}),seg('בלוק ב׳ · 5 דקות',300,L.slice(na),{amrap:true,title:tb,second:true})];
+const NEWP={
+ '2026-11-26':{short:'EMOM 10',sub:'שלוש תחנות במחזור, דקה לכל תחנה',
+   items:['12 סווינג יד אחת, קטלבל 8 (6 לכל יד)','10 גוד מורנינג ו-6 סופרמן עם עצירה של 2 שניות','נשיאת מזוודה עם קטלבל 12, 15 צעדים לכל יד'],
+   segs:npEmom([0,1,2,0,1,2,0,1,2,0])},
+ '2026-11-27':{short:'AMRAP 10',sub:'מבחן הבסיס. רושמים סבבים',test:true,
+   items:['5 ת׳ראסטר 2 דמבלס','10 שכיבות סמיכה','15 סקוואט אוויר']},
+ '2026-11-29':{short:'אינטרוולים 40/20',sub:'40 שנ׳ עבודה, 20 מנוחה. חמש תחנות, פעמיים',
+   items:['ג׳אמפינג ג׳קס ◆','סקייטרים ◆','סווינג שתי ידיים, קטלבל 12','מטפסי הרים','ברכיים גבוהות'],segs:L=>intervals(L,40,20)},
+ '2026-11-30':{short:'EMOM 10',sub:'שלוש תחנות במחזור, דקה לכל תחנה',
+   items:['8 סקוואט קוזאק לכל צד','10 לאנג׳ צד לסירוגין, קטלבל 8 בחזה','40 שנ׳ ישיבת קיר'],segs:npEmom([0,1,2,0,1,2,0,1,2,0])},
+ '2026-12-01':{short:'AMRAP 10',sub:'כמה שיותר סבבים',
+   items:['6 שכיבות יהלום','5 חתירת רנגייד לכל יד, 2 דמבלס','6 לחיצת חזה על הרצפה, 2 דמבלס','20 שנ׳ הולו הולד']},
+ '2026-12-02':{short:'דריל צבאי',sub:'4 סבבים, 5 חזרות מכל תרגיל, בלי הפסקה. הסדר נכתב מהזיכרון של מרקוס ועוד לא נבדק מול מקור',
+   items:['מתיחה והושטה','לאנג׳ אחורי','קפיצת מתיחה ◆','חתירה בשכיבה על הגב: משיכת ברכיים וידיים','סקוואט בנדר','ווינדמיל','לאנג׳ קדימה','חתירת בטן: סופרמן עם משיכת מרפקים','טוויסט ברך כפופה','שכיבה'],
+   segs:npFree('4 סבבים, 5 חזרות מכל תרגיל','סיימתי סבב')},
+ '2026-12-03':{short:'סולם עולה ויורד',sub:'2-4-6-8-10-8-6-4-2',unit:'שלבים',
+   items:['בכל שלב n: חצי מ-n קלין יד אחת, קטלבל 8, לכל צד','ו-n חמור בועט לכל צד'],segs:npFree('סולם 2 עד 10 וחזרה ל-2','סיימתי שלב')},
+ '2026-12-04':{short:'AMRAP 10',sub:'משחק שישי. רושמים סבבים, לא משווים לשום דבר',
+   items:['6 ברפי','8 גובלט סקוואט, קטלבל 12','10 מטפסי הרים']},
+ '2026-12-06':{short:'טבטה מעורבת',sub:'20 שנ׳ עבודה, 10 מנוחה, 8 פעמים. פעמיים',
+   items:['סווינג יד אחת, קטלבל 8','ברכיים גבוהות','ברפי','סקייטרים ◆','דקה אחרונה: כמה קפיצות חבל יש לך'],
+   segs:L=>{const a=[];
+     for(let k=0;k<8;k++){a.push(seg(`טבטה ראשונה · ${k+1}/8`,20,[L[k%2]],{quiet:k>1}));a.push(restSeg(`מנוחה ${k+1}/8`,10))}
+     a.push(restSeg('דקה מנוחה',60,'דקה מנוחה, הליכה ונשימה'));
+     for(let k=0;k<8;k++){a.push(seg(`טבטה שנייה · ${k+1}/8`,20,[L[2+k%2]],{quiet:k>1}));a.push(restSeg(`מנוחה ${k+1}/8`,10))}
+     a.push(seg('דקה אחרונה',60,[L[4]],{amrap:true,cl:'עוד 10 קפיצות'}));return a}},
+ '2026-12-07':{short:'5 בלוקים',sub:'בלוק כל 2 דקות, מה שנשאר מנוחה',
+   items:['20 שנ׳ זחילת דוב','8 גובלט סומו, עצירה של 3 שנ׳, קטלבל 12','6 לאנג׳ צד לכל צד'],segs:L=>blocks2(L,'כל 2 דקות, ואז מנוחה')},
+ '2026-12-08':{short:'אינטרוולים 40/20',sub:'40 שנ׳ עבודה, 20 מנוחה. חמש תחנות, פעמיים',
+   items:['שכיבות ספיידרמן','חתירה יד ימין, עצירה של 2 שנ׳ למעלה','חתירה יד שמאל, עצירה של 2 שנ׳ למעלה','לחיצת פרס 2 דמבלס','החזקת פלאנק'],segs:L=>intervals(L,40,20)},
+ '2026-12-09':{short:'פירמידה',sub:'2-4-6-8-10-8-6-4-2. נגמר הזמן באמצע? רושמים באיזה n עצרת',unit:'שלבים',
+   items:['n שכיבות סמיכה','n סקוואט קפיצה ◆','n V-אפ'],segs:npFree('פירמידה 2 עד 10 וחזרה','סיימתי שלב')},
+ '2026-12-10':{short:'2 בלוקים של 5 דקות',sub:'סופרים סבבים בכל בלוק',
+   items:['10 דדליפט רומני 2 דמבלס','5 סווינג יד אחת, קטלבל 12, לכל יד','10 גשר רגל אחת לכל רגל','4 סנאץ׳ יד אחת, קטלבל 8, לכל יד (מרפק צהוב: 30 שנ׳ סופרמן Y-T-W במקום)'],
+   segs:npTwoBlocks(2,'בלוק א׳: כמה שיותר סבבים','בלוק ב׳: כמה שיותר סבבים')},
+ '2026-12-11':{short:'צ׳יפר לזמן',sub:'משחק שישי. תקרה 10 דקות, רושמים זמן',unit:'תחנות',
+   items:['60 קפיצות חבל','20 גובלט סקוואט, קטלבל 12','20 שכיבות סמיכה','20 חתירת דמבל (10 לכל יד)','20 מטפסי הרים','10 ברפי'],
+   segs:npFree('גומרים את כל הרשימה פעם אחת, מהר','סיימתי תחנה')},
+ '2026-12-13':{short:'30/30',sub:'30 שנ׳ קלין ולחיצה, 30 שנ׳ חבל, בלי מנוחה, עד סוף 10 הדקות',
+   items:['30 שנ׳ קלין ולחיצה יד אחת, קטלבל 8, מחליפים יד כל סבב','30 שנ׳ חבל מהיר'],
+   segs:L=>{const a=[];for(let r=1;r<=5;r++){a.push(seg(`סבב ${r}/5 · קלין ולחיצה`,30,[L[0]]));a.push(seg(`סבב ${r}/5 · חבל`,30,[L[1]]))}
+     for(let r=6;r<=10;r++){a.push(seg(`סבב ${r}/10 · קלין ולחיצה`,30,[L[0]]));a.push(seg(`סבב ${r}/10 · חבל`,30,[L[1]]))}return a}},
+ '2026-12-14':{short:'AMRAP 10',sub:'כמה שיותר סבבים',
+   items:['8 ספליט סקוואט לכל רגל, 2 דמבלס','10 שאפל סקוואט צד','20 שנ׳ ישיבת קיר']},
+ '2026-12-15':{short:'AMRAP 10',sub:'בלי הפסקה',
+   items:['6 פוש-פרס 2 דמבלס','6 חתירה בהטיה 2 דמבלס','6 שכיבות עם עצירה של 2 שנ׳ בתחתית','6 הרמות צד']},
+ '2026-12-16':{short:'EMOM 10',sub:'שתי תחנות מתחלפות',
+   items:['5 ברפי ו-10 ג׳אמפינג ג׳קס ◆','12 פלאטר קיקס ו-6 בנט-לג טוויסט לכל צד'],segs:npEmom([0,1,0,1,0,1,0,1,0,1])},
+ '2026-12-17':{short:'5 בלוקים',sub:'קומבינציה כל 2 דקות, מה שנשאר מנוחה',
+   items:['6 דדליפט רגל אחת, קטלבל 12, לכל רגל','6 גשר רגל אחת עם עצירה של 3 שנ׳','נשיאה כפולה, קטלבל 12 ו-8, 10 צעדים'],segs:L=>blocks2(L,'קומבינציה, ואז מנוחה')},
+ '2026-12-18':{short:'AMRAP 10',sub:'מבחן הסוף, אותו מבחן של 27.11',test:true,
+   items:['5 ת׳ראסטר 2 דמבלס','10 שכיבות סמיכה','15 סקוואט אוויר']},
+ '2026-12-20':{short:'EMOM עולה',sub:'כל דקה ברפי, ואז חבל עד הצפצוף',
+   items:['ברפי','קפיצות חבל עד הצפצוף'],
+   segs:L=>{const a=[];for(let m=0;m<10;m++){const n=3+Math.floor(m/2);a.push(seg(`דקה ${m+1}/10`,60,[{m:'burpee',t:`${n} ברפי`},L[1]],{title:`${n} ברפי, ואז חבל`}))}return a}},
+ '2026-12-21':{short:'2 בלוקים של 5 דקות',sub:'בלוק כבד ואז בלוק קופצני',
+   items:['8 קוזאק סקוואט לכל צד, קטלבל 12 בחזה','8 ספליט סקוואט לכל רגל','10 סקוואט קפיצה ◆','10 סקייטרים ◆','30 קפיצות חבל'],
+   segs:npTwoBlocks(2,'בלוק א׳, כבד: כמה שיותר סבבים','בלוק ב׳, קופצני: כמה שיותר סבבים')},
+ '2026-12-22':{short:'אינטרוולים 45/15',sub:'45 שנ׳ עבודה, 15 מנוחה. חמש תחנות, פעמיים',
+   items:['שכיבות טמפו, 3 שנ׳ ירידה','חתירה יד ימין','חתירה יד שמאל','פרס יד אחת, קטלבל 8, מחליפים יד באמצע','פלאנק זרועות ישרות'],segs:L=>intervals(L,45,15)},
+ '2026-12-23':{short:'AMRAP 10',sub:'האימון האחרון בקופסה. הברפי חוזר בכוונה: מודדים אם 6 נהיה 8',
+   items:['40 קפיצות חבל','6 ברפי-בודיבילדר','20 פלאטר קיקס','10 סקוואט אוויר']}
+};
+const NP_SRC={"2026-11-26":{"zone":"שרשרת אחורית","world":"צבא קלאסי","grip":true,"knee":false},"2026-11-27":{"zone":"מבחן בסיס","world":"צבא קלאסי","grip":false,"knee":false},"2026-11-29":{"zone":"מנוע","world":"צבא קלאסי","grip":false,"knee":true},"2026-11-30":{"zone":"רגליים","world":"צבא קלאסי","grip":false,"knee":false},"2026-12-01":{"zone":"עליון","world":"צבא קלאסי","grip":true,"knee":false},"2026-12-02":{"zone":"צבאי","world":"צבא קלאסי","grip":false,"knee":true},"2026-12-03":{"zone":"שרשרת אחורית","world":"ג׳ונגל","grip":true,"knee":false},"2026-12-04":{"zone":"משחק שישי א׳","world":"ג׳ונגל","grip":false,"knee":false},"2026-12-06":{"zone":"מנוע","world":"ג׳ונגל","grip":false,"knee":true},"2026-12-07":{"zone":"רגליים","world":"ג׳ונגל","grip":false,"knee":false},"2026-12-08":{"zone":"עליון","world":"ג׳ונגל","grip":true,"knee":false},"2026-12-09":{"zone":"צבאי","world":"ג׳ונגל","grip":false,"knee":true},"2026-12-10":{"zone":"שרשרת אחורית","world":"ברזל","grip":true,"knee":false},"2026-12-11":{"zone":"משחק שישי ב׳","world":"ברזל","grip":false,"knee":false},"2026-12-13":{"zone":"מנוע","world":"ברזל","grip":true,"knee":false},"2026-12-14":{"zone":"רגליים","world":"ברזל","grip":false,"knee":false},"2026-12-15":{"zone":"עליון","world":"ברזל","grip":false,"knee":false},"2026-12-16":{"zone":"צבאי","world":"ברזל","grip":false,"knee":true},"2026-12-17":{"zone":"שרשרת אחורית","world":"פינאלה","grip":true,"knee":false},"2026-12-18":{"zone":"מבחן סוף","world":"פינאלה","grip":false,"knee":false},"2026-12-20":{"zone":"מנוע","world":"פינאלה","grip":false,"knee":false},"2026-12-21":{"zone":"רגליים","world":"פינאלה","grip":false,"knee":true},"2026-12-22":{"zone":"עליון","world":"פינאלה","grip":true,"knee":false},"2026-12-23":{"zone":"צבאי, האחרון","world":"פינאלה","grip":false,"knee":false}};
+/* the date a (weekday, week) pair stands for, so every caller of dayPlan gets the dated session */
+const isoFor=(dow,wk)=>{ const s=addDays(START_ISO,7*(wk-1)); for(let k=0;k<7;k++){const d=addDays(s,k); if(dowOf(d)===dow) return d;} return null; };
+function npPlan(dow,wk){
+  const iso=isoFor(dow,wk), p=iso&&NEWP[iso], src=NP_SRC&&NP_SRC[iso]; if(!p||!src) return null;
+  const L=NP_ITEMS(p.items,src.grip);
+  return {dow,wk,iso,name:src.zone,world:src.world,kind:'np',short:p.short,sub:p.sub,test:!!p.test,count:!p.segs||/amrap|שלב|תחנה|סבב/.test(String(p.segs)),
+          unit:p.unit||'סבבים',items:L,segs:p.segs,grip:src.grip,knee:src.knee,intro:null};
+}
+const GRIP_CHECK='בדיקת רמזור למרפק, 20 שניות: אוחזים בידית הקטלבל 10 שניות, כופפים שורש כף יד עם דמבל, ושואלים אם יש נוקשות. 0 עד 2 ממשיכים. 3 ומעלה, לוחצים "החלפה" ועושים גשר במקום אחיזה';
+
 function dayPlan(dow,wk){
+  const np=npPlan(dow,wk); if(np) return np;
   const p=PH2[wk]&&PH2[wk][dow];
   if(p) return {dow,wk,name:p.name,kind:p.kind,short:p.short,sub:p.sub,test:false,count:!!p.count||p.kind==='amrap',unit:p.unit||'סבבים',items:p.items,segs:p.segs,intro:`i-w${wk}d${dow}`};
   const d=DAYS[dow]; if(!d) return null;
@@ -577,8 +677,10 @@ function daySegments(dow,wk){
   const segs=[], L=plan.items;
   const WU=warmFor(dow);
   WU.forEach(([it,s],i)=>segs.push({kind:'warm',tag:`חימום ${i+1}/${WU.length}`,secs:s,items:[it],title:it.t}));
+  if(plan.grip) segs.push({kind:'setup',tag:'רמזור מרפק',secs:20,rest:true,items:[{m:'rest',t:GRIP_CHECK}],title:'בדיקת רמזור למרפק'});
   segs.push({kind:'setup',tag:'סטאפ',secs:SETUP_S,rest:true,items:[{m:'rest',t:gearLine(plan)}],title:'סטאפ לעבודה'});
   if(plan.segs){ plan.segs(L).forEach(s=>segs.push(s)); }
+  else if(plan.kind==='np'){ npAmrap(L).forEach(s=>segs.push(s)); }
   else if(plan.kind==='emom'){
     for(let m=0;m<10;m++){ const it=L[m%L.length]; segs.push({kind:'work',tag:`דקה ${m+1}/10`,secs:60,items:[it],title:it.t}); }
   } else if(plan.kind==='rounds'){
